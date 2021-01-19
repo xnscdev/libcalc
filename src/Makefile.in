@@ -132,7 +132,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgincludedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libcalc_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libcalc_la_OBJECTS = calc-expr.lo
+am_libcalc_la_OBJECTS = calc-expr.lo calc-number.lo
 libcalc_la_OBJECTS = $(am_libcalc_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -153,7 +153,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/calc-expr.Plo
+am__depfiles_remade = ./$(DEPDIR)/calc-expr.Plo \
+	./$(DEPDIR)/calc-number.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -331,11 +332,13 @@ AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit \
 
 lib_LTLIBRARIES = libcalc.la
 libcalc_la_SOURCES = \
-	calc-expr.c
+	calc-expr.c	\
+	calc-number.c
 
 libcalc_la_LIBADD = $(GLIB_LIBS) $(GOBJECT_LIBS)
 pkginclude_HEADERS = \
-	calc-expr.h
+	calc-expr.h	\
+	calc-number.h
 
 all: all-am
 
@@ -416,6 +419,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-expr.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-number.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -600,6 +604,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/calc-expr.Plo
+	-rm -f ./$(DEPDIR)/calc-number.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -646,6 +651,7 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/calc-expr.Plo
+	-rm -f ./$(DEPDIR)/calc-number.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
