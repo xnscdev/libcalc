@@ -49,6 +49,11 @@ struct _CalcNumber
   mpq_t value;
 };
 
+CalcNumber *calc_number_new_q (mpq_t value);
+CalcNumber *calc_number_new_z (mpz_t value);
+CalcNumber *calc_number_new_ui (unsigned long value);
+CalcNumber *calc_number_new_si (signed long value);
+
 G_END_DECLS
 
 #endif

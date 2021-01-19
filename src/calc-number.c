@@ -39,3 +39,39 @@ calc_number_equivalent (CalcExpr *self, CalcExpr *other)
   g_return_val_if_fail (CALC_IS_NUMBER (other), FALSE);
   return mpq_equal (CALC_NUMBER (self)->value, CALC_NUMBER (other)->value);
 }
+
+CalcNumber *
+calc_number_new_q (mpq_t value)
+{
+  CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
+  mpq_init (self->value);
+  mpq_set (self->value, value);
+  return self;
+}
+
+CalcNumber *
+calc_number_new_z (mpz_t value)
+{
+  CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
+  mpq_init (self->value);
+  mpq_set_z (self->value, value);
+  return self;
+}
+
+CalcNumber *
+calc_number_new_ui (unsigned long value)
+{
+  CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
+  mpq_init (self->value);
+  mpq_set_ui (self->value, value, 1);
+  return self;
+}
+
+CalcNumber *
+calc_number_new_si (signed long value)
+{
+  CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
+  mpq_init (self->value);
+  mpq_set_si (self->value, value, 1);
+  return self;
+}
