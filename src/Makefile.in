@@ -131,7 +131,8 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgincludedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libcalc_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+libcalc_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_libcalc_la_OBJECTS = calc-expr.lo calc-number.lo
 libcalc_la_OBJECTS = $(am_libcalc_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -231,6 +232,8 @@ EXEEXT = @EXEEXT@
 FGREP = @FGREP@
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_LIBS = @GLIB_LIBS@
+GMP_CFLAGS = @GMP_CFLAGS@
+GMP_LIBS = @GMP_LIBS@
 GOBJECT_CFLAGS = @GOBJECT_CFLAGS@
 GOBJECT_LIBS = @GOBJECT_LIBS@
 GREP = @GREP@
@@ -328,14 +331,14 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit \
-	$(GLIB_CFLAGS) $(GOBJECT_CFLAGS)
+	$(GMP_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)
 
 lib_LTLIBRARIES = libcalc.la
 libcalc_la_SOURCES = \
 	calc-expr.c	\
 	calc-number.c
 
-libcalc_la_LIBADD = $(GLIB_LIBS) $(GOBJECT_LIBS)
+libcalc_la_LIBADD = $(GMP_LIBS) $(GLIB_LIBS) $(GOBJECT_LIBS)
 pkginclude_HEADERS = \
 	calc-expr.h	\
 	calc-number.h
