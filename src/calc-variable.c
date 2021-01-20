@@ -25,6 +25,14 @@ static gboolean calc_variable_equivalent (CalcExpr *self, CalcExpr *other);
 static gboolean calc_variable_like_terms (CalcExpr *self, CalcExpr *other);
 static gulong calc_variable_hash (CalcExpr *expr);
 
+static GHashTable *calc_variable_values;
+
+static gboolean
+calc_variable_key_equal (gconstpointer a, gconstpointer b)
+{
+  return g_strcmp0 ((const gchar *) a, (const gchar *) b) == 0;
+}
+
 static void
 calc_variable_dispose (GObject *obj)
 {
@@ -39,6 +47,9 @@ calc_variable_class_init (CalcVariableClass *klass)
   CALC_EXPR_CLASS (klass)->equivalent = calc_variable_equivalent;
   CALC_EXPR_CLASS (klass)->like_terms = calc_variable_like_terms;
   CALC_EXPR_CLASS (klass)->hash = calc_variable_hash;
+
+  calc_variable_values =
+    g_hash_table_new_full (g_str_hash, calc_variable_key_equal, g_free, NULL);
 }
 
 static void
@@ -100,12 +111,36 @@ calc_variable_new (const gchar *text)
   return self;
 }
 
+/**
+ * calc_variable_set_value:
+ * @name: the name of the variable
+ * @value: the value to set the variable to
+ *
+ * Sets the value of the variable named @name to @value. Whenever the value
+ * of the variable @name is requested, @value will be returned. If @value
+ * is %NULL, any existing value of the variable is removed. If @value is not
+ * %NULL and is not a valid expression, no action is performed.
+ **/
+
 void
 calc_variable_set_value (const gchar *name, CalcExpr *value)
 {
+  g_return_if_fail (value == NULL || CALC_IS_EXPR (value));
+  g_hash_table_insert (calc_variable_values, g_strdup (name), value);
 }
+
+/**
+ * calc_variable_get_value:
+ * @name: the name of the variable
+ *
+ * Gets the value of the variable named @name.
+ *
+ * Returns: the value of the variable, or %NULL if no variable named @name
+ * was previously set to a value
+ **/
 
 CalcExpr *
 calc_variable_get_value (const gchar *name)
 {
+  return g_hash_table_lookup (calc_variable_values, name);
 }
