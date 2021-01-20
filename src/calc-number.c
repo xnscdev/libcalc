@@ -73,6 +73,8 @@ calc_number_get_final_type (CalcNumberType a, CalcNumberType b)
  *
  * Constructs a new #CalcNumber and initializes it to the GNU MP floating-point
  * number @value. The number will have a type set to %CALC_NUMBER_TYPE_FLOATING.
+ *
+ * Returns: the newly constructed instance
  **/
 
 CalcNumber *
@@ -91,6 +93,8 @@ calc_number_new_f (mpf_t value)
  * Constructs a new #CalcNumber and initializes it to the GNU MPFR
  * floating-point number @value. The number will have a type set to
  * %CALC_NUMBER_TYPE_FLOATING.
+ *
+ * Returns: the newly constructed instance
  **/
 
 CalcNumber *
@@ -108,6 +112,8 @@ calc_number_new_fr (mpfr_t value)
  *
  * Constructs a new #CalcNumber and initializes it to the GNU MP rational
  * number @value. The number will have a type set to %CALC_NUMBER_TYPE_RATIONAL.
+ *
+ * Returns: the newly constructed instance
  **/
 
 CalcNumber *
@@ -126,6 +132,8 @@ calc_number_new_q (mpq_t value)
  *
  * Constructs a new #CalcNumber and initializes it to the GNU MP integer
  * @value. The number will have a type set to %CALC_NUMBER_TYPE_INTEGER.
+ *
+ * Returns: the newly constructed instance
  **/
 
 CalcNumber *
@@ -143,6 +151,8 @@ calc_number_new_z (mpz_t value)
  *
  * Constructs a new #CalcNumber and initializes it to the 64-bit floating-point
  * number @value. The number will have a type set to %CALC_NUMBER_TYPE_FLOATING.
+ *
+ * Returns: the newly constructed instance
  **/
 
 CalcNumber *
@@ -160,6 +170,8 @@ calc_number_new_d (double value)
  *
  * Constructs a new #CalcNumber and initializes it to the unsigned integer
  * @value. The number will have a type set to %CALC_NUMBER_TYPE_INTEGER.
+ *
+ * Returns: the newly constructed instance
  **/
 
 CalcNumber *
@@ -177,6 +189,8 @@ calc_number_new_ui (unsigned long value)
  *
  * Constructs a new #CalcNumber and initializes it to the signed integer
  * @value. The number will have a type set to %CALC_NUMBER_TYPE_INTEGER.
+ *
+ * Returns: the newly constructed instance
  **/
 
 CalcNumber *
