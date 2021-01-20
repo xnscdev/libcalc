@@ -1,5 +1,5 @@
 /*************************************************************************
- * calc-expr.h -- This file is part of libcalc.                          *
+ * calc-variable.h -- This file is part of libcalc.                        *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,44 +16,39 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#ifndef _CALC_EXPR_H
-#define _CALC_EXPR_H
+#ifndef _CALC_VARIABLE_H
+#define _CALC_VARIABLE_H
 
-#include <glib-object.h>
-#include <stdio.h>
+#include <mpfr.h>
+#include "calc-expr.h"
 
 G_BEGIN_DECLS
 
-#define CALC_TYPE_EXPR calc_expr_get_type ()
-G_DECLARE_DERIVABLE_TYPE (CalcExpr, calc_expr, CALC, EXPR, GObject)
+#define CALC_TYPE_VARIABLE calc_variable_get_type ()
+G_DECLARE_FINAL_TYPE (CalcVariable, calc_variable, CALC, VARIABLE, CalcExpr)
 
-/**
- * CalcExprClass:
- * @print: prints an expression to a stdio stream
- * @equivalent: checks if two expressions are equivalent
- * @like_terms: checks if two expressions are like terms
- * @hash: computes a hash of an expression
- *
- * Class type for mathematical expressions.
- **/
-
-struct _CalcExprClass
+struct _CalcVariableClass
 {
   /*< private >*/
-  GObjectClass parent;
-  gpointer padding[12];
-
-  /*< public >*/
-  void (*print) (CalcExpr *, FILE *);
-  gboolean (*equivalent) (CalcExpr *, CalcExpr *);
-  gboolean (*like_terms) (CalcExpr *, CalcExpr *);
-  gulong (*hash) (CalcExpr *);
+  CalcExprClass parent;
 };
 
-void calc_expr_print (CalcExpr *self, FILE *stream);
-gboolean calc_expr_equivalent (CalcExpr *self, CalcExpr *other);
-gboolean calc_expr_like_terms (CalcExpr *self, CalcExpr *other);
-gulong calc_expr_hash (CalcExpr *self);
+/**
+ * CalcVariable:
+ *
+ * Represents a variable that may be set to a constant value.
+ **/
+
+struct _CalcVariable
+{
+  /*< private >*/
+  CalcExpr parent;
+  gchar *text;
+};
+
+CalcVariable *calc_variable_new (const gchar *text);
+void calc_variable_set_value (const gchar *name, CalcExpr *value);
+CalcExpr *calc_variable_get_value (const gchar *name);
 
 G_END_DECLS
 

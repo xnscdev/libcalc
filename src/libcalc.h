@@ -20,5 +20,6 @@
 #define _LIBCALC_H
 
 #include "calc-number.h"
+#include "calc-variable.h"
 
 #endif
