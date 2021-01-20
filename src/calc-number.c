@@ -324,47 +324,100 @@ calc_number_add (CalcNumber **result, CalcNumber *a, CalcNumber *b)
 }
 
 /**
- * calc_number_cast:
- * @self: the number to cast
- * @type: the type to cast to
+ * calc_number_add_z:
+ * @result: the pointer to store the result of the addition
+ * @a: the first addend
+ * @b: the second addend
  *
- * Changes the type of @self to @type and sets its value to a representation
- * of the original value with the new type. If @self is not a valid expression
- * or @type is not a valid type or is a type that cannot be cast to without
- * losing precision, no action is performed.
+ * Adds @a and @b and stores the result in @result. Any previous value in
+ * @result will be erased. The type of @result is dependent on the types of
+ * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
+ * @result will point to it. If @result is %NULL or @a is invalid, no action
+ * is performed.
  **/
 
 void
-calc_number_cast (CalcNumber *self, CalcNumberType type)
+calc_number_add_z (CalcNumber **result, CalcNumber *a, mpz_t b)
 {
-  g_return_if_fail (CALC_IS_NUMBER (self));
-  if (self->type == type)
-    return;
-  g_return_if_fail (type > self->type && type < N_CALC_NUMBER_TYPE);
-  switch (type)
+  mpq_t temp;
+  g_return_if_fail (result != NULL);
+  g_return_if_fail (*result == NULL || CALC_IS_NUMBER (*result));
+  g_return_if_fail (CALC_IS_NUMBER (a));
+  if (*result == NULL)
     {
+      *result = calc_number_new (NULL);
+      mpz_clear ((*result)->integer);
+    }
+  else
+    calc_number_dispose (G_OBJECT (result));
+  (*result)->type = a->type;
+  switch (a->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpz_init ((*result)->integer);
+      mpz_add ((*result)->integer, a->integer, b);
+      break;
     case CALC_NUMBER_TYPE_RATIONAL:
-      mpq_init (self->rational);
-      mpq_set_z (self->rational, self->integer);
-      mpz_clear (self->integer);
+      mpq_init ((*result)->rational);
+      mpq_init (temp);
+      mpq_set_z (temp, b);
+      mpq_add ((*result)->rational, a->rational, temp);
+      mpq_clear (temp);
       break;
     case CALC_NUMBER_TYPE_FLOATING:
-      mpfr_init (self->floating);
-      if (self->type == CALC_NUMBER_TYPE_RATIONAL)
-	{
-	  mpfr_set_q (self->floating, self->rational, MPFR_RNDN);
-	  mpq_clear (self->rational);
-	}
-      else
-	{
-	  mpfr_set_z (self->floating, self->integer, MPFR_RNDD);
-	  mpz_clear (self->integer);
-	}
-      break;
-    default:
+      mpfr_init ((*result)->floating);
+      mpfr_add_z ((*result)->floating, a->floating, b, MPFR_RNDN);
       break;
     }
-  self->type = type;
+}
+
+/**
+ * calc_number_add_q:
+ * @result: the pointer to store the result of the addition
+ * @a: the first addend
+ * @b: the second addend
+ *
+ * Adds @a and @b and stores the result in @result. Any previous value in
+ * @result will be erased. The type of @result is dependent on the types of
+ * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
+ * @result will point to it. If @result is %NULL or @a is invalid, no action
+ * is performed.
+ **/
+
+void
+calc_number_add_q (CalcNumber **result, CalcNumber *a, mpq_t b)
+{
+  mpq_t temp;
+  g_return_if_fail (result != NULL);
+  g_return_if_fail (*result == NULL || CALC_IS_NUMBER (*result));
+  g_return_if_fail (CALC_IS_NUMBER (a));
+  if (*result == NULL)
+    {
+      *result = calc_number_new (NULL);
+      mpz_clear ((*result)->integer);
+    }
+  else
+    calc_number_dispose (G_OBJECT (result));
+  (*result)->type = a->type;
+  switch (a->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      (*result)->type = CALC_NUMBER_TYPE_RATIONAL;
+      mpq_init ((*result)->rational);
+      mpq_init (temp);
+      mpq_set_z (temp, a->integer);
+      mpq_add ((*result)->rational, temp, b);
+      mpq_clear (temp);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpq_init ((*result)->rational);
+      mpq_add ((*result)->rational, a->rational, b);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_init ((*result)->floating);
+      mpfr_add_q ((*result)->floating, a->floating, b, MPFR_RNDN);
+      break;
+    }
 }
 
 /**
@@ -621,4 +674,48 @@ calc_number_cmp_si (CalcNumber *a, signed long b)
     default:
       return 0;
     }
+}
+
+/**
+ * calc_number_cast:
+ * @self: the number to cast
+ * @type: the type to cast to
+ *
+ * Changes the type of @self to @type and sets its value to a representation
+ * of the original value with the new type. If @self is not a valid expression
+ * or @type is not a valid type or is a type that cannot be cast to without
+ * losing precision, no action is performed.
+ **/
+
+void
+calc_number_cast (CalcNumber *self, CalcNumberType type)
+{
+  g_return_if_fail (CALC_IS_NUMBER (self));
+  if (self->type == type)
+    return;
+  g_return_if_fail (type > self->type && type < N_CALC_NUMBER_TYPE);
+  switch (type)
+    {
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpq_init (self->rational);
+      mpq_set_z (self->rational, self->integer);
+      mpz_clear (self->integer);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_init (self->floating);
+      if (self->type == CALC_NUMBER_TYPE_RATIONAL)
+	{
+	  mpfr_set_q (self->floating, self->rational, MPFR_RNDN);
+	  mpq_clear (self->rational);
+	}
+      else
+	{
+	  mpfr_set_z (self->floating, self->integer, MPFR_RNDD);
+	  mpz_clear (self->integer);
+	}
+      break;
+    default:
+      break;
+    }
+  self->type = type;
 }
