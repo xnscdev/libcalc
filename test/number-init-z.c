@@ -18,7 +18,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "calc-number.h"
+#include "libcalc.h"
 
 #define T0 65535
 

@@ -11,7 +11,7 @@ FIXXREF_OPTIONS =
 HFILE_GLOB = $(top_srcdir)/src/calc-*.h
 CFILE_GLOB = $(top_srcdir)/src/calc-*.c
 EXTRA_HFILES =
-IGNORE_HFILES =
+IGNORE_HFILES = libcalc.h
 HTML_IMAGES =
 
 content_files =

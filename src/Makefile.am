@@ -11,4 +11,5 @@ libcalc_la_LIBADD = $(GMP_LIBS) $(MPFR_LIBS) $(GLIB_LIBS) $(GOBJECT_LIBS)
 
 pkginclude_HEADERS =	\
 	calc-expr.h	\
-	calc-number.h
+	calc-number.h	\
+	libcalc.h
