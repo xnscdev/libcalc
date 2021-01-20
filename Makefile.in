@@ -346,7 +346,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = src doc
+SUBDIRS = src doc test
 all: all-recursive
 
 .SUFFIXES:

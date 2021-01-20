@@ -27,5 +27,5 @@ AC_SUBST([GOBJECT_LIBS])
 
 GTK_DOC_CHECK([1.14])
 
-AC_CONFIG_FILES([Makefile doc/Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile doc/Makefile src/Makefile test/Makefile])
 AC_OUTPUT
