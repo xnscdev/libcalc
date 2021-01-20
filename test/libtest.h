@@ -24,6 +24,8 @@
 #define DEFINE_TEST(name) void name (void)
 #define RUN_TEST(name) name ()
 
+void assert_num_equals_d (CalcNumber *num, double value);
+void assert_num_equals_ui (CalcNumber *num, unsigned long value);
 void assert_type_equals (CalcNumber *num, CalcNumberType type);
 
 #endif

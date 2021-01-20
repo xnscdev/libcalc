@@ -28,12 +28,7 @@ DEFINE_TEST (itoq)
   calc_number_cast (NULL, TEST_TYPE);
   calc_number_cast (a, TEST_TYPE);
   assert_type_equals (a, TEST_TYPE);
-  if (mpfr_cmp_d (a->floating, TEST_VALUE) != 0)
-    {
-      mpfr_out_str (stderr, 10, 4, a->floating, MPFR_RNDD);
-      fprintf (stderr, " != %d\n", TEST_VALUE);
-      exit (2);
-    }
+  assert_num_equals_d (a, TEST_VALUE);
 }
 
 int

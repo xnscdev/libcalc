@@ -107,7 +107,7 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libtest_a_AR = $(AR) $(ARFLAGS)
 libtest_a_LIBADD =
-am_libtest_a_OBJECTS = num-type.$(OBJEXT)
+am_libtest_a_OBJECTS = assert.$(OBJEXT) num-type.$(OBJEXT)
 libtest_a_OBJECTS = $(am_libtest_a_OBJECTS)
 am_number_cast_OBJECTS = number-cast.$(OBJEXT)
 number_cast_OBJECTS = $(am_number_cast_OBJECTS)
@@ -134,7 +134,7 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/num-type.Po \
+am__depfiles_remade = ./$(DEPDIR)/assert.Po ./$(DEPDIR)/num-type.Po \
 	./$(DEPDIR)/number-cast.Po ./$(DEPDIR)/number-init.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -532,6 +532,7 @@ AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit \
 TESTS = $(check_PROGRAMS)
 check_LIBRARIES = libtest.a
 libtest_a_SOURCES = \
+	assert.c	\
 	libtest.h	\
 	num-type.c
 
@@ -604,6 +605,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/assert.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/num-type.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-cast.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-init.Po@am__quote@ # am--include-marker
@@ -941,7 +943,8 @@ clean-am: clean-checkLIBRARIES clean-checkPROGRAMS clean-generic \
 	clean-libtool mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/num-type.Po
+		-rm -f ./$(DEPDIR)/assert.Po
+	-rm -f ./$(DEPDIR)/num-type.Po
 	-rm -f ./$(DEPDIR)/number-cast.Po
 	-rm -f ./$(DEPDIR)/number-init.Po
 	-rm -f Makefile
@@ -989,7 +992,8 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/num-type.Po
+		-rm -f ./$(DEPDIR)/assert.Po
+	-rm -f ./$(DEPDIR)/num-type.Po
 	-rm -f ./$(DEPDIR)/number-cast.Po
 	-rm -f ./$(DEPDIR)/number-init.Po
 	-rm -f Makefile

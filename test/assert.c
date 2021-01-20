@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-init.c -- This file is part of libcalc.                        *
+ * assert.c -- This file is part of libcalc.                             *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -19,17 +19,24 @@
 #include <stdlib.h>
 #include "libtest.h"
 
-#define TEST_VALUE 65535
-
-DEFINE_TEST (ui)
+void
+assert_num_equals_d (CalcNumber *num, double value)
 {
-  CalcNumber *a = calc_number_new_ui (TEST_VALUE);
-  assert_num_equals_ui (a, TEST_VALUE);
+  if (calc_number_cmp_d (num, value) != 0)
+    {
+      calc_expr_print (CALC_EXPR (num), stderr);
+      fprintf (stderr, " != %.2f\n", value);
+      abort ();
+    }
 }
 
-int
-main (void)
+void
+assert_num_equals_ui (CalcNumber *num, unsigned long value)
 {
-  RUN_TEST (ui);
-  return 0;
+  if (calc_number_cmp_ui (num, value) != 0)
+    {
+      calc_expr_print (CALC_EXPR (num), stderr);
+      fprintf (stderr, " != %lu\n", value);
+      abort ();
+    }
 }

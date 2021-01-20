@@ -9,6 +9,7 @@ TESTS = $(check_PROGRAMS)
 
 check_LIBRARIES = libtest.a
 libtest_a_SOURCES =	\
+	assert.c	\
 	libtest.h	\
 	num-type.c
 
