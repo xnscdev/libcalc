@@ -421,6 +421,72 @@ calc_number_add_q (CalcNumber **result, CalcNumber *a, mpq_t b)
 }
 
 /**
+ * calc_number_add_f:
+ * @result: the pointer to store the result of the addition
+ * @a: the first addend
+ * @b: the second addend
+ *
+ * Adds @a and @b and stores the result in @result. Any previous value in
+ * @result will be erased. The type of @result is dependent on the types of
+ * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
+ * @result will point to it. If @result is %NULL or @a is invalid, no action
+ * is performed.
+ **/
+
+void
+calc_number_add_f (CalcNumber **result, CalcNumber *a, mpf_t b)
+{
+  mpfr_t temp;
+  mpfr_init_set_f (temp, b, MPFR_RNDN);
+  calc_number_add_fr (result, a, temp);
+  mpfr_clear (temp);
+}
+
+/**
+ * calc_number_add_fr:
+ * @result: the pointer to store the result of the addition
+ * @a: the first addend
+ * @b: the second addend
+ *
+ * Adds @a and @b and stores the result in @result. Any previous value in
+ * @result will be erased. The type of @result is dependent on the types of
+ * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
+ * @result will point to it. If @result is %NULL or @a is invalid, no action
+ * is performed.
+ **/
+
+void
+calc_number_add_fr (CalcNumber **result, CalcNumber *a, mpfr_t b)
+{
+  g_return_if_fail (result != NULL);
+  g_return_if_fail (*result == NULL || CALC_IS_NUMBER (*result));
+  g_return_if_fail (CALC_IS_NUMBER (a));
+  if (*result == NULL)
+    {
+      *result = calc_number_new (NULL);
+      mpz_clear ((*result)->integer);
+    }
+  else
+    calc_number_dispose (G_OBJECT (result));
+  (*result)->type = CALC_NUMBER_TYPE_FLOATING;
+  switch (a->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpfr_init_set_z ((*result)->floating, a->integer, MPFR_RNDN);
+      mpfr_add ((*result)->floating, (*result)->floating, b, MPFR_RNDN);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpfr_init_set_q ((*result)->floating, a->rational, MPFR_RNDN);
+      mpfr_add ((*result)->floating, (*result)->floating, b, MPFR_RNDN);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_init ((*result)->floating);
+      mpfr_add ((*result)->floating, a->floating, b, MPFR_RNDN);
+      break;
+    }
+}
+
+/**
  * calc_number_cmp:
  * @a: the first number to compare
  * @b: the second number to compare
