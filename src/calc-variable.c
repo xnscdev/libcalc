@@ -80,15 +80,7 @@ calc_variable_like_terms (CalcExpr *self, CalcExpr *other)
 static gulong
 calc_variable_hash (CalcExpr *expr)
 {
-  /* djb2 algorithm */
-  gulong hash = 5831;
-  gchar *ptr = CALC_VARIABLE (expr)->text;
-  while (*ptr != '\0')
-    {
-      hash = (hash << 5) + hash + *ptr;
-      ptr++;
-    }
-  return hash;
+  return g_str_hash (CALC_VARIABLE (expr)->text);
 }
 
 /**
