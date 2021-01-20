@@ -317,6 +317,7 @@ calc_number_add (CalcNumber **result, CalcNumber *a, CalcNumber *b)
       mpfr_add ((*result)->floating, ca->floating, cb->floating, MPFR_RNDN);
       break;
     }
+  (*result)->type = type;
 
   g_object_unref (ca);
   g_object_unref (cb);
@@ -337,6 +338,8 @@ void
 calc_number_cast (CalcNumber *self, CalcNumberType type)
 {
   g_return_if_fail (CALC_IS_NUMBER (self));
+  if (self->type == type)
+    return;
   g_return_if_fail (type > self->type && type < N_CALC_NUMBER_TYPE);
   switch (type)
     {
