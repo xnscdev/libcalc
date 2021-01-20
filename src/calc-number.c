@@ -317,6 +317,9 @@ calc_number_add (CalcNumber **result, CalcNumber *a, CalcNumber *b)
       mpfr_add ((*result)->floating, ca->floating, cb->floating, MPFR_RNDN);
       break;
     }
+
+  g_object_unref (ca);
+  g_object_unref (cb);
 }
 
 /**
@@ -359,4 +362,53 @@ calc_number_cast (CalcNumber *self, CalcNumberType type)
       break;
     }
   self->type = type;
+}
+
+/**
+ * calc_number_cmp:
+ * @a: the first number to compare
+ * @b: the second number to compare
+ *
+ * Compares the values of @a and @b, casting both numbers to their minimal
+ * types before comparing.
+ *
+ * Returns: A positive value if @a > @b, negative if @a < @b, and zero if
+ * @a = @b or @a and @b are invalid numbers
+ **/
+
+gint
+calc_number_cmp (CalcNumber *a, CalcNumber *b)
+{
+  CalcNumberType type;
+  CalcNumber *ca;
+  CalcNumber *cb;
+  gint result;
+
+  g_return_val_if_fail (CALC_IS_NUMBER (a), 0);
+  g_return_val_if_fail (CALC_IS_NUMBER (b), 0);
+
+  type = calc_number_get_final_type (a->type, b->type);
+  ca = calc_number_new (a);
+  cb = calc_number_new (b);
+  calc_number_cast (ca, type);
+  calc_number_cast (cb, type);
+
+  switch (type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      result = mpz_cmp (ca->integer, cb->integer);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      result = mpq_cmp (ca->rational, cb->rational);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      result = mpfr_cmp (ca->floating, cb->floating);
+      break;
+    default:
+      return 0;
+    }
+
+  g_object_unref (ca);
+  g_object_unref (cb);
+  return result;
 }

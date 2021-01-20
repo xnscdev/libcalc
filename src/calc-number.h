@@ -79,6 +79,7 @@ CalcNumber *calc_number_new_ui (unsigned long value);
 CalcNumber *calc_number_new_si (signed long value);
 void calc_number_add (CalcNumber **result, CalcNumber *a, CalcNumber *b);
 void calc_number_cast (CalcNumber *self, CalcNumberType type);
+gint calc_number_cmp (CalcNumber *a, CalcNumber *b);
 
 G_END_DECLS
 
