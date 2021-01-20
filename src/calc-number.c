@@ -59,6 +59,14 @@ calc_number_equivalent (CalcExpr *self, CalcExpr *other)
   return FALSE; /* TODO Implement comparisons */
 }
 
+/**
+ * calc_number_new_f:
+ * @value: the value to initialize to
+ *
+ * Constructs a new #CalcNumber and initializes it to the GNU MP floating-point
+ * number @value. The number will have a type set to %CALC_NUMBER_TYPE_FLOATING.
+ **/
+
 CalcNumber *
 calc_number_new_f (mpf_t value)
 {
@@ -68,6 +76,15 @@ calc_number_new_f (mpf_t value)
   return self;
 }
 
+/**
+ * calc_number_new_fr:
+ * @value: the value to initialize to
+ *
+ * Constructs a new #CalcNumber and initializes it to the GNU MPFR
+ * floating-point number @value. The number will have a type set to
+ * %CALC_NUMBER_TYPE_FLOATING.
+ **/
+
 CalcNumber *
 calc_number_new_fr (mpfr_t value)
 {
@@ -76,6 +93,14 @@ calc_number_new_fr (mpfr_t value)
   self->type = CALC_NUMBER_TYPE_FLOATING;
   return self;
 }
+
+/**
+ * calc_number_new_q:
+ * @value: the value to initialize to
+ *
+ * Constructs a new #CalcNumber and initializes it to the GNU MP rational
+ * number @value. The number will have a type set to %CALC_NUMBER_TYPE_RATIONAL.
+ **/
 
 CalcNumber *
 calc_number_new_q (mpq_t value)
@@ -87,6 +112,14 @@ calc_number_new_q (mpq_t value)
   return self;
 }
 
+/**
+ * calc_number_new_z:
+ * @value: the value to initialize to
+ *
+ * Constructs a new #CalcNumber and initializes it to the GNU MP integer
+ * @value. The number will have a type set to %CALC_NUMBER_TYPE_INTEGER.
+ **/
+
 CalcNumber *
 calc_number_new_z (mpz_t value)
 {
@@ -95,6 +128,14 @@ calc_number_new_z (mpz_t value)
   self->type = CALC_NUMBER_TYPE_INTEGER;
   return self;
 }
+
+/**
+ * calc_number_new_d:
+ * @value: the value to initialize to
+ *
+ * Constructs a new #CalcNumber and initializes it to the 64-bit floating-point
+ * number @value. The number will have a type set to %CALC_NUMBER_TYPE_FLOATING.
+ **/
 
 CalcNumber *
 calc_number_new_d (double value)
@@ -105,6 +146,14 @@ calc_number_new_d (double value)
   return self;
 }
 
+/**
+ * calc_number_new_ui:
+ * @value: the value to initialize to
+ *
+ * Constructs a new #CalcNumber and initializes it to the unsigned integer
+ * @value. The number will have a type set to %CALC_NUMBER_TYPE_INTEGER.
+ **/
+
 CalcNumber *
 calc_number_new_ui (unsigned long value)
 {
@@ -113,6 +162,14 @@ calc_number_new_ui (unsigned long value)
   self->type = CALC_NUMBER_TYPE_INTEGER;
   return self;
 }
+
+/**
+ * calc_number_new_si:
+ * @value: the value to initialize to
+ *
+ * Constructs a new #CalcNumber and initializes it to the signed integer
+ * @value. The number will have a type set to %CALC_NUMBER_TYPE_INTEGER.
+ **/
 
 CalcNumber *
 calc_number_new_si (signed long value)
