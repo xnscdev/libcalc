@@ -20,6 +20,7 @@
 #define _CALC_EXPR_H
 
 #include <glib-object.h>
+#include <stdio.h>
 
 G_BEGIN_DECLS
 
@@ -28,6 +29,7 @@ G_DECLARE_DERIVABLE_TYPE (CalcExpr, calc_expr, CALC, EXPR, GObject)
 
 /**
  * CalcExprClass:
+ * @print: prints an expression to a stdio stream
  * @equivalent: checks if two expressions are equivalent
  *
  * Class type for mathematical expressions.
@@ -37,12 +39,14 @@ struct _CalcExprClass
 {
   /*< private >*/
   GObjectClass parent;
-  gpointer padding[15];
+  gpointer padding[14];
 
   /*< public >*/
+  void (*print) (CalcExpr *, FILE *);
   gboolean (*equivalent) (CalcExpr *, CalcExpr *);
 };
 
+void calc_expr_print (CalcExpr *self, FILE *stream);
 gboolean calc_expr_equivalent (CalcExpr *self, CalcExpr *other);
 
 G_END_DECLS

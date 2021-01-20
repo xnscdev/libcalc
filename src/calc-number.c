@@ -16,10 +16,12 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
+#include <stdio.h> /* mpfr_fprintf() */
 #include "calc-number.h"
 
 G_DEFINE_TYPE (CalcNumber, calc_number, CALC_TYPE_EXPR)
 
+static void calc_number_print (CalcExpr *expr, FILE *stream);
 static gboolean calc_number_equivalent (CalcExpr *self, CalcExpr *other);
 
 static void
@@ -44,12 +46,32 @@ static void
 calc_number_class_init (CalcNumberClass *klass)
 {
   G_OBJECT_CLASS (klass)->dispose = calc_number_dispose;
+  CALC_EXPR_CLASS (klass)->print = calc_number_print;
   CALC_EXPR_CLASS (klass)->equivalent = calc_number_equivalent;
 }
 
 static void
 calc_number_init (CalcNumber *self)
 {
+}
+
+static void
+calc_number_print (CalcExpr *expr, FILE *stream)
+{
+  CalcNumber *self = CALC_NUMBER (expr);
+  switch (self->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpz_out_str (stream, 10, self->integer);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpq_out_str (stream, 10, self->rational);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      /* TODO Customizable precision printing */
+      mpfr_fprintf (stream, "%.8RNf", self->floating);
+      break;
+    }
 }
 
 static gboolean

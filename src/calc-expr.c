@@ -23,12 +23,33 @@ G_DEFINE_ABSTRACT_TYPE (CalcExpr, calc_expr, G_TYPE_OBJECT)
 static void
 calc_expr_class_init (CalcExprClass *klass)
 {
+  klass->print = NULL;
   klass->equivalent = NULL;
 }
 
 static void
 calc_expr_init (CalcExpr *self)
 {
+}
+
+/**
+ * calc_expr_print:
+ * @self: the expression to print
+ * @stream: the stdio stream to print to
+ *
+ * Prints a textual representation of @self to the stdio stream @stream. If
+ * @self is not a valid expression or @stream is %NULL, no action is performed.
+ **/
+
+void
+calc_expr_print (CalcExpr *self, FILE *stream)
+{
+  CalcExprClass *klass;
+  g_return_if_fail (CALC_IS_EXPR (self));
+  g_return_if_fail (stream != NULL);
+  klass = CALC_EXPR_GET_CLASS (self);
+  g_return_if_fail (klass->print != NULL);
+  klass->print (self, stream);
 }
 
 /**
