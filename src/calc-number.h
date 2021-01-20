@@ -80,8 +80,8 @@ CalcNumber *calc_number_new_si (signed long value);
 
 void calc_number_add (CalcNumber **result, CalcNumber *a, CalcNumber *b);
 void calc_number_add_z (CalcNumber **result, CalcNumber *a, mpz_t b);
-void calc_number_add_q (CalcNumber **result, CalcNumber *a, mpq_t);
-void calc_number_add_f (CalcNumber **result, CalcNumber *a, mpf_t);
+void calc_number_add_q (CalcNumber **result, CalcNumber *a, mpq_t b);
+void calc_number_add_f (CalcNumber **result, CalcNumber *a, mpf_t b);
 void calc_number_add_fr (CalcNumber **result, CalcNumber *a, mpfr_t b);
 void calc_number_add_d (CalcNumber **result, CalcNumber *a, double b);
 void calc_number_add_ui (CalcNumber **result, CalcNumber *a, unsigned long b);
