@@ -25,6 +25,8 @@ calc_expr_class_init (CalcExprClass *klass)
 {
   klass->print = NULL;
   klass->equivalent = NULL;
+  klass->like_terms = NULL;
+  klass->hash = NULL;
 }
 
 static void
@@ -72,4 +74,47 @@ calc_expr_equivalent (CalcExpr *self, CalcExpr *other)
   klass = CALC_EXPR_GET_CLASS (self);
   g_return_val_if_fail (klass->equivalent != NULL, FALSE);
   return klass->equivalent (self, other);
+}
+
+/**
+ * calc_expr_like_terms:
+ * @self: the first expression
+ * @other: the second expression
+ *
+ * Compares two expressions to determine if they are like terms.
+ *
+ * Returns: %TRUE if both expressions are valid and like terms, otherwise %FALSE
+ **/
+
+gboolean
+calc_expr_like_terms (CalcExpr *self, CalcExpr *other)
+{
+  CalcExprClass *klass;
+  g_return_val_if_fail (CALC_IS_EXPR (self), FALSE);
+  g_return_val_if_fail (CALC_IS_EXPR (other), FALSE);
+  klass = CALC_EXPR_GET_CLASS (self);
+  g_return_val_if_fail (klass->like_terms != NULL, FALSE);
+  return klass->like_terms (self, other);
+}
+
+/**
+ * calc_expr_hash:
+ * @self: the expression
+ *
+ * Computes a hash of an expression, used internally for sorting purposes.
+ * The hash returned by this function should only be used for sorting. Matching
+ * hashes does not guarantee equivalent expressions, which should be tested
+ * for using calc_expr_equivalent() instead.
+ *
+ * Returns: the hash of the expression
+ **/
+
+gulong
+calc_expr_hash (CalcExpr *self)
+{
+  CalcExprClass *klass;
+  g_return_val_if_fail (CALC_IS_EXPR (self), FALSE);
+  klass = CALC_EXPR_GET_CLASS (self);
+  g_return_val_if_fail (klass->hash != NULL, FALSE);
+  return klass->hash (self);
 }

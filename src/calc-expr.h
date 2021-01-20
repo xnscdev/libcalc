@@ -39,15 +39,19 @@ struct _CalcExprClass
 {
   /*< private >*/
   GObjectClass parent;
-  gpointer padding[14];
+  gpointer padding[12];
 
   /*< public >*/
   void (*print) (CalcExpr *, FILE *);
   gboolean (*equivalent) (CalcExpr *, CalcExpr *);
+  gboolean (*like_terms) (CalcExpr *, CalcExpr *);
+  gulong (*hash) (CalcExpr *);
 };
 
 void calc_expr_print (CalcExpr *self, FILE *stream);
 gboolean calc_expr_equivalent (CalcExpr *self, CalcExpr *other);
+gboolean calc_expr_like_terms (CalcExpr *self, CalcExpr *other);
+gulong calc_expr_hash (CalcExpr *self);
 
 G_END_DECLS
 

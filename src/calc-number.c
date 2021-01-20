@@ -23,6 +23,8 @@ G_DEFINE_TYPE (CalcNumber, calc_number, CALC_TYPE_EXPR)
 
 static void calc_number_print (CalcExpr *expr, FILE *stream);
 static gboolean calc_number_equivalent (CalcExpr *self, CalcExpr *other);
+static gboolean calc_number_like_terms (CalcExpr *self, CalcExpr *other);
+static gulong calc_number_hash (CalcExpr *expr);
 
 static void
 calc_number_dispose (GObject *obj)
@@ -48,6 +50,8 @@ calc_number_class_init (CalcNumberClass *klass)
   G_OBJECT_CLASS (klass)->dispose = calc_number_dispose;
   CALC_EXPR_CLASS (klass)->print = calc_number_print;
   CALC_EXPR_CLASS (klass)->equivalent = calc_number_equivalent;
+  CALC_EXPR_CLASS (klass)->like_terms = calc_number_like_terms;
+  CALC_EXPR_CLASS (klass)->hash = calc_number_hash;
 }
 
 static void
@@ -79,6 +83,18 @@ calc_number_equivalent (CalcExpr *self, CalcExpr *other)
 {
   g_return_val_if_fail (CALC_IS_NUMBER (other), FALSE);
   return calc_number_cmp (CALC_NUMBER (self), CALC_NUMBER (other)) == 0;
+}
+
+static gboolean
+calc_number_like_terms (CalcExpr *self, CalcExpr *other)
+{
+  return CALC_IS_NUMBER (other);
+}
+
+static gulong
+calc_number_hash (CalcExpr *expr)
+{
+  return 0; /* Hashes for constant numbers are meaningless */
 }
 
 static CalcNumberType
