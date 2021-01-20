@@ -25,5 +25,7 @@ PKG_CHECK_MODULES([GOBJECT], [gobject-2.0 >= 2.44])
 AC_SUBST([GOBJECT_CFLAGS])
 AC_SUBST([GOBJECT_LIBS])
 
-AC_CONFIG_FILES([Makefile src/Makefile])
+GTK_DOC_CHECK([1.14])
+
+AC_CONFIG_FILES([Makefile doc/Makefile src/Makefile])
 AC_OUTPUT

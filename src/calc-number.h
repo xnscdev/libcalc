@@ -51,7 +51,6 @@ struct _CalcNumberClass
 
 /**
  * CalcNumber:
- * @value: the internal value of the number
  *
  * Represents a real rational number.
  **/
