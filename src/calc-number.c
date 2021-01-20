@@ -23,8 +23,27 @@ G_DEFINE_TYPE (CalcNumber, calc_number, CALC_TYPE_EXPR)
 static gboolean calc_number_equivalent (CalcExpr *self, CalcExpr *other);
 
 static void
+calc_number_dispose (GObject *obj)
+{
+  CalcNumber *self = CALC_NUMBER (obj);
+  switch (self->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpz_clear (self->integer);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpq_clear (self->rational);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_clear (self->floating);
+      break;
+    }
+}
+
+static void
 calc_number_class_init (CalcNumberClass *klass)
 {
+  G_OBJECT_CLASS (klass)->dispose = calc_number_dispose;
   CALC_EXPR_CLASS (klass)->equivalent = calc_number_equivalent;
 }
 
