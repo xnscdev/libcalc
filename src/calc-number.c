@@ -60,6 +60,24 @@ calc_number_equivalent (CalcExpr *self, CalcExpr *other)
 }
 
 CalcNumber *
+calc_number_new_f (mpf_t value)
+{
+  CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
+  mpfr_init_set_f (self->floating, value, MPFR_RNDN);
+  self->type = CALC_NUMBER_TYPE_FLOATING;
+  return self;
+}
+
+CalcNumber *
+calc_number_new_fr (mpfr_t value)
+{
+  CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
+  mpfr_init_set (self->floating, value, MPFR_RNDN);
+  self->type = CALC_NUMBER_TYPE_FLOATING;
+  return self;
+}
+
+CalcNumber *
 calc_number_new_q (mpq_t value)
 {
   CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
@@ -75,6 +93,15 @@ calc_number_new_z (mpz_t value)
   CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
   mpz_init_set (self->integer, value);
   self->type = CALC_NUMBER_TYPE_INTEGER;
+  return self;
+}
+
+CalcNumber *
+calc_number_new_d (double value)
+{
+  CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
+  mpfr_init_set_d (self->floating, value, MPFR_RNDN);
+  self->type = CALC_NUMBER_TYPE_FLOATING;
   return self;
 }
 
