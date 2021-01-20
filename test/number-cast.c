@@ -28,6 +28,7 @@ DEFINE_TEST (itoq)
   calc_number_cast (a, TEST_TYPE);
   assert_type_equals (a, TEST_TYPE);
   assert_num_equals_d (a, TEST_VALUE);
+  g_object_unref (a);
 }
 
 int

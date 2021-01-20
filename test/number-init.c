@@ -24,6 +24,7 @@ DEFINE_TEST (ui)
 {
   CalcNumber *a = calc_number_new_ui (TEST_VALUE);
   assert_num_equals_ui (a, TEST_VALUE);
+  g_object_unref (a);
 }
 
 int
