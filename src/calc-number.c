@@ -78,7 +78,7 @@ static gboolean
 calc_number_equivalent (CalcExpr *self, CalcExpr *other)
 {
   g_return_val_if_fail (CALC_IS_NUMBER (other), FALSE);
-  return FALSE; /* TODO Implement comparisons */
+  return calc_number_cmp (CALC_NUMBER (self), CALC_NUMBER (other)) == 0;
 }
 
 static CalcNumberType

@@ -16,7 +16,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#include <stdlib.h>
 #include "libtest.h"
 
 #define TEST_TYPE CALC_NUMBER_TYPE_FLOATING

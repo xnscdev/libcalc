@@ -87,7 +87,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-check_PROGRAMS = number-cast$(EXEEXT) number-init$(EXEEXT)
+check_PROGRAMS = number-add$(EXEEXT) number-cast$(EXEEXT) \
+	number-init$(EXEEXT)
 subdir = test
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
@@ -109,13 +110,16 @@ libtest_a_AR = $(AR) $(ARFLAGS)
 libtest_a_LIBADD =
 am_libtest_a_OBJECTS = assert.$(OBJEXT) num-type.$(OBJEXT)
 libtest_a_OBJECTS = $(am_libtest_a_OBJECTS)
-am_number_cast_OBJECTS = number-cast.$(OBJEXT)
-number_cast_OBJECTS = $(am_number_cast_OBJECTS)
-number_cast_DEPENDENCIES = libtest.a $(top_builddir)/src/libcalc.la
+am_number_add_OBJECTS = number-add.$(OBJEXT)
+number_add_OBJECTS = $(am_number_add_OBJECTS)
+number_add_DEPENDENCIES = libtest.a $(top_builddir)/src/libcalc.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+am_number_cast_OBJECTS = number-cast.$(OBJEXT)
+number_cast_OBJECTS = $(am_number_cast_OBJECTS)
+number_cast_DEPENDENCIES = libtest.a $(top_builddir)/src/libcalc.la
 am_number_init_OBJECTS = number-init.$(OBJEXT)
 number_init_OBJECTS = $(am_number_init_OBJECTS)
 number_init_DEPENDENCIES = libtest.a $(top_builddir)/src/libcalc.la
@@ -135,7 +139,8 @@ DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/assert.Po ./$(DEPDIR)/num-type.Po \
-	./$(DEPDIR)/number-cast.Po ./$(DEPDIR)/number-init.Po
+	./$(DEPDIR)/number-add.Po ./$(DEPDIR)/number-cast.Po \
+	./$(DEPDIR)/number-init.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -155,10 +160,10 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libtest_a_SOURCES) $(number_cast_SOURCES) \
-	$(number_init_SOURCES)
-DIST_SOURCES = $(libtest_a_SOURCES) $(number_cast_SOURCES) \
-	$(number_init_SOURCES)
+SOURCES = $(libtest_a_SOURCES) $(number_add_SOURCES) \
+	$(number_cast_SOURCES) $(number_init_SOURCES)
+DIST_SOURCES = $(libtest_a_SOURCES) $(number_add_SOURCES) \
+	$(number_cast_SOURCES) $(number_init_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -536,6 +541,8 @@ libtest_a_SOURCES = \
 	libtest.h	\
 	num-type.c
 
+number_add_SOURCES = number-add.c
+number_add_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 number_cast_SOURCES = number-cast.c
 number_cast_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 number_init_SOURCES = number-init.c
@@ -591,6 +598,10 @@ libtest.a: $(libtest_a_OBJECTS) $(libtest_a_DEPENDENCIES) $(EXTRA_libtest_a_DEPE
 	$(AM_V_AR)$(libtest_a_AR) libtest.a $(libtest_a_OBJECTS) $(libtest_a_LIBADD)
 	$(AM_V_at)$(RANLIB) libtest.a
 
+number-add$(EXEEXT): $(number_add_OBJECTS) $(number_add_DEPENDENCIES) $(EXTRA_number_add_DEPENDENCIES) 
+	@rm -f number-add$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(number_add_OBJECTS) $(number_add_LDADD) $(LIBS)
+
 number-cast$(EXEEXT): $(number_cast_OBJECTS) $(number_cast_DEPENDENCIES) $(EXTRA_number_cast_DEPENDENCIES) 
 	@rm -f number-cast$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(number_cast_OBJECTS) $(number_cast_LDADD) $(LIBS)
@@ -607,6 +618,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/assert.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/num-type.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-add.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-cast.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-init.Po@am__quote@ # am--include-marker
 
@@ -836,6 +848,13 @@ recheck: all $(check_PROGRAMS) $(check_LIBRARIES)
 	        am__force_recheck=am--force-recheck \
 	        TEST_LOGS="$$log_list"; \
 	exit $$?
+number-add.log: number-add$(EXEEXT)
+	@p='number-add$(EXEEXT)'; \
+	b='number-add'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 number-cast.log: number-cast$(EXEEXT)
 	@p='number-cast$(EXEEXT)'; \
 	b='number-cast'; \
@@ -945,6 +964,7 @@ clean-am: clean-checkLIBRARIES clean-checkPROGRAMS clean-generic \
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/assert.Po
 	-rm -f ./$(DEPDIR)/num-type.Po
+	-rm -f ./$(DEPDIR)/number-add.Po
 	-rm -f ./$(DEPDIR)/number-cast.Po
 	-rm -f ./$(DEPDIR)/number-init.Po
 	-rm -f Makefile
@@ -994,6 +1014,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/assert.Po
 	-rm -f ./$(DEPDIR)/num-type.Po
+	-rm -f ./$(DEPDIR)/number-add.Po
 	-rm -f ./$(DEPDIR)/number-cast.Po
 	-rm -f ./$(DEPDIR)/number-init.Po
 	-rm -f Makefile

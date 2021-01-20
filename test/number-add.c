@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-init.c -- This file is part of libcalc.                        *
+ * number-add.c -- This file is part of libcalc.                         *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,19 +16,25 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
+#include <stdlib.h>
 #include "libtest.h"
 
-#define TEST_VALUE 65535
+#define TEST_VALUE_A 1452863953L
+#define TEST_VALUE_B 134217728L
 
-DEFINE_TEST (ui)
+DEFINE_TEST (n_n)
 {
-  CalcNumber *a = calc_number_new_ui (TEST_VALUE);
-  assert_num_equals_ui (a, TEST_VALUE);
+  CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
+  CalcNumber *b = calc_number_new_d (TEST_VALUE_B);
+  CalcNumber *c = NULL;
+  calc_number_add (&c, a, b);
+  if (c == NULL)
+    abort ();
+  assert_num_equals_ui (c, TEST_VALUE_A + TEST_VALUE_B);
 }
 
 int
 main (void)
 {
-  RUN_TEST (ui);
-  return 0;
+  RUN_TEST (n_n);
 }
