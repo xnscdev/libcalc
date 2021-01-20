@@ -371,7 +371,7 @@ calc_number_cast (CalcNumber *self, CalcNumberType type)
  *
  * Compares the values of @a and @b.
  *
- * Returns: A positive value if @a > @b, negative if @a < @b, and zero if
+ * Returns: a positive value if @a > @b, negative if @a < @b, and zero if
  * @a = @b or @a and @b are invalid numbers
  **/
 
@@ -419,8 +419,8 @@ calc_number_cmp (CalcNumber *a, CalcNumber *b)
  *
  * Compares the values of @a and @b.
  *
- * Returns: A positive value if @a > @b, negative if @a < @b, and zero if
- * @a = @b or @a and @b are invalid numbers
+ * Returns: a positive value if @a > @b, negative if @a < @b, and zero if
+ * @a = @b or @a is an invalid number
  **/
 
 gint
@@ -447,8 +447,8 @@ calc_number_cmp_z (CalcNumber *a, mpz_t b)
  *
  * Compares the values of @a and @b.
  *
- * Returns: A positive value if @a > @b, negative if @a < @b, and zero if
- * @a = @b or @a and @b are invalid numbers
+ * Returns: a positive value if @a > @b, negative if @a < @b, and zero if
+ * @a = @b or @a is an invalid number
  **/
 
 gint
@@ -475,8 +475,8 @@ calc_number_cmp_q (CalcNumber *a, mpq_t b)
  *
  * Compares the values of @a and @b.
  *
- * Returns: A positive value if @a > @b, negative if @a < @b, and zero if
- * @a = @b or @a and @b are invalid numbers
+ * Returns: a positive value if @a > @b, negative if @a < @b, and zero if
+ * @a = @b or @a is an invalid number
  **/
 
 gint
@@ -509,8 +509,8 @@ calc_number_cmp_f (CalcNumber *a, mpf_t b)
  *
  * Compares the values of @a and @b.
  *
- * Returns: A positive value if @a > @b, negative if @a < @b, and zero if
- * @a = @b or @a and @b are invalid numbers
+ * Returns: a positive value if @a > @b, negative if @a < @b, and zero if
+ * @a = @b or @a is an invalid number
  **/
 
 gint
@@ -537,8 +537,8 @@ calc_number_cmp_fr (CalcNumber *a, mpfr_t b)
  *
  * Compares the values of @a and @b.
  *
- * Returns: A positive value if @a > @b, negative if @a < @b, and zero if
- * @a = @b or @a and @b are invalid numbers
+ * Returns: a positive value if @a > @b, negative if @a < @b, and zero if
+ * @a = @b or @a is an invalid number
  **/
 
 gint
@@ -559,6 +559,62 @@ calc_number_cmp_d (CalcNumber *a, double b)
       return result;
     case CALC_NUMBER_TYPE_FLOATING:
       return mpfr_cmp_d (a->floating, b);
+    default:
+      return 0;
+    }
+}
+
+/**
+ * calc_number_cmp_ui:
+ * @a: the first number to compare
+ * @b: the second number to compare
+ *
+ * Compares the values of @a and @b.
+ *
+ * Returns: a positive value if @a > @b, negative if @a < @b, and zero if
+ * @a = @b or @a is an invalid number
+ **/
+
+gint
+calc_number_cmp_ui (CalcNumber *a, unsigned long b)
+{
+  g_return_val_if_fail (CALC_IS_NUMBER (a), 0);
+  switch (a->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      return mpz_cmp_ui (a->integer, b);
+    case CALC_NUMBER_TYPE_RATIONAL:
+      return mpq_cmp_ui (a->rational, b, 1);
+    case CALC_NUMBER_TYPE_FLOATING:
+      return mpfr_cmp_ui (a->floating, b);
+    default:
+      return 0;
+    }
+}
+
+/**
+ * calc_number_cmp_si:
+ * @a: the first number to compare
+ * @b: the second number to compare
+ *
+ * Compares the values of @a and @b.
+ *
+ * Returns: a positive value if @a > @b, negative if @a < @b, and zero if
+ * @a = @b or @a is an invalid number
+ **/
+
+gint
+calc_number_cmp_si (CalcNumber *a, signed long b)
+{
+  g_return_val_if_fail (CALC_IS_NUMBER (a), 0);
+  switch (a->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      return mpz_cmp_si (a->integer, b);
+    case CALC_NUMBER_TYPE_RATIONAL:
+      return mpq_cmp_si (a->rational, b, 1);
+    case CALC_NUMBER_TYPE_FLOATING:
+      return mpfr_cmp_si (a->floating, b);
     default:
       return 0;
     }
