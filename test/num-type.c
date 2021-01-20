@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-init.c -- This file is part of libcalc.                        *
+ * num-type.c -- This file is part of libcalc.                           *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -20,22 +20,12 @@
 #include <stdlib.h>
 #include "libtest.h"
 
-#define TEST_VALUE 65535
-
-DEFINE_TEST (ui)
+void
+assert_type_equals (CalcNumber *num, CalcNumberType type)
 {
-  CalcNumber *a = calc_number_new_ui (TEST_VALUE);
-  if (mpz_cmp_ui (a->integer, TEST_VALUE) != 0)
+  if (num->type != type)
     {
-      mpz_out_str (stderr, 10, a->integer);
-      fprintf (stderr, " != %d\n", TEST_VALUE);
-      exit (1);
+      fprintf (stderr, "expected type %d but got %d\n", type, num->type);
+      abort ();
     }
-}
-
-int
-main (void)
-{
-  RUN_TEST (ui);
-  return 0;
 }

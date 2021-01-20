@@ -7,8 +7,13 @@ check_PROGRAMS =	\
 	number-init
 TESTS = $(check_PROGRAMS)
 
+check_LIBRARIES = libtest.a
+libtest_a_SOURCES =	\
+	libtest.h	\
+	num-type.c
+
 number_cast_SOURCES = number-cast.c
-number_cast_LDADD = $(top_builddir)/src/libcalc.la
+number_cast_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 
 number_init_SOURCES = number-init.c
-number_init_LDADD = $(top_builddir)/src/libcalc.la
+number_init_LDADD = libtest.a $(top_builddir)/src/libcalc.la

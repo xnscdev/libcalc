@@ -100,16 +100,25 @@ DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
+ARFLAGS = cru
+AM_V_AR = $(am__v_AR_@AM_V@)
+am__v_AR_ = $(am__v_AR_@AM_DEFAULT_V@)
+am__v_AR_0 = @echo "  AR      " $@;
+am__v_AR_1 = 
+libtest_a_AR = $(AR) $(ARFLAGS)
+libtest_a_LIBADD =
+am_libtest_a_OBJECTS = num-type.$(OBJEXT)
+libtest_a_OBJECTS = $(am_libtest_a_OBJECTS)
 am_number_cast_OBJECTS = number-cast.$(OBJEXT)
 number_cast_OBJECTS = $(am_number_cast_OBJECTS)
-number_cast_DEPENDENCIES = $(top_builddir)/src/libcalc.la
+number_cast_DEPENDENCIES = libtest.a $(top_builddir)/src/libcalc.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
 am_number_init_OBJECTS = number-init.$(OBJEXT)
 number_init_OBJECTS = $(am_number_init_OBJECTS)
-number_init_DEPENDENCIES = $(top_builddir)/src/libcalc.la
+number_init_DEPENDENCIES = libtest.a $(top_builddir)/src/libcalc.la
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -125,8 +134,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/number-cast.Po \
-	./$(DEPDIR)/number-init.Po
+am__depfiles_remade = ./$(DEPDIR)/num-type.Po \
+	./$(DEPDIR)/number-cast.Po ./$(DEPDIR)/number-init.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -146,8 +155,10 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(number_cast_SOURCES) $(number_init_SOURCES)
-DIST_SOURCES = $(number_cast_SOURCES) $(number_init_SOURCES)
+SOURCES = $(libtest_a_SOURCES) $(number_cast_SOURCES) \
+	$(number_init_SOURCES)
+DIST_SOURCES = $(libtest_a_SOURCES) $(number_cast_SOURCES) \
+	$(number_init_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -519,10 +530,15 @@ AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit \
 	$(GMP_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)
 
 TESTS = $(check_PROGRAMS)
+check_LIBRARIES = libtest.a
+libtest_a_SOURCES = \
+	libtest.h	\
+	num-type.c
+
 number_cast_SOURCES = number-cast.c
-number_cast_LDADD = $(top_builddir)/src/libcalc.la
+number_cast_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 number_init_SOURCES = number-init.c
-number_init_LDADD = $(top_builddir)/src/libcalc.la
+number_init_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 all: all-am
 
 .SUFFIXES:
@@ -566,6 +582,14 @@ clean-checkPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
+clean-checkLIBRARIES:
+	-test -z "$(check_LIBRARIES)" || rm -f $(check_LIBRARIES)
+
+libtest.a: $(libtest_a_OBJECTS) $(libtest_a_DEPENDENCIES) $(EXTRA_libtest_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libtest.a
+	$(AM_V_AR)$(libtest_a_AR) libtest.a $(libtest_a_OBJECTS) $(libtest_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libtest.a
+
 number-cast$(EXEEXT): $(number_cast_OBJECTS) $(number_cast_DEPENDENCIES) $(EXTRA_number_cast_DEPENDENCIES) 
 	@rm -f number-cast$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(number_cast_OBJECTS) $(number_cast_LDADD) $(LIBS)
@@ -580,6 +604,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/num-type.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-cast.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-init.Po@am__quote@ # am--include-marker
 
@@ -788,7 +813,7 @@ $(TEST_SUITE_LOG): $(TEST_LOGS)
 	fi;								\
 	$$success || exit 1
 
-check-TESTS: $(check_PROGRAMS)
+check-TESTS: $(check_PROGRAMS) $(check_LIBRARIES)
 	@list='$(RECHECK_LOGS)';           test -z "$$list" || rm -f $$list
 	@list='$(RECHECK_LOGS:.log=.trs)'; test -z "$$list" || rm -f $$list
 	@test -z "$(TEST_SUITE_LOG)" || rm -f $(TEST_SUITE_LOG)
@@ -798,7 +823,7 @@ check-TESTS: $(check_PROGRAMS)
 	log_list=`echo $$log_list`; trs_list=`echo $$trs_list`; \
 	$(MAKE) $(AM_MAKEFLAGS) $(TEST_SUITE_LOG) TEST_LOGS="$$log_list"; \
 	exit $$?;
-recheck: all $(check_PROGRAMS)
+recheck: all $(check_PROGRAMS) $(check_LIBRARIES)
 	@test -z "$(TEST_SUITE_LOG)" || rm -f $(TEST_SUITE_LOG)
 	@set +e; $(am__set_TESTS_bases); \
 	bases=`for i in $$bases; do echo $$i; done \
@@ -872,7 +897,7 @@ distdir-am: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-	$(MAKE) $(AM_MAKEFLAGS) $(check_PROGRAMS)
+	$(MAKE) $(AM_MAKEFLAGS) $(check_PROGRAMS) $(check_LIBRARIES)
 	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
 check: check-am
 all-am: Makefile
@@ -912,11 +937,12 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-checkPROGRAMS clean-generic clean-libtool \
-	mostlyclean-am
+clean-am: clean-checkLIBRARIES clean-checkPROGRAMS clean-generic \
+	clean-libtool mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/number-cast.Po
+		-rm -f ./$(DEPDIR)/num-type.Po
+	-rm -f ./$(DEPDIR)/number-cast.Po
 	-rm -f ./$(DEPDIR)/number-init.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
@@ -963,7 +989,8 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/number-cast.Po
+		-rm -f ./$(DEPDIR)/num-type.Po
+	-rm -f ./$(DEPDIR)/number-cast.Po
 	-rm -f ./$(DEPDIR)/number-init.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
@@ -986,15 +1013,16 @@ uninstall-am:
 .MAKE: check-am install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am am--depfiles check check-TESTS \
-	check-am clean clean-checkPROGRAMS clean-generic clean-libtool \
-	cscopelist-am ctags ctags-am distclean distclean-compile \
-	distclean-generic distclean-libtool distclean-tags distdir dvi \
-	dvi-am html html-am info info-am install install-am \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	check-am clean clean-checkLIBRARIES clean-checkPROGRAMS \
+	clean-generic clean-libtool cscopelist-am ctags ctags-am \
+	distclean distclean-compile distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	recheck tags tags-am uninstall uninstall-am

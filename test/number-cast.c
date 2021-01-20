@@ -18,27 +18,27 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "libcalc.h"
+#include "libtest.h"
 
 #define TEST_TYPE CALC_NUMBER_TYPE_FLOATING
 #define TEST_VALUE 256
 
-int
-main (void)
+DEFINE_TEST (itoq)
 {
   CalcNumber *a = calc_number_new_ui (TEST_VALUE);
   calc_number_cast (NULL, TEST_TYPE);
   calc_number_cast (a, TEST_TYPE);
-  if (a->type != TEST_TYPE)
-    {
-      fprintf (stderr, "bad type after cast\n");
-      exit (1);
-    }
+  assert_type_equals (a, TEST_TYPE);
   if (mpfr_cmp_d (a->floating, TEST_VALUE) != 0)
     {
       mpfr_out_str (stderr, 10, 4, a->floating, MPFR_RNDD);
       fprintf (stderr, " != %d\n", TEST_VALUE);
       exit (2);
     }
-  return 0;
+}
+
+int
+main (void)
+{
+  RUN_TEST (itoq);
 }

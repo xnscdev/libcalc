@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-init.c -- This file is part of libcalc.                        *
+ * libtest.h -- This file is part of libcalc.                            *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,26 +16,14 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "libtest.h"
+#ifndef _LIBTEST_H
+#define _LIBTEST_H
 
-#define TEST_VALUE 65535
+#include <libcalc.h>
 
-DEFINE_TEST (ui)
-{
-  CalcNumber *a = calc_number_new_ui (TEST_VALUE);
-  if (mpz_cmp_ui (a->integer, TEST_VALUE) != 0)
-    {
-      mpz_out_str (stderr, 10, a->integer);
-      fprintf (stderr, " != %d\n", TEST_VALUE);
-      exit (1);
-    }
-}
+#define DEFINE_TEST(name) void name (void)
+#define RUN_TEST(name) name ()
 
-int
-main (void)
-{
-  RUN_TEST (ui);
-  return 0;
-}
+void assert_type_equals (CalcNumber *num, CalcNumberType type);
+
+#endif
