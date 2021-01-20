@@ -80,6 +80,13 @@ CalcNumber *calc_number_new_si (signed long value);
 void calc_number_add (CalcNumber **result, CalcNumber *a, CalcNumber *b);
 void calc_number_cast (CalcNumber *self, CalcNumberType type);
 gint calc_number_cmp (CalcNumber *a, CalcNumber *b);
+gint calc_number_cmp_z (CalcNumber *a, mpz_t b);
+gint calc_number_cmp_q (CalcNumber *a, mpq_t b);
+gint calc_number_cmp_f (CalcNumber *a, mpf_t b);
+gint calc_number_cmp_fr (CalcNumber *a, mpfr_t b);
+gint calc_number_cmp_d (CalcNumber *a, double b);
+gint calc_number_cmp_ui (CalcNumber *a, unsigned long b);
+gint calc_number_cmp_si (CalcNumber *a, signed long b);
 
 G_END_DECLS
 
