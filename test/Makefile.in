@@ -87,7 +87,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-check_PROGRAMS = number-init-i$(EXEEXT) number-init-z$(EXEEXT)
+check_PROGRAMS = number-init$(EXEEXT)
 subdir = test
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
@@ -100,16 +100,13 @@ DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am_number_init_i_OBJECTS = number-init-i.$(OBJEXT)
-number_init_i_OBJECTS = $(am_number_init_i_OBJECTS)
-number_init_i_DEPENDENCIES = $(top_builddir)/src/libcalc.la
+am_number_init_OBJECTS = number-init.$(OBJEXT)
+number_init_OBJECTS = $(am_number_init_OBJECTS)
+number_init_DEPENDENCIES = $(top_builddir)/src/libcalc.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-am_number_init_z_OBJECTS = number-init-z.$(OBJEXT)
-number_init_z_OBJECTS = $(am_number_init_z_OBJECTS)
-number_init_z_DEPENDENCIES = $(top_builddir)/src/libcalc.la
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -125,8 +122,7 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/number-init-i.Po \
-	./$(DEPDIR)/number-init-z.Po
+am__depfiles_remade = ./$(DEPDIR)/number-init.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -146,8 +142,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(number_init_i_SOURCES) $(number_init_z_SOURCES)
-DIST_SOURCES = $(number_init_i_SOURCES) $(number_init_z_SOURCES)
+SOURCES = $(number_init_SOURCES)
+DIST_SOURCES = $(number_init_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -519,10 +515,8 @@ AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit \
 	$(GMP_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)
 
 TESTS = $(check_PROGRAMS)
-number_init_i_SOURCES = number-init-i.c
-number_init_i_LDADD = $(top_builddir)/src/libcalc.la
-number_init_z_SOURCES = number-init-z.c
-number_init_z_LDADD = $(top_builddir)/src/libcalc.la
+number_init_SOURCES = number-init.c
+number_init_LDADD = $(top_builddir)/src/libcalc.la
 all: all-am
 
 .SUFFIXES:
@@ -566,13 +560,9 @@ clean-checkPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
-number-init-i$(EXEEXT): $(number_init_i_OBJECTS) $(number_init_i_DEPENDENCIES) $(EXTRA_number_init_i_DEPENDENCIES) 
-	@rm -f number-init-i$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(number_init_i_OBJECTS) $(number_init_i_LDADD) $(LIBS)
-
-number-init-z$(EXEEXT): $(number_init_z_OBJECTS) $(number_init_z_DEPENDENCIES) $(EXTRA_number_init_z_DEPENDENCIES) 
-	@rm -f number-init-z$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(number_init_z_OBJECTS) $(number_init_z_LDADD) $(LIBS)
+number-init$(EXEEXT): $(number_init_OBJECTS) $(number_init_DEPENDENCIES) $(EXTRA_number_init_DEPENDENCIES) 
+	@rm -f number-init$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(number_init_OBJECTS) $(number_init_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -580,8 +570,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-init-i.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-init-z.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-init.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -809,16 +798,9 @@ recheck: all $(check_PROGRAMS)
 	        am__force_recheck=am--force-recheck \
 	        TEST_LOGS="$$log_list"; \
 	exit $$?
-number-init-i.log: number-init-i$(EXEEXT)
-	@p='number-init-i$(EXEEXT)'; \
-	b='number-init-i'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-number-init-z.log: number-init-z$(EXEEXT)
-	@p='number-init-z$(EXEEXT)'; \
-	b='number-init-z'; \
+number-init.log: number-init$(EXEEXT)
+	@p='number-init$(EXEEXT)'; \
+	b='number-init'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
@@ -916,8 +898,7 @@ clean-am: clean-checkPROGRAMS clean-generic clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/number-init-i.Po
-	-rm -f ./$(DEPDIR)/number-init-z.Po
+		-rm -f ./$(DEPDIR)/number-init.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -963,8 +944,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/number-init-i.Po
-	-rm -f ./$(DEPDIR)/number-init-z.Po
+		-rm -f ./$(DEPDIR)/number-init.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

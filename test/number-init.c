@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-init-i.c -- This file is part of libcalc.                      *
+ * number-init.c -- This file is part of libcalc.                        *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -20,17 +20,17 @@
 #include <stdlib.h>
 #include "libcalc.h"
 
-#define T0 65535
+#define TEST_VALUE 65535
 
 int
 main (void)
 {
-  CalcNumber *t0 = calc_number_new_ui (T0);
-  if (mpz_cmp_ui (t0->integer, T0) != 0)
+  CalcNumber *a = calc_number_new_ui (TEST_VALUE);
+  if (mpz_cmp_ui (a->integer, TEST_VALUE) != 0)
     {
-      g_object_unref (t0);
+      mpz_out_str (stderr, 10, a->integer);
+      fprintf (stderr, " != %d\n", TEST_VALUE);
       exit (1);
     }
-  g_object_unref (t0);
   return 0;
 }
