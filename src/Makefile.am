@@ -1,4 +1,4 @@
-AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit \
+AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit -Wno-switch \
 	$(GMP_CFLAGS) $(MPFR_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)
 
 pkgincludedir = $(includedir)/libcalc

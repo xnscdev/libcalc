@@ -37,8 +37,6 @@ calc_number_dispose (GObject *obj)
     case CALC_NUMBER_TYPE_FLOATING:
       mpfr_clear (self->floating);
       break;
-    default:
-      break; /* -Wswitch */
     }
 }
 
@@ -65,6 +63,39 @@ static CalcNumberType
 calc_number_get_final_type (CalcNumberType a, CalcNumberType b)
 {
   return a > b ? a : b;
+}
+
+/**
+ * calc_number_new:
+ * @value: the value to initialize to
+ *
+ * Constructs a new #CalcNumber by copying the data of @value.
+ *
+ * Returns: the newly constructed instance, or %NULL if @value is not a
+ * valid #CalcNumber
+ **/
+
+CalcNumber *
+calc_number_new (CalcNumber *value)
+{
+  CalcNumber *self;
+  g_return_val_if_fail (CALC_IS_NUMBER (value), NULL);
+  self = g_object_new (CALC_TYPE_NUMBER, NULL);
+  self->type = value->type;
+  switch (self->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpz_init_set (self->integer, value->integer);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpq_init (self->rational);
+      mpq_set (self->rational, value->rational);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_init_set (self->floating, value->floating, MPFR_RNDN);
+      break;
+    }
+  return self;
 }
 
 /**
@@ -203,7 +234,7 @@ calc_number_new_si (signed long value)
 }
 
 void
-calc_number_add (CalcNumber *self, CalcNumber *other)
+calc_number_add (CalcNumber *result, CalcNumber *a, CalcNumber *b)
 {
 }
 

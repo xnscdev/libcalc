@@ -69,6 +69,7 @@ struct _CalcNumber
   CalcNumberType type;
 };
 
+CalcNumber *calc_number_new (CalcNumber *value);
 CalcNumber *calc_number_new_f (mpf_t value);
 CalcNumber *calc_number_new_fr (mpfr_t value);
 CalcNumber *calc_number_new_q (mpq_t value);
@@ -76,7 +77,7 @@ CalcNumber *calc_number_new_z (mpz_t value);
 CalcNumber *calc_number_new_d (double value);
 CalcNumber *calc_number_new_ui (unsigned long value);
 CalcNumber *calc_number_new_si (signed long value);
-void calc_number_add (CalcNumber *self, CalcNumber *other);
+void calc_number_add (CalcNumber *result, CalcNumber *a, CalcNumber *b);
 void calc_number_cast (CalcNumber *self, CalcNumberType type);
 
 G_END_DECLS
