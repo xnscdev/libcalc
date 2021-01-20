@@ -19,10 +19,26 @@
 #ifndef _CALC_NUMBER_H
 #define _CALC_NUMBER_H
 
-#include <gmp.h>
+#include <mpfr.h>
 #include "calc-expr.h"
 
 G_BEGIN_DECLS
+
+/**
+ * CalcNumberType:
+ * @CALC_NUMBER_TYPE_INTEGER: an integer
+ * @CALC_NUMBER_TYPE_RATIONAL: a rational number
+ * @CALC_NUMBER_TYPE_FLOATING: an arbitrary floating-point real number
+ *
+ * Contains the types of values used for a #CalcNumber instance.
+ **/
+
+typedef enum
+{
+  CALC_NUMBER_TYPE_INTEGER = 1,
+  CALC_NUMBER_TYPE_RATIONAL,
+  CALC_NUMBER_TYPE_FLOATING
+} CalcNumberType;
 
 #define CALC_TYPE_NUMBER calc_number_get_type ()
 G_DECLARE_FINAL_TYPE (CalcNumber, calc_number, CALC, NUMBER, CalcExpr)
@@ -44,9 +60,10 @@ struct _CalcNumber
 {
   /*< private >*/
   CalcExpr parent;
-
-  /*< public >*/
-  mpq_t value;
+  mpz_t integer;
+  mpq_t rational;
+  mpfr_t floating;
+  CalcNumberType type;
 };
 
 CalcNumber *calc_number_new_q (mpq_t value);
