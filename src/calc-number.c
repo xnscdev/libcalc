@@ -37,6 +37,8 @@ calc_number_dispose (GObject *obj)
     case CALC_NUMBER_TYPE_FLOATING:
       mpfr_clear (self->floating);
       break;
+    default:
+      break; /* -Wswitch */
     }
 }
 
@@ -57,6 +59,12 @@ calc_number_equivalent (CalcExpr *self, CalcExpr *other)
 {
   g_return_val_if_fail (CALC_IS_NUMBER (other), FALSE);
   return FALSE; /* TODO Implement comparisons */
+}
+
+static CalcNumberType
+calc_number_get_final_type (CalcNumberType a, CalcNumberType b)
+{
+  return a > b ? a : b;
 }
 
 /**
@@ -178,4 +186,51 @@ calc_number_new_si (signed long value)
   mpz_init_set_si (self->integer, value);
   self->type = CALC_NUMBER_TYPE_INTEGER;
   return self;
+}
+
+void
+calc_number_add (CalcNumber *self, CalcNumber *other)
+{
+}
+
+/**
+ * calc_number_cast:
+ * @self: the number to cast
+ * @type: the type to cast to
+ *
+ * Changes the type of @self to @type and sets its value to a representation
+ * of the original value with the new type. If @self is not a valid expression
+ * or @type is not a valid type or is a type that cannot be cast to without
+ * losing precision, no action is performed.
+ **/
+
+void
+calc_number_cast (CalcNumber *self, CalcNumberType type)
+{
+  g_return_if_fail (CALC_IS_NUMBER (self));
+  g_return_if_fail (type > self->type && type < N_CALC_NUMBER_TYPE);
+  switch (type)
+    {
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpq_init (self->rational);
+      mpq_set_z (self->rational, self->integer);
+      mpz_clear (self->integer);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_init (self->floating);
+      if (self->type == CALC_NUMBER_TYPE_RATIONAL)
+	{
+	  mpfr_set_q (self->floating, self->rational, MPFR_RNDN);
+	  mpq_clear (self->rational);
+	}
+      else
+	{
+	  mpfr_set_z (self->floating, self->integer, MPFR_RNDD);
+	  mpz_clear (self->integer);
+	}
+      break;
+    default:
+      break;
+    }
+  self->type = type;
 }
