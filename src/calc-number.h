@@ -87,6 +87,15 @@ void calc_number_add_d (CalcNumber **result, CalcNumber *a, double b);
 void calc_number_add_ui (CalcNumber **result, CalcNumber *a, unsigned long b);
 void calc_number_add_si (CalcNumber **result, CalcNumber *a, signed long b);
 
+void calc_number_sub (CalcNumber **result, CalcNumber *a, CalcNumber *b);
+void calc_number_sub_z (CalcNumber **result, CalcNumber *a, mpz_t b);
+void calc_number_sub_q (CalcNumber **result, CalcNumber *a, mpq_t b);
+void calc_number_sub_f (CalcNumber **result, CalcNumber *a, mpf_t b);
+void calc_number_sub_fr (CalcNumber **result, CalcNumber *a, mpfr_t b);
+void calc_number_sub_d (CalcNumber **result, CalcNumber *a, double b);
+void calc_number_sub_ui (CalcNumber **result, CalcNumber *a, unsigned long b);
+void calc_number_sub_si (CalcNumber **result, CalcNumber *a, signed long b);
+
 gint calc_number_cmp (CalcNumber *a, CalcNumber *b);
 gint calc_number_cmp_z (CalcNumber *a, mpz_t b);
 gint calc_number_cmp_q (CalcNumber *a, mpq_t b);

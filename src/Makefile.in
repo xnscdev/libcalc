@@ -137,7 +137,7 @@ am__DEPENDENCIES_1 =
 libcalc_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libcalc_la_OBJECTS = calc-expr.lo calc-number.lo calc-number-add.lo \
-	calc-number-cmp.lo calc-variable.lo
+	calc-number-cmp.lo calc-number-sub.lo calc-variable.lo
 libcalc_la_OBJECTS = $(am_libcalc_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -160,7 +160,8 @@ depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/calc-expr.Plo \
 	./$(DEPDIR)/calc-number-add.Plo \
-	./$(DEPDIR)/calc-number-cmp.Plo ./$(DEPDIR)/calc-number.Plo \
+	./$(DEPDIR)/calc-number-cmp.Plo \
+	./$(DEPDIR)/calc-number-sub.Plo ./$(DEPDIR)/calc-number.Plo \
 	./$(DEPDIR)/calc-variable.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -365,6 +366,7 @@ libcalc_la_SOURCES = \
 	calc-number.c		\
 	calc-number-add.c	\
 	calc-number-cmp.c	\
+	calc-number-sub.c	\
 	calc-variable.c
 
 libcalc_la_LIBADD = $(GMP_LIBS) $(MPFR_LIBS) $(GLIB_LIBS) $(GOBJECT_LIBS)
@@ -470,6 +472,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-expr.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-number-add.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-number-cmp.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-number-sub.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-number.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-variable.Plo@am__quote@ # am--include-marker
 
@@ -701,6 +704,7 @@ distclean: distclean-am
 		-rm -f ./$(DEPDIR)/calc-expr.Plo
 	-rm -f ./$(DEPDIR)/calc-number-add.Plo
 	-rm -f ./$(DEPDIR)/calc-number-cmp.Plo
+	-rm -f ./$(DEPDIR)/calc-number-sub.Plo
 	-rm -f ./$(DEPDIR)/calc-number.Plo
 	-rm -f ./$(DEPDIR)/calc-variable.Plo
 	-rm -f Makefile
@@ -752,6 +756,7 @@ maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/calc-expr.Plo
 	-rm -f ./$(DEPDIR)/calc-number-add.Plo
 	-rm -f ./$(DEPDIR)/calc-number-cmp.Plo
+	-rm -f ./$(DEPDIR)/calc-number-sub.Plo
 	-rm -f ./$(DEPDIR)/calc-number.Plo
 	-rm -f ./$(DEPDIR)/calc-variable.Plo
 	-rm -f Makefile

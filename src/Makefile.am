@@ -9,6 +9,7 @@ libcalc_la_SOURCES =		\
 	calc-number.c		\
 	calc-number-add.c	\
 	calc-number-cmp.c	\
+	calc-number-sub.c	\
 	calc-variable.c
 libcalc_la_LIBADD = $(GMP_LIBS) $(MPFR_LIBS) $(GLIB_LIBS) $(GOBJECT_LIBS)
 
