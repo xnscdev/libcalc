@@ -137,8 +137,8 @@ am__DEPENDENCIES_1 =
 libcalc_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libcalc_la_OBJECTS = calc-expr.lo calc-number.lo calc-number-add.lo \
-	calc-number-cmp.lo calc-number-mul.lo calc-number-sub.lo \
-	calc-variable.lo
+	calc-number-cmp.lo calc-number-div.lo calc-number-mul.lo \
+	calc-number-sub.lo calc-variable.lo
 libcalc_la_OBJECTS = $(am_libcalc_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -162,6 +162,7 @@ am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/calc-expr.Plo \
 	./$(DEPDIR)/calc-number-add.Plo \
 	./$(DEPDIR)/calc-number-cmp.Plo \
+	./$(DEPDIR)/calc-number-div.Plo \
 	./$(DEPDIR)/calc-number-mul.Plo \
 	./$(DEPDIR)/calc-number-sub.Plo ./$(DEPDIR)/calc-number.Plo \
 	./$(DEPDIR)/calc-variable.Plo
@@ -368,6 +369,7 @@ libcalc_la_SOURCES = \
 	calc-number.c		\
 	calc-number-add.c	\
 	calc-number-cmp.c	\
+	calc-number-div.c	\
 	calc-number-mul.c	\
 	calc-number-sub.c	\
 	calc-variable.c
@@ -475,6 +477,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-expr.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-number-add.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-number-cmp.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-number-div.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-number-mul.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-number-sub.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calc-number.Plo@am__quote@ # am--include-marker
@@ -708,6 +711,7 @@ distclean: distclean-am
 		-rm -f ./$(DEPDIR)/calc-expr.Plo
 	-rm -f ./$(DEPDIR)/calc-number-add.Plo
 	-rm -f ./$(DEPDIR)/calc-number-cmp.Plo
+	-rm -f ./$(DEPDIR)/calc-number-div.Plo
 	-rm -f ./$(DEPDIR)/calc-number-mul.Plo
 	-rm -f ./$(DEPDIR)/calc-number-sub.Plo
 	-rm -f ./$(DEPDIR)/calc-number.Plo
@@ -761,6 +765,7 @@ maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/calc-expr.Plo
 	-rm -f ./$(DEPDIR)/calc-number-add.Plo
 	-rm -f ./$(DEPDIR)/calc-number-cmp.Plo
+	-rm -f ./$(DEPDIR)/calc-number-div.Plo
 	-rm -f ./$(DEPDIR)/calc-number-mul.Plo
 	-rm -f ./$(DEPDIR)/calc-number-sub.Plo
 	-rm -f ./$(DEPDIR)/calc-number.Plo

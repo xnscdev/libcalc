@@ -9,6 +9,7 @@ libcalc_la_SOURCES =		\
 	calc-number.c		\
 	calc-number-add.c	\
 	calc-number-cmp.c	\
+	calc-number-div.c	\
 	calc-number-mul.c	\
 	calc-number-sub.c	\
 	calc-variable.c

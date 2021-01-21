@@ -88,8 +88,8 @@ calc_number_sub (CalcNumber **result, CalcNumber *a, CalcNumber *b)
  * Subtracts @b from @a and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a is invalid, no action
- * is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
@@ -136,8 +136,8 @@ calc_number_sub_z (CalcNumber **result, CalcNumber *a, mpz_t b)
  * Subtracts @b from @a and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a is invalid, no action
- * is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
@@ -185,8 +185,8 @@ calc_number_sub_q (CalcNumber **result, CalcNumber *a, mpq_t b)
  * Subtracts @b from @a and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a is invalid, no action
- * is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
@@ -207,8 +207,8 @@ calc_number_sub_f (CalcNumber **result, CalcNumber *a, mpf_t b)
  * Subtracts @b from @a and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a is invalid, no action
- * is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
@@ -251,8 +251,8 @@ calc_number_sub_fr (CalcNumber **result, CalcNumber *a, mpfr_t b)
  * Subtracts @b from @a and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a is invalid, no action
- * is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
@@ -295,8 +295,8 @@ calc_number_sub_d (CalcNumber **result, CalcNumber *a, double b)
  * Subtracts @b from @a and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a is invalid, no action
- * is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
@@ -343,8 +343,8 @@ calc_number_sub_ui (CalcNumber **result, CalcNumber *a, unsigned long b)
  * Subtracts @b from @a and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a is invalid, no action
- * is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void

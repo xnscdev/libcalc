@@ -88,8 +88,8 @@ calc_number_mul (CalcNumber **result, CalcNumber *a, CalcNumber *b)
  * Multiplies @a and @b and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a or @b are invalid
- * numbers, no action is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
@@ -136,8 +136,8 @@ calc_number_mul_z (CalcNumber **result, CalcNumber *a, mpz_t b)
  * Multiplies @a and @b and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a or @b are invalid
- * numbers, no action is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
@@ -185,8 +185,8 @@ calc_number_mul_q (CalcNumber **result, CalcNumber *a, mpq_t b)
  * Multiplies @a and @b and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a or @b are invalid
- * numbers, no action is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
@@ -207,8 +207,8 @@ calc_number_mul_f (CalcNumber **result, CalcNumber *a, mpf_t b)
  * Multiplies @a and @b and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a or @b are invalid
- * numbers, no action is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
@@ -251,8 +251,8 @@ calc_number_mul_fr (CalcNumber **result, CalcNumber *a, mpfr_t b)
  * Multiplies @a and @b and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a or @b are invalid
- * numbers, no action is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
@@ -294,8 +294,8 @@ calc_number_mul_d (CalcNumber **result, CalcNumber *a, double b)
  * Multiplies @a and @b and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a or @b are invalid
- * numbers, no action is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
@@ -342,8 +342,8 @@ calc_number_mul_ui (CalcNumber **result, CalcNumber *a, unsigned long b)
  * Multiplies @a and @b and stores the result in @result. Any previous value in
  * @result will be erased. The type of @result is dependent on the types of
  * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a or @b are invalid
- * numbers, no action is performed.
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
  **/
 
 void
