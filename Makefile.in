@@ -165,7 +165,7 @@ am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(top_srcdir)/build-aux/install-sh \
 	$(top_srcdir)/build-aux/ltmain.sh \
 	$(top_srcdir)/build-aux/missing COPYING build-aux/compile \
-	build-aux/config.guess build-aux/config.sub \
+	build-aux/config.guess build-aux/config.sub build-aux/depcomp \
 	build-aux/install-sh build-aux/ltmain.sh build-aux/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
@@ -254,6 +254,14 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
+INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
+INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
+INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
+INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
+INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
+INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
+INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
@@ -291,6 +299,8 @@ SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
 VERSION = @VERSION@
+_GI_EXP_DATADIR = @_GI_EXP_DATADIR@
+_GI_EXP_LIBDIR = @_GI_EXP_LIBDIR@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -346,6 +356,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
+DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
 SUBDIRS = src doc test
 all: all-recursive
 

@@ -15,6 +15,7 @@
 @SET_MAKE@
 
 
+
 VPATH = @srcdir@
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
@@ -88,6 +89,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+@HAVE_INTROSPECTION_TRUE@am__append_1 = Calc-1.0.gir
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
@@ -128,7 +130,8 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgincludedir)"
+am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(girdir)" \
+	"$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(pkgincludedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libcalc_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
@@ -182,6 +185,7 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
+DATA = $(gir_DATA) $(typelib_DATA)
 HEADERS = $(pkginclude_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
@@ -249,6 +253,14 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
+INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
+INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
+INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
+INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
+INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
+INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
+INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
@@ -286,6 +298,8 @@ SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
 VERSION = @VERSION@
+_GI_EXP_DATADIR = @_GI_EXP_DATADIR@
+_GI_EXP_LIBDIR = @_GI_EXP_LIBDIR@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -355,6 +369,21 @@ pkginclude_HEADERS = \
 	calc-variable.h	\
 	libcalc.h
 
+INTROSPECTION_GIRS = $(am__append_1)
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all
+INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
+@HAVE_INTROSPECTION_TRUE@introspection_sources = $(libcalc_la_SOURCES) $(pkginclude_HEADERS)
+@HAVE_INTROSPECTION_TRUE@Calc_1_0_gir_INCLUDES = GObject-2.0
+@HAVE_INTROSPECTION_TRUE@Calc_1_0_gir_CFLAGS = $(INCLUDES)
+@HAVE_INTROSPECTION_TRUE@Calc_1_0_gir_LIBS = libcalc.la
+@HAVE_INTROSPECTION_TRUE@Calc_1_0_gir_FILES = $(introspection_sources)
+@HAVE_INTROSPECTION_TRUE@Calc_1_0_gir_NAMESPACE = Calc
+@HAVE_INTROSPECTION_TRUE@Calc_1_0_gir_VERSION = $(VERSION)
+@HAVE_INTROSPECTION_TRUE@girdir = $(datadir)/gir-1.0
+@HAVE_INTROSPECTION_TRUE@gir_DATA = $(INTROSPECTION_GIRS)
+@HAVE_INTROSPECTION_TRUE@typelibdir = $(libdir)/girepository-1.0
+@HAVE_INTROSPECTION_TRUE@typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+@HAVE_INTROSPECTION_TRUE@CLEANFILES = $(gir_DATA) $(typelib_DATA)
 all: all-am
 
 .SUFFIXES:
@@ -469,6 +498,48 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-girDATA: $(gir_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(girdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(girdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(girdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(girdir)" || exit $$?; \
+	done
+
+uninstall-girDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(girdir)'; $(am__uninstall_files_from_dir)
+install-typelibDATA: $(typelib_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(typelibdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(typelibdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(typelibdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(typelibdir)" || exit $$?; \
+	done
+
+uninstall-typelibDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(typelibdir)'; $(am__uninstall_files_from_dir)
 install-pkgincludeHEADERS: $(pkginclude_HEADERS)
 	@$(NORMAL_INSTALL)
 	@list='$(pkginclude_HEADERS)'; test -n "$(pkgincludedir)" || list=; \
@@ -578,9 +649,9 @@ distdir-am: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgincludedir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(girdir)" "$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(pkgincludedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -605,6 +676,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -638,7 +710,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-pkgincludeHEADERS
+install-data-am: install-girDATA install-pkgincludeHEADERS \
+	install-typelibDATA
 
 install-dvi: install-dvi-am
 
@@ -686,7 +759,8 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-libLTLIBRARIES uninstall-pkgincludeHEADERS
+uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
+	uninstall-pkgincludeHEADERS uninstall-typelibDATA
 
 .MAKE: install-am install-strip
 
@@ -696,18 +770,23 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-pkgincludeHEADERS
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-data \
 	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-libLTLIBRARIES install-man install-pdf \
-	install-pdf-am install-pkgincludeHEADERS install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
+	install-exec-am install-girDATA install-html install-html-am \
+	install-info install-info-am install-libLTLIBRARIES \
+	install-man install-pdf install-pdf-am \
+	install-pkgincludeHEADERS install-ps install-ps-am \
+	install-strip install-typelibDATA installcheck installcheck-am \
 	installdirs maintainer-clean maintainer-clean-generic \
 	mostlyclean mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
-	uninstall-am uninstall-libLTLIBRARIES \
-	uninstall-pkgincludeHEADERS
+	uninstall-am uninstall-girDATA uninstall-libLTLIBRARIES \
+	uninstall-pkgincludeHEADERS uninstall-typelibDATA
 
 .PRECIOUS: Makefile
 
+
+-include $(INTROSPECTION_MAKEFILE)
+
+@HAVE_INTROSPECTION_TRUE@Calc-1.0.gir: libcalc.la
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
