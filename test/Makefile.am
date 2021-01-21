@@ -5,6 +5,7 @@ AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit \
 check_PROGRAMS =	\
 	number-add	\
 	number-cast	\
+	number-div	\
 	number-init	\
 	number-mul	\
 	number-sub
@@ -21,6 +22,9 @@ number_add_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 
 number_cast_SOURCES = number-cast.c
 number_cast_LDADD = libtest.a $(top_builddir)/src/libcalc.la
+
+number_div_SOURCES = number-div.c
+number_div_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 
 number_init_SOURCES = number-init.c
 number_init_LDADD = libtest.a $(top_builddir)/src/libcalc.la

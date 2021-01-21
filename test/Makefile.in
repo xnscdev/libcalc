@@ -88,7 +88,8 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 check_PROGRAMS = number-add$(EXEEXT) number-cast$(EXEEXT) \
-	number-init$(EXEEXT) number-mul$(EXEEXT) number-sub$(EXEEXT)
+	number-div$(EXEEXT) number-init$(EXEEXT) number-mul$(EXEEXT) \
+	number-sub$(EXEEXT)
 subdir = test
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
@@ -120,6 +121,9 @@ am__v_lt_1 =
 am_number_cast_OBJECTS = number-cast.$(OBJEXT)
 number_cast_OBJECTS = $(am_number_cast_OBJECTS)
 number_cast_DEPENDENCIES = libtest.a $(top_builddir)/src/libcalc.la
+am_number_div_OBJECTS = number-div.$(OBJEXT)
+number_div_OBJECTS = $(am_number_div_OBJECTS)
+number_div_DEPENDENCIES = libtest.a $(top_builddir)/src/libcalc.la
 am_number_init_OBJECTS = number-init.$(OBJEXT)
 number_init_OBJECTS = $(am_number_init_OBJECTS)
 number_init_DEPENDENCIES = libtest.a $(top_builddir)/src/libcalc.la
@@ -146,8 +150,8 @@ depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/assert.Po ./$(DEPDIR)/num-type.Po \
 	./$(DEPDIR)/number-add.Po ./$(DEPDIR)/number-cast.Po \
-	./$(DEPDIR)/number-init.Po ./$(DEPDIR)/number-mul.Po \
-	./$(DEPDIR)/number-sub.Po
+	./$(DEPDIR)/number-div.Po ./$(DEPDIR)/number-init.Po \
+	./$(DEPDIR)/number-mul.Po ./$(DEPDIR)/number-sub.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -168,11 +172,13 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(libtest_a_SOURCES) $(number_add_SOURCES) \
-	$(number_cast_SOURCES) $(number_init_SOURCES) \
-	$(number_mul_SOURCES) $(number_sub_SOURCES)
+	$(number_cast_SOURCES) $(number_div_SOURCES) \
+	$(number_init_SOURCES) $(number_mul_SOURCES) \
+	$(number_sub_SOURCES)
 DIST_SOURCES = $(libtest_a_SOURCES) $(number_add_SOURCES) \
-	$(number_cast_SOURCES) $(number_init_SOURCES) \
-	$(number_mul_SOURCES) $(number_sub_SOURCES)
+	$(number_cast_SOURCES) $(number_div_SOURCES) \
+	$(number_init_SOURCES) $(number_mul_SOURCES) \
+	$(number_sub_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -564,6 +570,8 @@ number_add_SOURCES = number-add.c
 number_add_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 number_cast_SOURCES = number-cast.c
 number_cast_LDADD = libtest.a $(top_builddir)/src/libcalc.la
+number_div_SOURCES = number-div.c
+number_div_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 number_init_SOURCES = number-init.c
 number_init_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 number_mul_SOURCES = number-mul.c
@@ -629,6 +637,10 @@ number-cast$(EXEEXT): $(number_cast_OBJECTS) $(number_cast_DEPENDENCIES) $(EXTRA
 	@rm -f number-cast$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(number_cast_OBJECTS) $(number_cast_LDADD) $(LIBS)
 
+number-div$(EXEEXT): $(number_div_OBJECTS) $(number_div_DEPENDENCIES) $(EXTRA_number_div_DEPENDENCIES) 
+	@rm -f number-div$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(number_div_OBJECTS) $(number_div_LDADD) $(LIBS)
+
 number-init$(EXEEXT): $(number_init_OBJECTS) $(number_init_DEPENDENCIES) $(EXTRA_number_init_DEPENDENCIES) 
 	@rm -f number-init$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(number_init_OBJECTS) $(number_init_LDADD) $(LIBS)
@@ -651,6 +663,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/num-type.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-add.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-cast.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-div.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-init.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-mul.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-sub.Po@am__quote@ # am--include-marker
@@ -895,6 +908,13 @@ number-cast.log: number-cast$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+number-div.log: number-div$(EXEEXT)
+	@p='number-div$(EXEEXT)'; \
+	b='number-div'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 number-init.log: number-init$(EXEEXT)
 	@p='number-init$(EXEEXT)'; \
 	b='number-init'; \
@@ -1013,6 +1033,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/num-type.Po
 	-rm -f ./$(DEPDIR)/number-add.Po
 	-rm -f ./$(DEPDIR)/number-cast.Po
+	-rm -f ./$(DEPDIR)/number-div.Po
 	-rm -f ./$(DEPDIR)/number-init.Po
 	-rm -f ./$(DEPDIR)/number-mul.Po
 	-rm -f ./$(DEPDIR)/number-sub.Po
@@ -1065,6 +1086,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/num-type.Po
 	-rm -f ./$(DEPDIR)/number-add.Po
 	-rm -f ./$(DEPDIR)/number-cast.Po
+	-rm -f ./$(DEPDIR)/number-div.Po
 	-rm -f ./$(DEPDIR)/number-init.Po
 	-rm -f ./$(DEPDIR)/number-mul.Po
 	-rm -f ./$(DEPDIR)/number-sub.Po
