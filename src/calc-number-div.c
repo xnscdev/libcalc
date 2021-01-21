@@ -20,6 +20,8 @@
 
 #include "calc-number.h"
 
+/* TODO Use mpz_divexact */
+
 /**
  * calc_number_div:
  * @result: the pointer to store the result of the division
@@ -275,5 +277,153 @@ calc_number_div_fr (CalcNumber **result, CalcNumber *a, mpfr_t b)
     case CALC_NUMBER_TYPE_FLOATING:
       mpfr_div ((*result)->floating, a->floating, b, MPFR_RNDN);
       break;
+    }
+}
+
+/**
+ * calc_number_div_d:
+ * @result: the pointer to store the result of the division
+ * @a: the dividend
+ * @b: the divisor
+ *
+ * Divides @a by @b and stores the result in @result. Any previous value in
+ * @result will be erased. The type of @result is dependent on the types of
+ * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
+ **/
+
+void
+calc_number_div_d (CalcNumber **result, CalcNumber *a, double b)
+{
+  g_return_if_fail (result != NULL);
+  g_return_if_fail (*result == NULL || CALC_IS_NUMBER (*result));
+  g_return_if_fail (CALC_IS_NUMBER (a));
+
+  if (*result == NULL)
+    {
+      *result = calc_number_new (NULL);
+      mpz_clear ((*result)->integer);
+    }
+  else
+    _calc_number_release (*result);
+  (*result)->type = CALC_NUMBER_TYPE_FLOATING;
+  mpfr_init ((*result)->floating);
+  switch (a->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpfr_set_z ((*result)->floating, a->integer, MPFR_RNDN);
+      mpfr_div_d ((*result)->floating, (*result)->floating, b, MPFR_RNDN);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpfr_set_q ((*result)->floating, a->rational, MPFR_RNDN);
+      mpfr_div_d ((*result)->floating, (*result)->floating, b, MPFR_RNDN);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_div_d ((*result)->floating, a->floating, b, MPFR_RNDN);
+      break;
+    }
+}
+
+/**
+ * calc_number_div_ui:
+ * @result: the pointer to store the result of the division
+ * @a: the dividend
+ * @b: the divisor
+ *
+ * Divides @a by @b and stores the result in @result. Any previous value in
+ * @result will be erased. The type of @result is dependent on the types of
+ * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
+ **/
+
+void
+calc_number_div_ui (CalcNumber **result, CalcNumber *a, unsigned long b)
+{
+  mpz_t temp;
+  mpq_t rb;
+  g_return_if_fail (result != NULL);
+  g_return_if_fail (*result == NULL || CALC_IS_NUMBER (*result));
+  g_return_if_fail (CALC_IS_NUMBER (a));
+
+  if (*result == NULL)
+    {
+      *result = calc_number_new (NULL);
+      mpz_clear ((*result)->integer);
+    }
+  else
+    _calc_number_release (*result);
+  (*result)->type = a->type;
+  switch (a->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpz_init (temp);
+      mpz_mod_ui (temp, a->integer, b);
+      if (mpz_cmp_ui (temp, 0) == 0)
+	{
+	  mpz_init ((*result)->integer);
+	  mpz_divexact_ui ((*result)->integer, a->integer, b);
+	}
+      else
+	{
+	  mpq_t qa;
+	  mpq_t qb;
+	  (*result)->type = CALC_NUMBER_TYPE_RATIONAL;
+	  mpq_inits ((*result)->rational, qa, qb, NULL);
+	  mpq_set_z (qa, a->integer);
+	  mpq_set_ui (qb, b, 1);
+	  mpq_div ((*result)->rational, qa, qb);
+	  mpq_clears (qa, qb, NULL);
+	}
+      mpz_clear (temp);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpq_init ((*result)->rational);
+      mpq_init (rb);
+      mpq_set_ui (rb, b, 1);
+      mpq_div ((*result)->rational, a->rational, rb);
+      mpq_clear (rb);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_init ((*result)->floating);
+      mpfr_div_ui ((*result)->floating, a->floating, b, MPFR_RNDN);
+      break;
+    }
+}
+
+/**
+ * calc_number_div_si:
+ * @result: the pointer to store the result of the division
+ * @a: the dividend
+ * @b: the divisor
+ *
+ * Divides @a by @b and stores the result in @result. Any previous value in
+ * @result will be erased. The type of @result is dependent on the types of
+ * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
+ * @result will point to it. If @result is %NULL or @a is an invalid number,
+ * no action is performed.
+ **/
+
+void
+calc_number_div_si (CalcNumber **result, CalcNumber *a, signed long b)
+{
+  if (b >= 0)
+    calc_number_div_ui (result, a, b);
+  else
+    {
+      calc_number_div_ui (result, a, -b);
+      switch ((*result)->type)
+	{
+	case CALC_NUMBER_TYPE_INTEGER:
+	  mpz_neg ((*result)->integer, (*result)->integer);
+	  break;
+	case CALC_NUMBER_TYPE_RATIONAL:
+	  mpq_neg ((*result)->rational, (*result)->rational);
+	  break;
+	case CALC_NUMBER_TYPE_FLOATING:
+	  mpfr_neg ((*result)->floating, (*result)->floating, MPFR_RNDN);
+	  break;
+	}
     }
 }
