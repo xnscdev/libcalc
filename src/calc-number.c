@@ -94,8 +94,8 @@ calc_number_hash (CalcExpr *expr)
  * Constructs a new #CalcNumber by copying the data of @value. If @value
  * is %NULL, the new instance is initialized to an integer value of zero.
  *
- * Returns: the newly constructed instance, or %NULL if @value is not a
- * valid #CalcNumber and not %NULL
+ * Returns: (transfer full): the newly constructed instance, or %NULL if @value
+ * is not a valid #CalcNumber and not %NULL
  **/
 
 CalcNumber *

@@ -44,10 +44,10 @@ struct _CalcExprClass
   gpointer padding[12];
 
   /*< public >*/
-  void (*print) (CalcExpr *, FILE *);
-  gboolean (*equivalent) (CalcExpr *, CalcExpr *);
-  gboolean (*like_terms) (CalcExpr *, CalcExpr *);
-  gulong (*hash) (CalcExpr *);
+  void (*print) (CalcExpr *self, FILE *stream);
+  gboolean (*equivalent) (CalcExpr *self, CalcExpr *other);
+  gboolean (*like_terms) (CalcExpr *self, CalcExpr *other);
+  gulong (*hash) (CalcExpr *self);
 };
 
 void calc_expr_print (CalcExpr *self, FILE *stream);
