@@ -88,7 +88,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 check_PROGRAMS = number-add$(EXEEXT) number-cast$(EXEEXT) \
-	number-init$(EXEEXT)
+	number-sub$(EXEEXT) number-init$(EXEEXT)
 subdir = test
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
@@ -123,6 +123,9 @@ number_cast_DEPENDENCIES = libtest.a $(top_builddir)/src/libcalc.la
 am_number_init_OBJECTS = number-init.$(OBJEXT)
 number_init_OBJECTS = $(am_number_init_OBJECTS)
 number_init_DEPENDENCIES = libtest.a $(top_builddir)/src/libcalc.la
+am_number_sub_OBJECTS = number-sub.$(OBJEXT)
+number_sub_OBJECTS = $(am_number_sub_OBJECTS)
+number_sub_DEPENDENCIES = libtest.a $(top_builddir)/src/libcalc.la
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -140,7 +143,7 @@ depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/assert.Po ./$(DEPDIR)/num-type.Po \
 	./$(DEPDIR)/number-add.Po ./$(DEPDIR)/number-cast.Po \
-	./$(DEPDIR)/number-init.Po
+	./$(DEPDIR)/number-init.Po ./$(DEPDIR)/number-sub.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -161,9 +164,11 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(libtest_a_SOURCES) $(number_add_SOURCES) \
-	$(number_cast_SOURCES) $(number_init_SOURCES)
+	$(number_cast_SOURCES) $(number_init_SOURCES) \
+	$(number_sub_SOURCES)
 DIST_SOURCES = $(libtest_a_SOURCES) $(number_add_SOURCES) \
-	$(number_cast_SOURCES) $(number_init_SOURCES)
+	$(number_cast_SOURCES) $(number_init_SOURCES) \
+	$(number_sub_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -557,6 +562,8 @@ number_cast_SOURCES = number-cast.c
 number_cast_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 number_init_SOURCES = number-init.c
 number_init_LDADD = libtest.a $(top_builddir)/src/libcalc.la
+number_sub_SOURCES = number-sub.c
+number_sub_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 all: all-am
 
 .SUFFIXES:
@@ -620,6 +627,10 @@ number-init$(EXEEXT): $(number_init_OBJECTS) $(number_init_DEPENDENCIES) $(EXTRA
 	@rm -f number-init$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(number_init_OBJECTS) $(number_init_LDADD) $(LIBS)
 
+number-sub$(EXEEXT): $(number_sub_OBJECTS) $(number_sub_DEPENDENCIES) $(EXTRA_number_sub_DEPENDENCIES) 
+	@rm -f number-sub$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(number_sub_OBJECTS) $(number_sub_LDADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
@@ -631,6 +642,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-add.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-cast.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-init.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/number-sub.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -872,6 +884,13 @@ number-cast.log: number-cast$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+number-sub.log: number-sub$(EXEEXT)
+	@p='number-sub$(EXEEXT)'; \
+	b='number-sub'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 number-init.log: number-init$(EXEEXT)
 	@p='number-init$(EXEEXT)'; \
 	b='number-init'; \
@@ -977,6 +996,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/number-add.Po
 	-rm -f ./$(DEPDIR)/number-cast.Po
 	-rm -f ./$(DEPDIR)/number-init.Po
+	-rm -f ./$(DEPDIR)/number-sub.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -1027,6 +1047,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/number-add.Po
 	-rm -f ./$(DEPDIR)/number-cast.Po
 	-rm -f ./$(DEPDIR)/number-init.Po
+	-rm -f ./$(DEPDIR)/number-sub.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

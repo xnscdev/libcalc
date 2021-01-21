@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-add.c -- This file is part of libcalc.                         *
+ * number-sub.c -- This file is part of libcalc.                         *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -27,12 +27,12 @@ DEFINE_TEST (n_n)
   CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
   CalcNumber *b = calc_number_new_d (TEST_VALUE_B);
   CalcNumber *c = NULL;
-  calc_number_add (&c, a, b);
+  calc_number_sub (&c, a, b);
   g_object_unref (a);
   g_object_unref (b);
   if (c == NULL)
     abort ();
-  assert_num_equals_ui (c, TEST_VALUE_A + TEST_VALUE_B);
+  assert_num_equals_ui (c, TEST_VALUE_A - TEST_VALUE_B);
   g_object_unref (c);
 }
 
@@ -43,12 +43,12 @@ DEFINE_TEST (n_q)
   CalcNumber *c = NULL;
   mpq_init (b);
   mpq_set_ui (b, TEST_VALUE_B, 1);
-  calc_number_add_q (&c, a, b);
+  calc_number_sub_q (&c, a, b);
   g_object_unref (a);
   mpq_clear (b);
   if (c == NULL)
     abort ();
-  assert_num_equals_ui (c, TEST_VALUE_A + TEST_VALUE_B);
+  assert_num_equals_ui (c, TEST_VALUE_A - TEST_VALUE_B);
   g_object_unref (c);
 }
 
@@ -56,11 +56,11 @@ DEFINE_TEST (n_ui)
 {
   CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
   CalcNumber *b = NULL;
-  calc_number_add_ui (&b, a, TEST_VALUE_B);
+  calc_number_sub_ui (&b, a, TEST_VALUE_B);
   g_object_unref (a);
   if (b == NULL)
     abort ();
-  assert_num_equals_ui (b, TEST_VALUE_A + TEST_VALUE_B);
+  assert_num_equals_ui (b, TEST_VALUE_A - TEST_VALUE_B);
   g_object_unref (b);
 }
 
@@ -68,11 +68,11 @@ DEFINE_TEST (n_si)
 {
   CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
   CalcNumber *b = NULL;
-  calc_number_add_si (&b, a, -TEST_VALUE_B);
+  calc_number_sub_si (&b, a, -TEST_VALUE_B);
   g_object_unref (a);
   if (b == NULL)
     abort ();
-  assert_num_equals_ui (b, TEST_VALUE_A - TEST_VALUE_B);
+  assert_num_equals_ui (b, TEST_VALUE_A + TEST_VALUE_B);
   g_object_unref (b);
 }
 
