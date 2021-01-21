@@ -113,4 +113,53 @@ calc_number_div (CalcNumber **result, CalcNumber *a, CalcNumber *b)
 void
 calc_number_div_z (CalcNumber **result, CalcNumber *a, mpz_t b)
 {
+  mpz_t temp;
+  mpq_t rb;
+  g_return_if_fail (result != NULL);
+  g_return_if_fail (*result == NULL || CALC_IS_NUMBER (*result));
+  g_return_if_fail (CALC_IS_NUMBER (a));
+
+  if (*result == NULL)
+    {
+      *result = calc_number_new (NULL);
+      mpz_clear ((*result)->integer);
+    }
+  else
+    _calc_number_release (*result);
+  (*result)->type = a->type;
+  switch (a->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpz_init (temp);
+      mpz_mod (temp, a->integer, b);
+      if (mpz_cmp_ui (temp, 0) == 0)
+	{
+	  mpz_init ((*result)->integer);
+	  mpz_tdiv_q ((*result)->integer, a->integer, b);
+	}
+      else
+	{
+	  mpq_t qa;
+	  mpq_t qb;
+	  (*result)->type = CALC_NUMBER_TYPE_RATIONAL;
+	  mpq_inits (qa, qb, NULL);
+	  mpq_set_z (qa, a->integer);
+	  mpq_set_z (qb, b);
+	  mpq_div ((*result)->rational, qa, qb);
+	  mpq_clears (qa, qb, NULL);
+	}
+      mpz_clear (temp);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpq_init ((*result)->rational);
+      mpq_init (rb);
+      mpq_set_z (rb, b);
+      mpq_div ((*result)->rational, a->rational, rb);
+      mpq_clear (rb);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_init ((*result)->floating);
+      mpfr_div_z ((*result)->floating, a->floating, b, MPFR_RNDN);
+      break;
+    }
 }
