@@ -40,3 +40,14 @@ assert_num_equals_ui (CalcNumber *num, unsigned long value)
       abort ();
     }
 }
+
+void
+assert_num_equals_si (CalcNumber *num, signed long value)
+{
+  if (calc_number_cmp_si (num, value) != 0)
+    {
+      calc_expr_print (CALC_EXPR (num), stderr);
+      fprintf (stderr, " != %ld\n", value);
+      abort ();
+    }
+}

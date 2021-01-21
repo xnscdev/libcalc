@@ -26,6 +26,7 @@
 
 void assert_num_equals_d (CalcNumber *num, double value);
 void assert_num_equals_ui (CalcNumber *num, unsigned long value);
+void assert_num_equals_si (CalcNumber *num, signed long value);
 void assert_type_equals (CalcNumber *num, CalcNumberType type);
 
 #endif
