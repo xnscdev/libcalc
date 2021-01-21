@@ -127,8 +127,8 @@ calc_variable_set_value (const gchar *name, CalcExpr *value)
  *
  * Gets the value of the variable named @name.
  *
- * Returns: the value of the variable, or %NULL if no variable named @name
- * was previously set to a value
+ * Returns: (transfer none): the value of the variable, or %NULL if no variable
+ * named @name was previously set to a value
  **/
 
 CalcExpr *
