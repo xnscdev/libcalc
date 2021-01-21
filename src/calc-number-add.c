@@ -225,18 +225,18 @@ calc_number_add_fr (CalcNumber **result, CalcNumber *a, mpfr_t b)
   else
     _calc_number_release (*result);
   (*result)->type = CALC_NUMBER_TYPE_FLOATING;
+  mpfr_init ((*result)->floating);
   switch (a->type)
     {
     case CALC_NUMBER_TYPE_INTEGER:
-      mpfr_init_set_z ((*result)->floating, a->integer, MPFR_RNDN);
+      mpfr_set_z ((*result)->floating, a->integer, MPFR_RNDN);
       mpfr_add ((*result)->floating, (*result)->floating, b, MPFR_RNDN);
       break;
     case CALC_NUMBER_TYPE_RATIONAL:
-      mpfr_init_set_q ((*result)->floating, a->rational, MPFR_RNDN);
+      mpfr_set_q ((*result)->floating, a->rational, MPFR_RNDN);
       mpfr_add ((*result)->floating, (*result)->floating, b, MPFR_RNDN);
       break;
     case CALC_NUMBER_TYPE_FLOATING:
-      mpfr_init ((*result)->floating);
       mpfr_add ((*result)->floating, a->floating, b, MPFR_RNDN);
       break;
     }
@@ -269,18 +269,18 @@ calc_number_add_d (CalcNumber **result, CalcNumber *a, double b)
   else
     _calc_number_release (*result);
   (*result)->type = CALC_NUMBER_TYPE_FLOATING;
+  mpfr_init ((*result)->floating);
   switch (a->type)
     {
     case CALC_NUMBER_TYPE_INTEGER:
-      mpfr_init_set_z ((*result)->floating, a->integer, MPFR_RNDN);
+      mpfr_set_z ((*result)->floating, a->integer, MPFR_RNDN);
       mpfr_add_d ((*result)->floating, (*result)->floating, b, MPFR_RNDN);
       break;
     case CALC_NUMBER_TYPE_RATIONAL:
-      mpfr_init_set_q ((*result)->floating, a->rational, MPFR_RNDN);
+      mpfr_set_q ((*result)->floating, a->rational, MPFR_RNDN);
       mpfr_add_d ((*result)->floating, (*result)->floating, b, MPFR_RNDN);
       break;
     case CALC_NUMBER_TYPE_FLOATING:
-      mpfr_init ((*result)->floating);
       mpfr_add_d ((*result)->floating, a->floating, b, MPFR_RNDN);
       break;
     }
