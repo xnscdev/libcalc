@@ -98,6 +98,14 @@ gint calc_number_cmp_si (CalcNumber *a, signed long b);
 
 void calc_number_cast (CalcNumber *self, CalcNumberType type);
 
+#ifdef _LIBCALC_INTERNAL
+
+/*< private >*/
+CalcNumberType _calc_number_get_final_type (CalcNumberType a, CalcNumberType b);
+void _calc_number_release (CalcNumber *self);
+
+#endif
+
 G_END_DECLS
 
 #endif

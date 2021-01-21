@@ -4,9 +4,11 @@ AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit -Wno-switch \
 pkgincludedir = $(includedir)/libcalc
 
 lib_LTLIBRARIES = libcalc.la
-libcalc_la_SOURCES =	\
-	calc-expr.c	\
-	calc-number.c	\
+libcalc_la_SOURCES =		\
+	calc-expr.c		\
+	calc-number.c		\
+	calc-number-add.c	\
+	calc-number-cmp.c	\
 	calc-variable.c
 libcalc_la_LIBADD = $(GMP_LIBS) $(MPFR_LIBS) $(GLIB_LIBS) $(GOBJECT_LIBS)
 
