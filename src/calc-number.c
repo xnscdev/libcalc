@@ -130,6 +130,45 @@ calc_number_new (CalcNumber *value)
 }
 
 /**
+ * calc_number_new_z:
+ * @value: the value to initialize to
+ *
+ * Constructs a new #CalcNumber and initializes it to the GNU MP integer
+ * @value. The number will have a type set to %CALC_NUMBER_TYPE_INTEGER.
+ *
+ * Returns: the newly constructed instance
+ **/
+
+CalcNumber *
+calc_number_new_z (mpz_t value)
+{
+  CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
+  mpz_init_set (self->integer, value);
+  self->type = CALC_NUMBER_TYPE_INTEGER;
+  return self;
+}
+
+/**
+ * calc_number_new_q:
+ * @value: the value to initialize to
+ *
+ * Constructs a new #CalcNumber and initializes it to the GNU MP rational
+ * number @value. The number will have a type set to %CALC_NUMBER_TYPE_RATIONAL.
+ *
+ * Returns: the newly constructed instance
+ **/
+
+CalcNumber *
+calc_number_new_q (mpq_t value)
+{
+  CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
+  mpq_init (self->rational);
+  mpq_set (self->rational, value);
+  self->type = CALC_NUMBER_TYPE_RATIONAL;
+  return self;
+}
+
+/**
  * calc_number_new_f:
  * @value: the value to initialize to
  *
@@ -165,45 +204,6 @@ calc_number_new_fr (mpfr_t value)
   CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
   mpfr_init_set (self->floating, value, MPFR_RNDN);
   self->type = CALC_NUMBER_TYPE_FLOATING;
-  return self;
-}
-
-/**
- * calc_number_new_q:
- * @value: the value to initialize to
- *
- * Constructs a new #CalcNumber and initializes it to the GNU MP rational
- * number @value. The number will have a type set to %CALC_NUMBER_TYPE_RATIONAL.
- *
- * Returns: the newly constructed instance
- **/
-
-CalcNumber *
-calc_number_new_q (mpq_t value)
-{
-  CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
-  mpq_init (self->rational);
-  mpq_set (self->rational, value);
-  self->type = CALC_NUMBER_TYPE_RATIONAL;
-  return self;
-}
-
-/**
- * calc_number_new_z:
- * @value: the value to initialize to
- *
- * Constructs a new #CalcNumber and initializes it to the GNU MP integer
- * @value. The number will have a type set to %CALC_NUMBER_TYPE_INTEGER.
- *
- * Returns: the newly constructed instance
- **/
-
-CalcNumber *
-calc_number_new_z (mpz_t value)
-{
-  CalcNumber *self = g_object_new (CALC_TYPE_NUMBER, NULL);
-  mpz_init_set (self->integer, value);
-  self->type = CALC_NUMBER_TYPE_INTEGER;
   return self;
 }
 

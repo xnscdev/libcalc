@@ -70,10 +70,10 @@ struct _CalcNumber
 };
 
 CalcNumber *calc_number_new (CalcNumber *value);
+CalcNumber *calc_number_new_z (mpz_t value);
+CalcNumber *calc_number_new_q (mpq_t value);
 CalcNumber *calc_number_new_f (mpf_t value);
 CalcNumber *calc_number_new_fr (mpfr_t value);
-CalcNumber *calc_number_new_q (mpq_t value);
-CalcNumber *calc_number_new_z (mpz_t value);
 CalcNumber *calc_number_new_d (double value);
 CalcNumber *calc_number_new_ui (unsigned long value);
 CalcNumber *calc_number_new_si (signed long value);
