@@ -20,8 +20,6 @@
 
 #include "calc-number.h"
 
-/* TODO Use mpz_divexact */
-
 /**
  * calc_number_div:
  * @result: the pointer to store the result of the division
@@ -70,7 +68,7 @@ calc_number_div (CalcNumber **result, CalcNumber *a, CalcNumber *b)
       if (mpz_cmp_ui (temp, 0) == 0)
 	{
 	  mpz_init ((*result)->integer);
-	  mpz_tdiv_q ((*result)->integer, ca->integer, cb->integer);
+	  mpz_divexact ((*result)->integer, ca->integer, cb->integer);
 	}
       else
 	{
