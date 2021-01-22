@@ -7,6 +7,7 @@ check_PROGRAMS =	\
 	number-cast	\
 	number-div	\
 	number-init	\
+	number-log	\
 	number-mul	\
 	number-sign	\
 	number-sub
@@ -29,6 +30,9 @@ number_div_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 
 number_init_SOURCES = number-init.c
 number_init_LDADD = libtest.a $(top_builddir)/src/libcalc.la
+
+number_log_SOURCES = number-log.c
+number_log_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 
 number_mul_SOURCES = number-mul.c
 number_mul_LDADD = libtest.a $(top_builddir)/src/libcalc.la
