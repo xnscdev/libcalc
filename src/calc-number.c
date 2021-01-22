@@ -310,52 +310,82 @@ calc_number_cast (CalcNumber *self, CalcNumberType type)
 
 /**
  * calc_number_neg:
+ * @result: the pointer to store the result
  * @self: the number
  *
- * Negates the value of @self, setting its value to the additive inverse of
- * its original value. If @self is not a valid number, no action is performed.
+ * Sets the value of @result to the additive inverse of @self. If @result
+ * points to %NULL, a new #CalcNumber is allocated and @result will point to
+ * it. If @self is not a valid number, no action is performed.
  **/
 
 void
-calc_number_neg (CalcNumber *self)
+calc_number_neg (CalcNumber **result, CalcNumber *self)
 {
+  g_return_if_fail (result != NULL);
   g_return_if_fail (CALC_IS_NUMBER (self));
+
+  if (*result == NULL)
+    {
+      *result = calc_number_new (NULL);
+      mpz_clear ((*result)->integer);
+    }
+  else
+    _calc_number_release (*result);
+  (*result)->type = self->type;
   switch (self->type)
     {
     case CALC_NUMBER_TYPE_INTEGER:
-      mpz_neg (self->integer, self->integer);
+      mpz_init ((*result)->integer);
+      mpz_neg ((*result)->integer, self->integer);
       break;
     case CALC_NUMBER_TYPE_RATIONAL:
-      mpq_neg (self->rational, self->rational);
+      mpq_init ((*result)->rational);
+      mpq_neg ((*result)->rational, self->rational);
       break;
     case CALC_NUMBER_TYPE_FLOATING:
-      mpfr_neg (self->floating, self->floating, MPFR_RNDN);
+      mpfr_init ((*result)->floating);
+      mpfr_neg ((*result)->floating, self->floating, MPFR_RNDN);
       break;
     }
 }
 
 /**
  * calc_number_abs:
+ * @result: the pointer to store the result
  * @self: the number
  *
- * Sets the value of @self to the absolute value of its original value. If
- * @self is not a valid number, no action is performed.
+ * Sets the value of @result to the absolute value of @self. If @result
+ * points to %NULL, a new #CalcNumber is allocated and @result will point to
+ * it. If @self is not a valid number, no action is performed.
  **/
 
 void
-calc_number_abs (CalcNumber *self)
+calc_number_abs (CalcNumber **result, CalcNumber *self)
 {
+  g_return_if_fail (result != NULL);
   g_return_if_fail (CALC_IS_NUMBER (self));
+
+  if (*result == NULL)
+    {
+      *result = calc_number_new (NULL);
+      mpz_clear ((*result)->integer);
+    }
+  else
+    _calc_number_release (*result);
+  (*result)->type = self->type;
   switch (self->type)
     {
     case CALC_NUMBER_TYPE_INTEGER:
-      mpz_abs (self->integer, self->integer);
+      mpz_init ((*result)->integer);
+      mpz_abs ((*result)->integer, self->integer);
       break;
     case CALC_NUMBER_TYPE_RATIONAL:
-      mpq_abs (self->rational, self->rational);
+      mpq_init ((*result)->rational);
+      mpq_abs ((*result)->rational, self->rational);
       break;
     case CALC_NUMBER_TYPE_FLOATING:
-      mpfr_abs (self->floating, self->floating, MPFR_RNDN);
+      mpfr_init ((*result)->floating);
+      mpfr_abs ((*result)->floating, self->floating, MPFR_RNDN);
       break;
     }
 }

@@ -24,49 +24,57 @@
 DEFINE_TEST (z_abs)
 {
   CalcNumber *a = calc_number_new_si (-TEST_VALUE);
-  calc_number_abs (a);
-  assert_num_equals_ui (a, TEST_VALUE);
+  CalcNumber *b = NULL;
+  calc_number_abs (&b, a);
+  assert_num_equals_ui (b, TEST_VALUE);
   g_object_unref (a);
   a = calc_number_new_ui (TEST_VALUE);
-  calc_number_abs (a);
-  assert_num_equals_ui (a, TEST_VALUE);
+  calc_number_abs (&b, a);
+  assert_num_equals_ui (b, TEST_VALUE);
   g_object_unref (a);
+  g_object_unref (b);
 }
 
 DEFINE_TEST (f_abs)
 {
   CalcNumber *a = calc_number_new_d (-TEST_VALUE);
-  calc_number_abs (a);
-  assert_num_equals_d (a, TEST_VALUE);
+  CalcNumber *b = NULL;
+  calc_number_abs (&b, a);
+  assert_num_equals_d (b, TEST_VALUE);
   g_object_unref (a);
   a = calc_number_new_d (TEST_VALUE);
-  calc_number_abs (a);
-  assert_num_equals_d (a, TEST_VALUE);
+  calc_number_abs (&b, a);
+  assert_num_equals_d (b, TEST_VALUE);
   g_object_unref (a);
+  g_object_unref (b);
 }
 
 DEFINE_TEST (z_neg)
 {
-  CalcNumber *a = calc_number_new_ui (TEST_VALUE);
-  calc_number_neg (a);
-  assert_num_equals_si (a, -TEST_VALUE);
+  CalcNumber *a = calc_number_new_si (-TEST_VALUE);
+  CalcNumber *b = NULL;
+  calc_number_neg (&b, a);
+  assert_num_equals_ui (b, TEST_VALUE);
   g_object_unref (a);
-  a = calc_number_new_si (-TEST_VALUE);
-  calc_number_neg (a);
-  assert_num_equals_ui (a, TEST_VALUE);
+  a = calc_number_new_ui (TEST_VALUE);
+  calc_number_neg (&b, a);
+  assert_num_equals_si (b, -TEST_VALUE);
   g_object_unref (a);
+  g_object_unref (b);
 }
 
 DEFINE_TEST (f_neg)
 {
-  CalcNumber *a = calc_number_new_d (TEST_VALUE);
-  calc_number_neg (a);
-  assert_num_equals_d (a, -TEST_VALUE);
+  CalcNumber *a = calc_number_new_d (-TEST_VALUE);
+  CalcNumber *b = NULL;
+  calc_number_neg (&b, a);
+  assert_num_equals_d (b, TEST_VALUE);
   g_object_unref (a);
-  a = calc_number_new_d (-TEST_VALUE);
-  calc_number_neg (a);
-  assert_num_equals_d (a, TEST_VALUE);
+  a = calc_number_new_d (TEST_VALUE);
+  calc_number_neg (&b, a);
+  assert_num_equals_d (b, -TEST_VALUE);
   g_object_unref (a);
+  g_object_unref (b);
 }
 
 int

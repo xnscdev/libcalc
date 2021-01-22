@@ -124,8 +124,8 @@ gint calc_number_cmp_ui (CalcNumber *a, unsigned long b);
 gint calc_number_cmp_si (CalcNumber *a, signed long b);
 
 void calc_number_cast (CalcNumber *self, CalcNumberType type);
-void calc_number_neg (CalcNumber *self);
-void calc_number_abs (CalcNumber *self);
+void calc_number_neg (CalcNumber **result, CalcNumber *self);
+void calc_number_abs (CalcNumber **result, CalcNumber *self);
 
 #ifdef _LIBCALC_INTERNAL
 
