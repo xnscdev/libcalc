@@ -3,3 +3,9 @@ build
 ._*
 *~
 .DS_Store
+configure
+gtk-doc.make
+Makefile.in
+aclocal.m4
+build-aux
+m4
