@@ -130,6 +130,8 @@ void calc_number_abs (CalcNumber **result, CalcNumber *self);
 gint calc_number_log (CalcNumber **result, CalcNumber *self);
 gint calc_number_log2 (CalcNumber **result, CalcNumber *self);
 gint calc_number_log10 (CalcNumber **result, CalcNumber *self);
+gint calc_number_logn (CalcNumber **result, CalcNumber *self,
+		       unsigned long base);
 
 #ifdef _LIBCALC_INTERNAL
 

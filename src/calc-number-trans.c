@@ -178,3 +178,44 @@ calc_number_log10 (CalcNumber **result, CalcNumber *self)
     }
   return ret;
 }
+
+/**
+ * calc_number_logn:
+ * @result: the pointer to store the result
+ * @self: the number
+ * @base: the base of the logarithm
+ *
+ * Sets the value of @result to the base-@base logarithm of @self. If @result
+ * points to %NULL, a new #CalcNumber is allocated and @result will point to it.
+ * If @result is %NULL, @base is zero or one, or @self is an invalid number,
+ * no action is performed and this function returns -1.
+ *
+ * Returns: zero if the calculation succeeded
+ **/
+
+gint
+calc_number_logn (CalcNumber **result, CalcNumber *self, unsigned long base)
+{
+  CalcNumber *a = NULL;
+  CalcNumber *b = NULL;
+  CalcNumber *fbase;
+  g_return_val_if_fail (result != NULL, -1);
+  g_return_val_if_fail (CALC_IS_NUMBER (self), -1);
+  g_return_val_if_fail (base > 1, -1);
+
+  fbase = calc_number_new_ui (base);
+  calc_number_log2 (&a, self);
+  calc_number_log2 (&b, fbase);
+  g_object_unref (fbase);
+  if (a == NULL || b == NULL)
+    {
+      g_object_unref (a);
+      g_object_unref (b);
+      return -1;
+    }
+
+  calc_number_div (result, a, b);
+  g_object_unref (a);
+  g_object_unref (b);
+  return 0;
+}
