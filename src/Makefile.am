@@ -12,6 +12,7 @@ libcalc_la_SOURCES =		\
 	calc-number-div.c	\
 	calc-number-mul.c	\
 	calc-number-sub.c	\
+	calc-number-trans.c	\
 	calc-variable.c
 libcalc_la_LIBADD = $(GMP_LIBS) $(MPFR_LIBS) $(GLIB_LIBS) $(GOBJECT_LIBS)
 
