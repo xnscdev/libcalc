@@ -245,18 +245,43 @@ gint
 calc_number_pow (CalcNumber **result, CalcNumber *a, CalcNumber *b)
 {
   gint ret;
-  CalcNumber *ca;
-  CalcNumber *cb;
+  mpfr_t base;
+  mpfr_t power;
 
   g_return_val_if_fail (result != NULL, -1);
   g_return_val_if_fail (*result == NULL || CALC_IS_NUMBER (*result), -1);
   g_return_val_if_fail (CALC_IS_NUMBER (a), -1);
   g_return_val_if_fail (CALC_IS_NUMBER (b), -1);
 
-  ca = calc_number_new (a);
-  cb = calc_number_new (b);
-  calc_number_cast (ca, CALC_NUMBER_TYPE_FLOATING);
-  calc_number_cast (cb, CALC_NUMBER_TYPE_FLOATING);
+  switch (a->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpfr_init_set_z (base, a->integer, MPFR_RNDN);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpfr_init_set_q (base, a->rational, MPFR_RNDN);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_init_set (base, a->floating, MPFR_RNDN);
+      break;
+    default:
+      return -1;
+    }
+  switch (b->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpfr_init_set_z (power, b->integer, MPFR_RNDN);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpfr_init_set_q (power, b->rational, MPFR_RNDN);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_init_set (power, b->floating, MPFR_RNDN);
+      break;
+    default:
+      mpfr_clear (base);
+      return -1;
+    }
 
   if (*result == NULL)
     {
@@ -266,8 +291,9 @@ calc_number_pow (CalcNumber **result, CalcNumber *a, CalcNumber *b)
   else
     _calc_number_release (*result);
   (*result)->type = CALC_NUMBER_TYPE_FLOATING;
-  ret = mpfr_pow ((*result)->floating, ca->floating, cb->floating, MPFR_RNDN);
-  g_object_unref (ca);
-  g_object_unref (cb);
+  mpfr_init ((*result)->floating);
+  ret = mpfr_pow ((*result)->floating, base, power, MPFR_RNDN);
+  mpfr_clear (base);
+  mpfr_clear (power);
   return ret;
 }

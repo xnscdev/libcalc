@@ -19,19 +19,17 @@
 #include <stdlib.h>
 #include "libtest.h"
 
-#define TEST_VALUE 64
-
 DEFINE_TEST (test0)
 {
-  CalcNumber *a = calc_number_new_ui (2);
-  CalcNumber *b = calc_number_new_ui (3);
+  CalcNumber *a = calc_number_new_ui (3);
+  CalcNumber *b = calc_number_new_ui (4);
   CalcNumber *c = NULL;
   calc_number_pow (&c, a, b);
   g_object_unref (a);
   g_object_unref (b);
   if (c == NULL)
     abort ();
-  assert_num_equals_ui (c, 8);
+  assert_num_equals_ui (c, 81);
   g_object_unref (c);
 }
 
