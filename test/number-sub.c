@@ -83,4 +83,5 @@ main (void)
   RUN_TEST (n_q);
   RUN_TEST (n_ui);
   RUN_TEST (n_si);
+  return 0;
 }

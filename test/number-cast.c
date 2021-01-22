@@ -35,4 +35,5 @@ int
 main (void)
 {
   RUN_TEST (itoq);
+  return 0;
 }

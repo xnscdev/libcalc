@@ -70,4 +70,5 @@ main (void)
   RUN_TEST (test0);
   RUN_TEST (test1);
   RUN_TEST (test2);
+  return 0;
 }

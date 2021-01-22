@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-sign.c -- This file is part of libcalc.                         *
+ * number-sign.c -- This file is part of libcalc.                        *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -84,4 +84,5 @@ main (void)
   RUN_TEST (f_abs);
   RUN_TEST (z_neg);
   RUN_TEST (f_neg);
+  return 0;
 }

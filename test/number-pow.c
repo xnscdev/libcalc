@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-add.c -- This file is part of libcalc.                         *
+ * number-pow.c -- This file is part of libcalc.                         *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -19,47 +19,25 @@
 #include <stdlib.h>
 #include "libtest.h"
 
+#define TEST_VALUE 64
+
 DEFINE_TEST (test0)
 {
-  CalcNumber *a = calc_number_new_ui (16384);
-  CalcNumber *b = NULL;
-  calc_number_log2 (&b, a);
+  CalcNumber *a = calc_number_new_ui (2);
+  CalcNumber *b = calc_number_new_ui (3);
+  CalcNumber *c = NULL;
+  calc_number_pow (&c, a, b);
   g_object_unref (a);
-  if (b == NULL)
-    abort ();
-  assert_num_equals_ui (b, 14);
   g_object_unref (b);
-}
-
-DEFINE_TEST (test1)
-{
-  CalcNumber *a = calc_number_new_ui (10000);
-  CalcNumber *b = NULL;
-  calc_number_log10 (&b, a);
-  g_object_unref (a);
-  if (b == NULL)
+  if (c == NULL)
     abort ();
-  assert_num_equals_ui (b, 4);
-  g_object_unref (b);
-}
-
-DEFINE_TEST (test2)
-{
-  CalcNumber *a = calc_number_new_ui (16807);
-  CalcNumber *b = NULL;
-  calc_number_logn (&b, a, 7);
-  g_object_unref (a);
-  if (b == NULL)
-    abort ();
-  assert_num_equals_ui (b, 5);
-  g_object_unref (b);
+  assert_num_equals_ui (c, 8);
+  g_object_unref (c);
 }
 
 int
 main (void)
 {
   RUN_TEST (test0);
-  RUN_TEST (test1);
-  RUN_TEST (test2);
   return 0;
 }
