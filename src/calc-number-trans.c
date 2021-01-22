@@ -25,10 +25,10 @@
  * @result: the pointer to store the result
  * @self: the number
  *
- * Sets the value of @result to the natural logarithm of @self. If @result
- * points to %NULL, a new #CalcNumber is allocated and @result will point to it.
- * If @result is %NULL or @self is an invalid number, no action is performed
- * and this function returns -1.
+ * Sets the value of @result to the natural logarithm of @self. Any previous
+ * value in @result is erased. If @result points to %NULL, a new #CalcNumber
+ * is allocated and @result will point to it. If @result is %NULL or @self is 
+ * an invalid number, no action is performed and this function returns -1.
  *
  * Returns: zero if the calculation is exact, positive if the calculation is
  * slightly larger than the actual value, and negative if the calculation is
@@ -79,10 +79,10 @@ calc_number_log (CalcNumber **result, CalcNumber *self)
  * @result: the pointer to store the result
  * @self: the number
  *
- * Sets the value of @result to the binary logarithm of @self. If @result
- * points to %NULL, a new #CalcNumber is allocated and @result will point to it.
- * If @result is %NULL or @self is an invalid number, no action is performed
- * and this function returns -1.
+ * Sets the value of @result to the binary logarithm of @self. Any previous
+ * value in @result is erased. If @result points to %NULL, a new #CalcNumber
+ * is allocated and @result will point to it. If @result is %NULL or @self is 
+ * an invalid number, no action is performed and this function returns -1.
  *
  * Returns: zero if the calculation is exact, positive if the calculation is
  * slightly larger than the actual value, and negative if the calculation is
@@ -133,10 +133,10 @@ calc_number_log2 (CalcNumber **result, CalcNumber *self)
  * @result: the pointer to store the result
  * @self: the number
  *
- * Sets the value of @result to the decimal logarithm of @self. If @result
- * points to %NULL, a new #CalcNumber is allocated and @result will point to it.
- * If @result is %NULL or @self is an invalid number, no action is performed
- * and this function returns -1.
+ * Sets the value of @result to the decimal logarithm of @self. Any previous
+ * value in @result is erased. If @result points to %NULL, a new #CalcNumber
+ * is allocated and @result will point to it. If @result is %NULL or @self is 
+ * an invalid number, no action is performed and this function returns -1.
  *
  * Returns: zero if the calculation is exact, positive if the calculation is
  * slightly larger than the actual value, and negative if the calculation is
@@ -188,10 +188,11 @@ calc_number_log10 (CalcNumber **result, CalcNumber *self)
  * @self: the number
  * @base: the base of the logarithm
  *
- * Sets the value of @result to the base-@base logarithm of @self. If @result
- * points to %NULL, a new #CalcNumber is allocated and @result will point to it.
- * If @result is %NULL, @base is zero or one, or @self is an invalid number,
- * no action is performed and this function returns -1.
+ * Sets the value of @result to the base-@base logarithm of @self. Any
+ * previous value of @result will be erased. If @result points to %NULL, a new
+ * #CalcNumber is allocated and @result will point to it. If @result is %NULL,
+ * @base is zero or one, or @self is an invalid number, no action is performed
+ * and this function returns -1.
  *
  * Returns: zero if the calculation succeeded
  **/
@@ -231,10 +232,9 @@ calc_number_logn (CalcNumber **result, CalcNumber *self, unsigned long base)
  * @b: the power to raise the base to
  *
  * Sets the value of @result to @a raised the @b power. Any previous value in
- * @result will be erased. The type of @result is dependent on the types of
- * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
- * @result will point to it. If @result is %NULL or @a or @b are invalid
- * numbers, no action is performed and the function returns -1.
+ * @result will be erased. If @result points to %NULL, a new #CalcNumber is
+ * allocated and @result will point to it. If @result is %NULL or @a or @b are
+ * invalid numbers, no action is performed and the function returns -1.
  *
  * Returns: zero if the calculation is exact, positive if the calculation is
  * slightly larger than the actual value, and negative if the calculation is
