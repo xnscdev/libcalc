@@ -315,7 +315,8 @@ calc_number_cast (CalcNumber *self, CalcNumberType type)
  *
  * Sets the value of @result to the additive inverse of @self. If @result
  * points to %NULL, a new #CalcNumber is allocated and @result will point to
- * it. If @self is not a valid number, no action is performed.
+ * it. If @result is %NULL or @self is not a valid number, no action is
+ * performed.
  **/
 
 void
@@ -356,7 +357,8 @@ calc_number_neg (CalcNumber **result, CalcNumber *self)
  *
  * Sets the value of @result to the absolute value of @self. If @result
  * points to %NULL, a new #CalcNumber is allocated and @result will point to
- * it. If @self is not a valid number, no action is performed.
+ * it. If @result is %NULL or @self is not a valid number, no action is
+ * performed.
  **/
 
 void
