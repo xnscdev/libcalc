@@ -41,6 +41,7 @@ calc_number_log (CalcNumber **result, CalcNumber *self)
   gint ret;
   mpfr_t temp;
   g_return_val_if_fail (result != NULL, -1);
+  g_return_val_if_fail (*result == NULL || CALC_IS_NUMBER (*result), -1);
   g_return_val_if_fail (CALC_IS_NUMBER (self), -1);
 
   if (*result == NULL)
@@ -94,6 +95,7 @@ calc_number_log2 (CalcNumber **result, CalcNumber *self)
   gint ret;
   mpfr_t temp;
   g_return_val_if_fail (result != NULL, -1);
+  g_return_val_if_fail (*result == NULL || CALC_IS_NUMBER (*result), -1);
   g_return_val_if_fail (CALC_IS_NUMBER (self), -1);
 
   if (*result == NULL)
@@ -147,6 +149,7 @@ calc_number_log10 (CalcNumber **result, CalcNumber *self)
   gint ret;
   mpfr_t temp;
   g_return_val_if_fail (result != NULL, -1);
+  g_return_val_if_fail (*result == NULL || CALC_IS_NUMBER (*result), -1);
   g_return_val_if_fail (CALC_IS_NUMBER (self), -1);
 
   if (*result == NULL)
@@ -200,6 +203,7 @@ calc_number_logn (CalcNumber **result, CalcNumber *self, unsigned long base)
   CalcNumber *b = NULL;
   CalcNumber *fbase;
   g_return_val_if_fail (result != NULL, -1);
+  g_return_val_if_fail (*result == NULL || CALC_IS_NUMBER (*result), -1);
   g_return_val_if_fail (CALC_IS_NUMBER (self), -1);
   g_return_val_if_fail (base > 1, -1);
 
@@ -218,4 +222,52 @@ calc_number_logn (CalcNumber **result, CalcNumber *self, unsigned long base)
   g_object_unref (a);
   g_object_unref (b);
   return 0;
+}
+
+/**
+ * calc_number_pow:
+ * @result: the pointer to store the result of the exponentiation
+ * @a: the base number
+ * @b: the power to raise the base to
+ *
+ * Sets the value of @result to @a raised the @b power. Any previous value in
+ * @result will be erased. The type of @result is dependent on the types of
+ * @a and @b. If @result points to %NULL, a new #CalcNumber is allocated and
+ * @result will point to it. If @result is %NULL or @a or @b are invalid
+ * numbers, no action is performed and the function returns -1.
+ *
+ * Returns: zero if the calculation is exact, positive if the calculation is
+ * slightly larger than the actual value, and negative if the calculation is
+ * slightly smaller than the actual value or invalid arguments were given
+ **/
+
+gint
+calc_number_pow (CalcNumber **result, CalcNumber *a, CalcNumber *b)
+{
+  gint ret;
+  CalcNumber *ca;
+  CalcNumber *cb;
+
+  g_return_val_if_fail (result != NULL, -1);
+  g_return_val_if_fail (*result == NULL || CALC_IS_NUMBER (*result), -1);
+  g_return_val_if_fail (CALC_IS_NUMBER (a), -1);
+  g_return_val_if_fail (CALC_IS_NUMBER (b), -1);
+
+  ca = calc_number_new (a);
+  cb = calc_number_new (b);
+  calc_number_cast (ca, CALC_NUMBER_TYPE_FLOATING);
+  calc_number_cast (cb, CALC_NUMBER_TYPE_FLOATING);
+
+  if (*result == NULL)
+    {
+      *result = calc_number_new (NULL);
+      mpz_clear ((*result)->integer);
+    }
+  else
+    _calc_number_release (*result);
+  (*result)->type = CALC_NUMBER_TYPE_FLOATING;
+  ret = mpfr_pow ((*result)->floating, ca->floating, cb->floating, MPFR_RNDN);
+  g_object_unref (ca);
+  g_object_unref (cb);
+  return ret;
 }

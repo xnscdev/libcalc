@@ -132,6 +132,7 @@ gint calc_number_log2 (CalcNumber **result, CalcNumber *self);
 gint calc_number_log10 (CalcNumber **result, CalcNumber *self);
 gint calc_number_logn (CalcNumber **result, CalcNumber *self,
 		       unsigned long base);
+gint calc_number_pow (CalcNumber **result, CalcNumber *a, CalcNumber *b);
 
 #ifdef _LIBCALC_INTERNAL
 
