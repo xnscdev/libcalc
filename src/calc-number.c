@@ -308,6 +308,32 @@ calc_number_cast (CalcNumber *self, CalcNumberType type)
   self->type = type;
 }
 
+/**
+ * calc_number_neg:
+ * @self: the number to negate
+ *
+ * Negates the value of @self, setting its value to the additive inverse of
+ * its original value. If @self is not a valid number, no action is performed.
+ **/
+
+void
+calc_number_neg (CalcNumber *self)
+{
+  g_return_if_fail (CALC_IS_NUMBER (self));
+  switch (self->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpz_neg (self->integer, self->integer);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpq_neg (self->rational, self->rational);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_neg (self->floating, self->floating, MPFR_RNDN);
+      break;
+    }
+}
+
 CalcNumberType
 _calc_number_get_final_type (CalcNumberType a, CalcNumberType b)
 {
