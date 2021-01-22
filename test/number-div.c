@@ -34,8 +34,40 @@ DEFINE_TEST (test0)
   g_object_unref (c);
 }
 
+DEFINE_TEST (test1)
+{
+  CalcNumber *a = calc_number_new_ui (6);
+  CalcNumber *b = calc_number_new_ui (4);
+  CalcNumber *c = NULL;
+  calc_number_div (&c, a, b);
+  g_object_unref (a);
+  g_object_unref (b);
+  if (c == NULL)
+    abort ();
+  assert_type_equals (c, CALC_NUMBER_TYPE_RATIONAL);
+  assert_num_equals_d (c, 1.5);
+  g_object_unref (c);
+}
+
+DEFINE_TEST (test2)
+{
+  CalcNumber *a = calc_number_new_d (1.5);
+  CalcNumber *b = calc_number_new_ui (3);
+  CalcNumber *c = NULL;
+  calc_number_div (&c, a, b);
+  g_object_unref (a);
+  g_object_unref (b);
+  if (c == NULL)
+    abort ();
+  assert_type_equals (c, CALC_NUMBER_TYPE_FLOATING);
+  assert_num_equals_d (c, 0.5);
+  g_object_unref (c);
+}
+
 int
 main (void)
 {
   RUN_TEST (test0);
+  RUN_TEST (test1);
+  RUN_TEST (test2);
 }
