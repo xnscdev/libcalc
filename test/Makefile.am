@@ -3,6 +3,7 @@ AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit \
 	$(GMP_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)
 
 check_PROGRAMS =	\
+	eval-arith	\
 	number-add	\
 	number-cast	\
 	number-div	\
@@ -19,6 +20,9 @@ libtest_a_SOURCES =	\
 	assert.c	\
 	libtest.h	\
 	num-type.c
+
+eval_arith_SOURCES = eval-arith.c
+eval_arith_LDADD = libtest.a $(top_builddir)/src/libcalc.la
 
 number_add_SOURCES = number-add.c
 number_add_LDADD = libtest.a $(top_builddir)/src/libcalc.la
