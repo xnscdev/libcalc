@@ -19,6 +19,7 @@
   <chapter>
     <title>Types Overview</title>
     <xi:include href="xml/calc-expr.xml"/>
+    <xi:include href="xml/calc-fraction.xml"/>
     <xi:include href="xml/calc-number.xml"/>
     <xi:include href="xml/calc-variable.xml"/>
   </chapter>
