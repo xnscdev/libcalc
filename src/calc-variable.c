@@ -16,6 +16,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
+#include "calc-number.h"
 #include "calc-variable.h"
 
 G_DEFINE_TYPE (CalcVariable, calc_variable, CALC_TYPE_EXPR)
@@ -24,6 +25,7 @@ static void calc_variable_print (CalcExpr *expr, FILE *stream);
 static gboolean calc_variable_equivalent (CalcExpr *self, CalcExpr *other);
 static gboolean calc_variable_like_terms (CalcExpr *self, CalcExpr *other);
 static gulong calc_variable_hash (CalcExpr *expr);
+static gboolean calc_variable_evaluate (CalcExpr *expr, CalcExpr *result);
 
 static GHashTable *calc_variable_values;
 
@@ -42,11 +44,13 @@ calc_variable_dispose (GObject *obj)
 static void
 calc_variable_class_init (CalcVariableClass *klass)
 {
+  CalcExprClass *exprclass = CALC_EXPR_CLASS (klass);
   G_OBJECT_CLASS (klass)->dispose = calc_variable_dispose;
-  CALC_EXPR_CLASS (klass)->print = calc_variable_print;
-  CALC_EXPR_CLASS (klass)->equivalent = calc_variable_equivalent;
-  CALC_EXPR_CLASS (klass)->like_terms = calc_variable_like_terms;
-  CALC_EXPR_CLASS (klass)->hash = calc_variable_hash;
+  exprclass->print = calc_variable_print;
+  exprclass->equivalent = calc_variable_equivalent;
+  exprclass->like_terms = calc_variable_like_terms;
+  exprclass->hash = calc_variable_hash;
+  exprclass->evaluate = calc_variable_evaluate;
 
   calc_variable_values =
     g_hash_table_new_full (g_str_hash, calc_variable_key_equal, g_free, NULL);
@@ -81,6 +85,17 @@ static gulong
 calc_variable_hash (CalcExpr *expr)
 {
   return g_str_hash (CALC_VARIABLE (expr)->text);
+}
+
+static gboolean
+calc_variable_evaluate (CalcExpr *expr, CalcExpr *result)
+{
+  CalcExpr *value;
+  g_return_val_if_fail (CALC_IS_NUMBER (result), FALSE);
+  value = calc_variable_get_value (CALC_VARIABLE (expr)->text);
+  if (value == NULL)
+    return FALSE;
+  return calc_expr_evaluate (value, result);
 }
 
 /**
