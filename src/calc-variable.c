@@ -119,6 +119,43 @@ calc_variable_new (const gchar *text)
 }
 
 /**
+ * calc_variable_set_name:
+ * @self: the variable
+ * @text: the string to set the variable name to
+ *
+ * Changes the name of the #CalcVariable instance @self to @text. If @self
+ * is an invalid variable or @text is %NULL, no action is performed. The
+ * variable name is copied from @text, so @text may be freed after calling
+ * this function.
+ **/
+
+void
+calc_variable_set_name (CalcVariable *self, const gchar *text)
+{
+  g_return_if_fail (CALC_IS_VARIABLE (self));
+  g_return_if_fail (text != NULL);
+  g_free (self->text);
+  self->text = g_strdup (text);
+}
+
+/**
+ * calc_variable_get_name:
+ * @self: the variable
+ *
+ * Gets the name of the #CalcVariable instance @self. The returned pointer
+ * should not be freed or modified.
+ *
+ * Returns: the name of @self, or %NULL if @self is an invalid variable
+ **/
+
+const gchar *
+calc_variable_get_name (CalcVariable *self)
+{
+  g_return_val_if_fail (CALC_IS_VARIABLE (self), NULL);
+  return self->text;
+}
+
+/**
  * calc_variable_set_value:
  * @name: the name of the variable
  * @value: the value to set the variable to

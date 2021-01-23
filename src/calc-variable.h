@@ -47,6 +47,8 @@ struct _CalcVariable
 };
 
 CalcVariable *calc_variable_new (const gchar *text);
+void calc_variable_set_name (CalcVariable *self, const gchar *text);
+const gchar *calc_variable_get_name (CalcVariable *self);
 void calc_variable_set_value (const gchar *name, CalcExpr *value);
 CalcExpr *calc_variable_get_value (const gchar *name);
 
