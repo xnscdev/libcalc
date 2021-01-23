@@ -48,6 +48,10 @@ struct _CalcFraction
 };
 
 CalcFraction *calc_fraction_new (CalcExpr *num, CalcExpr *denom);
+void calc_fraction_set_num (CalcFraction *self, CalcExpr *num);
+CalcExpr *calc_fraction_get_num (CalcFraction *self);
+void calc_fraction_set_denom (CalcFraction *self, CalcExpr *denom);
+CalcExpr *calc_fraction_get_denom (CalcFraction *self);
 
 G_END_DECLS
 

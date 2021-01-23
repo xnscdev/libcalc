@@ -131,3 +131,71 @@ calc_fraction_new (CalcExpr *num, CalcExpr *denom)
   self->denom = denom;
   return self;
 }
+
+/**
+ * calc_fraction_set_num:
+ * @self: the fraction
+ * @num: the new numerator
+ *
+ * Changes the numerator of @self to @num. If @self is an invalid fraction
+ * or @num is an invalid expression, no action is performed. @num should not
+ * be freed until @self is no longer in use.
+ **/
+
+void
+calc_fraction_set_num (CalcFraction *self, CalcExpr *num)
+{
+  g_return_if_fail (CALC_IS_FRACTION (self));
+  g_return_if_fail (CALC_IS_EXPR (num));
+  self->num = num;
+}
+
+/**
+ * calc_fraction_get_num:
+ * @self: the fraction
+ *
+ * Gets the numerator of @self, which may be modified but should not be freed.
+ *
+ * Returns: the numerator of @self, or %NULL if @self is an invalid fraction
+ **/
+
+CalcExpr *
+calc_fraction_get_num (CalcFraction *self)
+{
+  g_return_val_if_fail (CALC_IS_FRACTION (self), NULL);
+  return self->num;
+}
+
+/**
+ * calc_fraction_set_denom:
+ * @self: the fraction
+ * @denom: the new denominator
+ *
+ * Changes the denominator of @self to @denom. If @self is an invalid fraction
+ * or @denom is an invalid expression, no action is performed. @denom should not
+ * be freed until @self is no longer in use.
+ **/
+
+void
+calc_fraction_set_denom (CalcFraction *self, CalcExpr *denom)
+{
+  g_return_if_fail (CALC_IS_FRACTION (self));
+  g_return_if_fail (CALC_IS_EXPR (denom));
+  self->denom = denom;
+}
+
+/**
+ * calc_fraction_get_denom:
+ * @self: the fraction
+ *
+ * Gets the denominator of @self, which may be modified but should not be freed.
+ *
+ * Returns: the denominator of @self, or %NULL if @self is an invalid fraction
+ **/
+
+CalcExpr *
+calc_fraction_get_denom (CalcFraction *self)
+{
+  g_return_val_if_fail (CALC_IS_FRACTION (self), NULL);
+  return self->denom;
+}
