@@ -120,3 +120,26 @@ calc_expr_hash (CalcExpr *self)
   g_return_val_if_fail (klass->hash != NULL, FALSE);
   return klass->hash (self);
 }
+
+/**
+ * calc_expr_evaluate:
+ * @self: the expression to evaluate
+ * @result: where to store the result of the calculation
+ *
+ * Evaluates the arithmetic expression @self. All arithmetic will be performed,
+ * and variables will be substituted. If variables are used in the expression,
+ * they must be set to a value. The result of the calculation is stored in
+ * @result, which should be an instance of #CalcNumber.
+ *
+ * Returns: %TRUE if the calculation succeeded
+ **/
+
+gboolean
+calc_expr_evaluate (CalcExpr *self, CalcExpr *result)
+{
+  CalcExprClass *klass;
+  g_return_val_if_fail (CALC_IS_EXPR (self), FALSE);
+  klass = CALC_EXPR_GET_CLASS (self);
+  g_return_val_if_fail (klass->evaluate != NULL, FALSE);
+  return klass->evaluate (self, result);
+}

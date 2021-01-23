@@ -33,6 +33,7 @@ G_DECLARE_DERIVABLE_TYPE (CalcExpr, calc_expr, CALC, EXPR, GObject)
  * @equivalent: checks if two expressions are equivalent
  * @like_terms: checks if two expressions are like terms
  * @hash: computes a hash of an expression
+ * @evaluate: evaluates an arithmetic expression
  *
  * Class type for mathematical expressions.
  **/
@@ -41,19 +42,21 @@ struct _CalcExprClass
 {
   /*< private >*/
   GObjectClass parent;
-  gpointer padding[12];
+  gpointer padding[11];
 
   /*< public >*/
   void (*print) (CalcExpr *self, FILE *stream);
   gboolean (*equivalent) (CalcExpr *self, CalcExpr *other);
   gboolean (*like_terms) (CalcExpr *self, CalcExpr *other);
   gulong (*hash) (CalcExpr *self);
+  gboolean (*evaluate) (CalcExpr *self, CalcExpr *result);
 };
 
 void calc_expr_print (CalcExpr *self, FILE *stream);
 gboolean calc_expr_equivalent (CalcExpr *self, CalcExpr *other);
 gboolean calc_expr_like_terms (CalcExpr *self, CalcExpr *other);
 gulong calc_expr_hash (CalcExpr *self);
+gboolean calc_expr_evaluate (CalcExpr *self, CalcExpr *result);
 
 G_END_DECLS
 

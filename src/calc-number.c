@@ -27,6 +27,7 @@ static void calc_number_print (CalcExpr *expr, FILE *stream);
 static gboolean calc_number_equivalent (CalcExpr *self, CalcExpr *other);
 static gboolean calc_number_like_terms (CalcExpr *self, CalcExpr *other);
 static gulong calc_number_hash (CalcExpr *expr);
+static gboolean calc_number_evaluate (CalcExpr *expr, CalcExpr *result);
 
 static void
 calc_number_dispose (GObject *obj)
@@ -37,11 +38,14 @@ calc_number_dispose (GObject *obj)
 static void
 calc_number_class_init (CalcNumberClass *klass)
 {
+  CalcExprClass *exprclass = CALC_EXPR_CLASS (klass);
   G_OBJECT_CLASS (klass)->dispose = calc_number_dispose;
-  CALC_EXPR_CLASS (klass)->print = calc_number_print;
-  CALC_EXPR_CLASS (klass)->equivalent = calc_number_equivalent;
-  CALC_EXPR_CLASS (klass)->like_terms = calc_number_like_terms;
-  CALC_EXPR_CLASS (klass)->hash = calc_number_hash;
+  exprclass->print = calc_number_print;
+  exprclass->equivalent = calc_number_equivalent;
+  exprclass->like_terms = calc_number_like_terms;
+  exprclass->hash = calc_number_hash;
+  exprclass->evaluate = calc_number_evaluate;
+  
 }
 
 static void
@@ -85,6 +89,33 @@ static gulong
 calc_number_hash (CalcExpr *expr)
 {
   return 0; /* Hashes for constant numbers are meaningless */
+}
+
+static gboolean
+calc_number_evaluate (CalcExpr *expr, CalcExpr *result)
+{
+  CalcNumber *self = CALC_NUMBER (expr);
+  CalcNumber *ans;
+  g_return_val_if_fail (CALC_IS_NUMBER (result), FALSE);
+  ans = CALC_NUMBER (result);
+  _calc_number_release (ans);
+  ans->type = self->type;
+  switch (ans->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpz_init_set (ans->integer, self->integer);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpq_init (ans->rational);
+      mpq_set (ans->rational, self->rational);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_init_set (ans->floating, self->floating, MPFR_RNDN);
+      break;
+    default:
+      return FALSE;
+    }
+  return TRUE;
 }
 
 /**
