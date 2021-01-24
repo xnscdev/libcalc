@@ -47,6 +47,9 @@ struct _CalcTerm
 };
 
 CalcTerm *calc_term_new (CalcNumber *coefficient);
+void calc_term_set_coefficient (CalcTerm *self, CalcNumber *coefficient);
+CalcNumber *calc_term_get_coefficient (CalcTerm *self);
+void calc_term_add_factor (CalcTerm *self, CalcExpr *factor);
 
 G_END_DECLS
 

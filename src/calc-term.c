@@ -16,7 +16,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#include "calc-number.h"
 #include "calc-term.h"
 
 G_DEFINE_TYPE (CalcTerm, calc_term, CALC_TYPE_EXPR)
@@ -181,4 +180,58 @@ calc_term_new (CalcNumber *coefficient)
   self = g_object_new (CALC_TYPE_TERM, NULL);
   self->coefficient = coefficient;
   return self;
+}
+
+/**
+ * calc_term_set_coefficient:
+ * @self: the term
+ * @coefficient: the new coefficient
+ *
+ * Changes the coefficient of @self to @coefficient. @coefficient should not
+ * be freed until @self is no longer in use, but the previous coefficient of
+ * @self may be freed after calling this function. If @self or @coefficient
+ * are invalid, no action is performed.
+ **/
+
+void
+calc_term_set_coefficient (CalcTerm *self, CalcNumber *coefficient)
+{
+  g_return_if_fail (CALC_IS_TERM (self));
+  g_return_if_fail (CALC_IS_NUMBER (coefficient));
+  self->coefficient = coefficient;
+}
+
+/**
+ * calc_term_get_coefficient:
+ * @self: the term
+ *
+ * Gets the coefficient of @self.
+ *
+ * Returns: (transfer none): the coefficient of @self, which may be modified
+ * but not freed
+ **/
+
+CalcNumber *
+calc_term_get_coefficient (CalcTerm *self)
+{
+  g_return_val_if_fail (CALC_IS_TERM (self), NULL);
+  return self->coefficient;
+}
+
+/**
+ * calc_term_add_factor:
+ * @self: the term
+ * @factor: the factor to add
+ *
+ * Adds the expression @factor as a factor of @self. @factor should not
+ * be freed until @self is no longer in use. If @self or @factor are invalid,
+ * no action is performed.
+ **/
+
+void
+calc_term_add_factor (CalcTerm *self, CalcExpr *factor)
+{
+  g_return_if_fail (CALC_IS_TERM (self));
+  g_return_if_fail (CALC_IS_EXPR (factor));
+  g_ptr_array_add (self->factors, factor);
 }
