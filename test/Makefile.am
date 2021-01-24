@@ -12,6 +12,7 @@ TESTS =	eval-arith	\
 	number-pow	\
 	number-sign	\
 	number-sub	\
+	term-factors	\
 	term-init
 check_PROGRAMS = $(TESTS)
 
@@ -52,6 +53,9 @@ number_sign_LDADD = libtest.a $(top_builddir)/src/libcalc.la $(DEP_LIBS)
 
 number_sub_SOURCES = number-sub.c
 number_sub_LDADD = libtest.a $(top_builddir)/src/libcalc.la $(DEP_LIBS)
+
+term_factors_SOURCES = term-factors.c
+term_factors_LDADD = libtest.a $(top_builddir)/src/libcalc.la $(DEP_LIBS)
 
 term_init_SOURCES = term-init.c
 term_init_LDADD = libtest.a $(top_builddir)/src/libcalc.la $(DEP_LIBS)

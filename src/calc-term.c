@@ -234,5 +234,11 @@ calc_term_add_factor (CalcTerm *self, CalcExpr *factor)
 {
   g_return_if_fail (CALC_IS_TERM (self));
   g_return_if_fail (CALC_IS_EXPR (factor));
-  g_ptr_array_add (self->factors, factor);
+  if (CALC_IS_NUMBER (factor))
+    {
+      CalcNumber *temp = calc_number_new (self->coefficient);
+      calc_number_mul (&self->coefficient, temp, CALC_NUMBER (factor));
+    }
+  else
+    g_ptr_array_add (self->factors, factor);
 }
