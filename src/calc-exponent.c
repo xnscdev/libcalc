@@ -46,11 +46,12 @@ calc_exponent_init (CalcExponent *self)
 static void
 calc_exponent_print (CalcExpr *expr, FILE *stream)
 {
-  /* TODO Parenthesis in printing expressions when necessary */
   CalcExponent *self = CALC_EXPONENT (expr);
+  fputc ('(', stream);
   calc_expr_print (self->base, stream);
-  fputc ('^', stream);
+  fprintf (stream, ")^(");
   calc_expr_print (self->power, stream);
+  fputc (')', stream);
 }
 
 static gboolean

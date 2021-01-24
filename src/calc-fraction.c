@@ -47,9 +47,11 @@ static void
 calc_fraction_print (CalcExpr *expr, FILE *stream)
 {
   CalcFraction *self = CALC_FRACTION (expr);
+  fputc ('(', stream);
   calc_expr_print (self->num, stream);
-  fputc ('/', stream);
+  fprintf (stream, ")/(");
   calc_expr_print (self->denom, stream);
+  fputc (')', stream);
 }
 
 static gboolean
