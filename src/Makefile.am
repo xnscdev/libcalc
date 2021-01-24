@@ -5,6 +5,7 @@ pkgincludedir = $(includedir)/libcalc
 
 lib_LTLIBRARIES = libcalc.la
 libcalc_la_SOURCES =		\
+	calc-exponent.c		\
 	calc-expr.c		\
 	calc-fraction.c		\
 	calc-number.c		\
@@ -18,6 +19,7 @@ libcalc_la_SOURCES =		\
 libcalc_la_LIBADD = $(GMP_LIBS) $(MPFR_LIBS) $(GLIB_LIBS) $(GOBJECT_LIBS)
 
 pkginclude_HEADERS =	\
+	calc-exponent.h	\
 	calc-expr.h	\
 	calc-fraction.h	\
 	calc-number.h	\

@@ -19,7 +19,6 @@
 #ifndef _CALC_FRACTION_H
 #define _CALC_FRACTION_H
 
-#include <mpfr.h>
 #include "calc-expr.h"
 
 G_BEGIN_DECLS

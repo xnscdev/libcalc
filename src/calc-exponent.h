@@ -1,5 +1,5 @@
 /*************************************************************************
- * calc-variable.h -- This file is part of libcalc.                        *
+ * calc-exponent.h -- This file is part of libcalc.                      *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,40 +16,41 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#ifndef _CALC_VARIABLE_H
-#define _CALC_VARIABLE_H
+#ifndef _CALC_EXPONENT_H
+#define _CALC_EXPONENT_H
 
 #include "calc-expr.h"
 
 G_BEGIN_DECLS
 
-#define CALC_TYPE_VARIABLE calc_variable_get_type ()
-G_DECLARE_FINAL_TYPE (CalcVariable, calc_variable, CALC, VARIABLE, CalcExpr)
+#define CALC_TYPE_EXPONENT calc_exponent_get_type ()
+G_DECLARE_FINAL_TYPE (CalcExponent, calc_exponent, CALC, EXPONENT, CalcExpr)
 
-struct _CalcVariableClass
+struct _CalcExponentClass
 {
   /*< private >*/
   CalcExprClass parent;
 };
 
 /**
- * CalcVariable:
+ * CalcExponent:
  *
- * Represents a variable that may be set to a constant value.
+ * Represents a base expression raised to a power expression.
  **/
 
-struct _CalcVariable
+struct _CalcExponent
 {
   /*< private >*/
   CalcExpr parent;
-  gchar *text;
+  CalcExpr *base;
+  CalcExpr *power;
 };
 
-CalcVariable *calc_variable_new (const gchar *text);
-void calc_variable_set_name (CalcVariable *self, const gchar *text);
-const gchar *calc_variable_get_name (CalcVariable *self);
-void calc_variable_set_value (const gchar *name, CalcExpr *value);
-CalcExpr *calc_variable_get_value (const gchar *name);
+CalcExponent *calc_exponent_new (CalcExpr *base, CalcExpr *power);
+void calc_exponent_set_base (CalcExponent *self, CalcExpr *base);
+CalcExpr *calc_exponent_get_base (CalcExponent *self);
+void calc_exponent_set_power (CalcExponent *self, CalcExpr *power);
+CalcExpr *calc_exponent_get_power (CalcExponent *self);
 
 G_END_DECLS
 
