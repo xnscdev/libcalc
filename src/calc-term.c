@@ -102,7 +102,7 @@ calc_term_like_terms (CalcExpr *self, CalcExpr *other)
 {
   CalcTerm *term = CALC_TERM (self);
   CalcTerm *other_term;
-  gint i;
+  guint i;
 
   g_return_val_if_fail (CALC_IS_TERM (other), FALSE);
   other_term = CALC_TERM (other);
@@ -132,7 +132,34 @@ calc_term_hash (CalcExpr *expr)
 static gboolean
 calc_term_evaluate (CalcExpr *expr, CalcExpr *result)
 {
-  return FALSE; /* TODO Implement */
+  CalcTerm *self = CALC_TERM (expr);
+  CalcNumber *total = NULL;
+  guint i;
+
+  g_return_val_if_fail (CALC_IS_NUMBER (result), FALSE);
+  /* Terms without factors behave as numbers */
+  if (self->factors->len == 0)
+    return calc_expr_evaluate (CALC_EXPR (self->coefficient), result);
+
+  for (i = 0; i < self->factors->len; i++)
+    {
+      CalcNumber *ans = calc_number_new (NULL);
+      CalcNumber *temp;
+      if (!calc_expr_evaluate (self->factors->pdata[i], CALC_EXPR (ans)))
+	{
+	  g_object_unref (ans);
+	  g_object_unref (total);
+	  return FALSE;
+	}
+      temp = calc_number_new (total);
+      calc_number_mul (&total, temp, ans);
+      g_object_unref (ans);
+      g_object_unref (temp);
+    }
+
+  calc_expr_evaluate (CALC_EXPR (total), result);
+  g_object_unref (total);
+  return TRUE;
 }
 
 /**
