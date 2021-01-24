@@ -141,7 +141,8 @@ calc_fraction_new (CalcExpr *num, CalcExpr *denom)
  *
  * Changes the numerator of @self to @num. If @self is an invalid fraction
  * or @num is an invalid expression, no action is performed. @num should not
- * be freed until @self is no longer in use.
+ * be freed until @self is no longer in use, but the previous numerator of
+ * @self may be freed after calling this function.
  **/
 
 void
@@ -175,7 +176,8 @@ calc_fraction_get_num (CalcFraction *self)
  *
  * Changes the denominator of @self to @denom. If @self is an invalid fraction
  * or @denom is an invalid expression, no action is performed. @denom should not
- * be freed until @self is no longer in use.
+ * be freed until @self is no longer in use, but the previous denominator of
+ * @self may be freed after calling this function.
  **/
 
 void

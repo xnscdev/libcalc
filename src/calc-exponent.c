@@ -136,8 +136,10 @@ calc_exponent_new (CalcExpr *base, CalcExpr *power)
  * @self: the exponent
  * @base: the new base
  *
- * Changes the base of @self to @base. If @self is an invalid exponent or
- * @base is an invalid expression, no action is performed.
+ * Changes the base of @self to @base. @base should not be freed until @self
+ * is no longer in use, but the previous base value of @self may be freed after
+ * calling this function. If @self is an invalid exponent or @base is an
+ * invalid expression, no action is performed.
  **/
 
 void
@@ -169,8 +171,10 @@ calc_exponent_get_base (CalcExponent *self)
  * @self: the exponent
  * @power: the new power
  *
- * Changes the power of @self to @power. If @self is an invalid exponent or
- * @power is an invalid expression, no action is performed.
+ * Changes the power of @self to @power. @power should not be freed until @self
+ * is no longer in use, but the previous power of @self may be freed after
+ * calling this function. If @self is an invalid exponent or @power is an
+ * invalid expression, no action is performed.
  **/
 
 void
