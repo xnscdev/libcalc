@@ -140,6 +140,7 @@ calc_term_evaluate (CalcExpr *expr, CalcExpr *result)
   if (self->factors->len == 0)
     return calc_expr_evaluate (CALC_EXPR (self->coefficient), result);
 
+  total = calc_number_new (self->coefficient);
   for (i = 0; i < self->factors->len; i++)
     {
       CalcNumber *ans = calc_number_new (NULL);
