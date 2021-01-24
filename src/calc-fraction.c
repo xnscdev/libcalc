@@ -68,7 +68,6 @@ calc_fraction_equivalent (CalcExpr *self, CalcExpr *other)
 static gboolean
 calc_fraction_like_terms (CalcExpr *self, CalcExpr *other)
 {
-  g_return_val_if_fail (CALC_IS_FRACTION (other), FALSE);
   return calc_expr_equivalent (CALC_FRACTION (self)->denom,
 			       CALC_FRACTION (other)->denom);
 }

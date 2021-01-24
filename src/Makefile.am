@@ -15,6 +15,7 @@ libcalc_la_SOURCES =		\
 	calc-number-mul.c	\
 	calc-number-sub.c	\
 	calc-number-trans.c	\
+	calc-term.c		\
 	calc-variable.c
 libcalc_la_LIBADD = $(GMP_LIBS) $(MPFR_LIBS) $(GLIB_LIBS) $(GOBJECT_LIBS)
 
@@ -23,6 +24,7 @@ pkginclude_HEADERS =	\
 	calc-expr.h	\
 	calc-fraction.h	\
 	calc-number.h	\
+	calc-term.h	\
 	calc-variable.h	\
 	libcalc.h
 

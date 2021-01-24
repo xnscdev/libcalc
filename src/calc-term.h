@@ -1,5 +1,5 @@
 /*************************************************************************
- * libcalc.h -- This file is part of libcalc.                            *
+ * calc-term.h -- This file is part of libcalc.                          *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,13 +16,38 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#ifndef _LIBCALC_H
-#define _LIBCALC_H
+#ifndef _CALC_TERM_H
+#define _CALC_TERM_H
 
-#include "calc-exponent.h"
-#include "calc-fraction.h"
 #include "calc-number.h"
-#include "calc-term.h"
-#include "calc-variable.h"
+
+G_BEGIN_DECLS
+
+#define CALC_TYPE_TERM calc_term_get_type ()
+G_DECLARE_FINAL_TYPE (CalcTerm, calc_term, CALC, TERM, CalcExpr)
+
+struct _CalcTermClass
+{
+  /*< private >*/
+  CalcExprClass parent;
+};
+
+/**
+ * CalcTerm:
+ *
+ * Represents the multiplication of a coefficient and zero or more factors.
+ **/
+
+struct _CalcTerm
+{
+  /*< private >*/
+  CalcExpr parent;
+  CalcNumber *coefficient;
+  GPtrArray *factors;
+};
+
+CalcTerm *calc_term_new (CalcNumber *coefficient);
+
+G_END_DECLS
 
 #endif
