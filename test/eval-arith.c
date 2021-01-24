@@ -64,11 +64,27 @@ DEFINE_TEST (sa_exp)
   g_object_unref (power);
 }
 
+DEFINE_TEST (sa_frac)
+{
+  CalcNumber *num = calc_number_new_ui (TEST_VALUE);
+  CalcNumber *denom = calc_number_new_ui (2);
+  CalcFraction *a = calc_fraction_new (CALC_EXPR (num), CALC_EXPR (denom));
+  CalcNumber *b = calc_number_new (NULL);
+  if (!calc_expr_evaluate (CALC_EXPR (a), CALC_EXPR (b)))
+    abort ();
+  assert_num_equals_ui (b, TEST_VALUE / 2);
+  g_object_unref (a);
+  g_object_unref (b);
+  g_object_unref (num);
+  g_object_unref (denom);
+}
+
 int
 main (void)
 {
   RUN_TEST (sa_num);
   RUN_TEST (sa_var);
   RUN_TEST (sa_exp);
+  RUN_TEST (sa_frac);
   return 0;
 }
