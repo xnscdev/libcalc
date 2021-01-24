@@ -49,10 +49,26 @@ DEFINE_TEST (sa_var)
   calc_variable_set_value (TEST_VARIABLE, NULL);
 }
 
+DEFINE_TEST (sa_exp)
+{
+  CalcNumber *base = calc_number_new_ui (TEST_VALUE);
+  CalcNumber *power = calc_number_new_ui (2);
+  CalcExponent *a = calc_exponent_new (CALC_EXPR (base), CALC_EXPR (power));
+  CalcNumber *b = calc_number_new (NULL);
+  if (!calc_expr_evaluate (CALC_EXPR (a), CALC_EXPR (b)))
+    abort ();
+  assert_num_equals_ui (b, TEST_VALUE * TEST_VALUE);
+  g_object_unref (a);
+  g_object_unref (b);
+  g_object_unref (base);
+  g_object_unref (power);
+}
+
 int
 main (void)
 {
   RUN_TEST (sa_num);
   RUN_TEST (sa_var);
+  RUN_TEST (sa_exp);
   return 0;
 }
