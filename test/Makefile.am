@@ -18,7 +18,10 @@ TESTS =	eval-exp	\
 	num-log2	\
 	num-log10	\
 	num-log7	\
-	number-mul	\
+	num-mul-n	\
+	num-mul-q	\
+	num-mul-ui	\
+	num-mul-si	\
 	number-pow	\
 	number-sign	\
 	number-sub	\
