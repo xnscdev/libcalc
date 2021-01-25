@@ -11,8 +11,10 @@ TESTS =	eval-exp	\
 	num-add-q	\
 	num-add-ui	\
 	num-add-si	\
-	number-cast	\
-	number-div	\
+	num-cast	\
+	num-div-int	\
+	num-div-nogcd	\
+	num-div-dec	\
 	number-init	\
 	number-log	\
 	number-mul	\

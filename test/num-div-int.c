@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-cast.c -- This file is part of libcalc.                        *
+ * num-div-int.c -- This file is part of libcalc.                        *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -18,22 +18,22 @@
 
 #include "libtest.h"
 
-#define TEST_TYPE CALC_NUMBER_TYPE_FLOATING
-#define TEST_VALUE 256
-
-DEFINE_TEST (itoq)
-{
-  CalcNumber *a = calc_number_new_ui (TEST_VALUE);
-  calc_number_cast (NULL, TEST_TYPE);
-  calc_number_cast (a, TEST_TYPE);
-  assert_num_type_equals (a, TEST_TYPE);
-  assert_num_equals_d (a, TEST_VALUE);
-  g_object_unref (a);
-}
+#define TEST_DIVIDEND 6
+#define TEST_DIVISOR 2
+#define TEST_QUOTIENT 3
 
 int
 main (void)
 {
-  RUN_TEST (itoq);
+  CalcNumber *a = calc_number_new_ui (TEST_DIVIDEND);
+  CalcNumber *b = calc_number_new_ui (TEST_DIVISOR);
+  CalcNumber *c = NULL;
+  calc_number_div (&c, a, b);
+  g_object_unref (a);
+  g_object_unref (b);
+  assert (c != NULL);
+  assert_num_type_equals (c, CALC_NUMBER_TYPE_INTEGER);
+  assert_num_equals_ui (c, TEST_QUOTIENT);
+  g_object_unref (c);
   return 0;
 }

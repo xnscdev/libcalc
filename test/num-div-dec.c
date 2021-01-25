@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-div.c -- This file is part of libcalc.                         *
+ * num-div-dec.c -- This file is part of libcalc.                        *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,59 +16,24 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#include <stdlib.h>
 #include "libtest.h"
 
-DEFINE_TEST (test0)
-{
-  CalcNumber *a = calc_number_new_ui (6);
-  CalcNumber *b = calc_number_new_ui (2);
-  CalcNumber *c = NULL;
-  calc_number_div (&c, a, b);
-  g_object_unref (a);
-  g_object_unref (b);
-  if (c == NULL)
-    abort ();
-  assert_num_type_equals (c, CALC_NUMBER_TYPE_INTEGER);
-  assert_num_equals_ui (c, 3);
-  g_object_unref (c);
-}
-
-DEFINE_TEST (test1)
-{
-  CalcNumber *a = calc_number_new_ui (6);
-  CalcNumber *b = calc_number_new_ui (4);
-  CalcNumber *c = NULL;
-  calc_number_div (&c, a, b);
-  g_object_unref (a);
-  g_object_unref (b);
-  if (c == NULL)
-    abort ();
-  assert_num_type_equals (c, CALC_NUMBER_TYPE_RATIONAL);
-  assert_num_equals_d (c, 1.5);
-  g_object_unref (c);
-}
-
-DEFINE_TEST (test2)
-{
-  CalcNumber *a = calc_number_new_d (1.5);
-  CalcNumber *b = calc_number_new_ui (3);
-  CalcNumber *c = NULL;
-  calc_number_div (&c, a, b);
-  g_object_unref (a);
-  g_object_unref (b);
-  if (c == NULL)
-    abort ();
-  assert_num_type_equals (c, CALC_NUMBER_TYPE_FLOATING);
-  assert_num_equals_d (c, 0.5);
-  g_object_unref (c);
-}
+#define TEST_DIVIDEND 1.5
+#define TEST_DIVISOR 3
+#define TEST_QUOTIENT 0.5
 
 int
 main (void)
 {
-  RUN_TEST (test0);
-  RUN_TEST (test1);
-  RUN_TEST (test2);
+  CalcNumber *a = calc_number_new_d (TEST_DIVIDEND);
+  CalcNumber *b = calc_number_new_ui (TEST_DIVISOR);
+  CalcNumber *c = NULL;
+  calc_number_div (&c, a, b);
+  g_object_unref (a);
+  g_object_unref (b);
+  assert (c != NULL);
+  assert_num_type_equals (c, CALC_NUMBER_TYPE_FLOATING);
+  assert_num_equals_d (c, TEST_QUOTIENT);
+  g_object_unref (c);
   return 0;
 }
