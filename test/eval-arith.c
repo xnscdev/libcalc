@@ -79,6 +79,23 @@ DEFINE_TEST (sa_frac)
   g_object_unref (denom);
 }
 
+DEFINE_TEST (sa_sum)
+{
+  CalcNumber *a = calc_number_new_ui (TEST_VALUE);
+  CalcSum *b = calc_sum_new (CALC_EXPR (a));
+  CalcVariable *c = calc_variable_new ("x");
+  CalcNumber *d = calc_number_new (NULL);
+  calc_variable_set_value ("x", CALC_EXPR (a));
+  calc_sum_add_term (b, CALC_EXPR (c));
+  if (!calc_expr_evaluate (CALC_EXPR (b), CALC_EXPR (d)))
+    abort ();
+  assert_num_equals_ui (d, TEST_VALUE * 2);
+  calc_variable_set_value ("x", NULL);
+  g_object_unref (a);
+  g_object_unref (b);
+  g_object_unref (c);
+}
+
 int
 main (void)
 {
@@ -86,5 +103,6 @@ main (void)
   RUN_TEST (sa_var);
   RUN_TEST (sa_exp);
   RUN_TEST (sa_frac);
+  RUN_TEST (sa_sum);
   return 0;
 }
