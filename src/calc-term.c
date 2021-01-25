@@ -249,6 +249,8 @@ calc_term_get_coefficient (CalcTerm *self)
  * @factor and a power of 1.
  **/
 
+/* TODO Fix memory leaks with allocating constant numbers in exponents */
+
 void
 calc_term_add_factor (CalcTerm *self, CalcExpr *factor)
 {
@@ -266,7 +268,7 @@ calc_term_add_factor (CalcTerm *self, CalcExpr *factor)
   for (i = 0; i < self->factors->len; i++)
     {
       CalcExpr *expr = self->factors->pdata[i];
-      if (CALC_IS_EXPONENT (expr)
+      if (CALC_IS_EXPONENT (factor)
 	  && calc_expr_equivalent (CALC_EXPONENT (factor)->base,
 				   CALC_EXPONENT (expr)->base))
 	{
@@ -284,6 +286,23 @@ calc_term_add_factor (CalcTerm *self, CalcExpr *factor)
 	    calc_exponent_new (expr, CALC_EXPR (calc_number_new_ui (2)));
 	  g_ptr_array_add (self->factors, temp);
 	  return;
+	}
+      else
+	{
+	  CalcExponent *ex = CALC_EXPONENT (expr);
+	  if (calc_expr_equivalent (ex->base, factor))
+	    {
+	      if (CALC_IS_SUM (ex->power))
+	        calc_sum_add_term (CALC_SUM (ex->power),
+				   CALC_EXPR (calc_number_new_ui (1)));
+	      else
+		{
+		  CalcSum *temp = calc_sum_new (ex->power);
+		  calc_sum_add_term (temp, CALC_EXPR (calc_number_new_ui (1)));
+		  ex->power = CALC_EXPR (temp);
+		}
+	      return;
+	    }
 	}
     }
 
