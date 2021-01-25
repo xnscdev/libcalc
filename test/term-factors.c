@@ -42,11 +42,17 @@ DEFINE_TEST (var)
   CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
   CalcVariable *b = calc_variable_new ("x");
   CalcTerm *c = calc_term_new (a);
+  CalcExponent *d;
+  CalcVariable *e;
   calc_term_add_factor (c, CALC_EXPR (b));
   assert (c->factors->len == 1);
-  assert (CALC_IS_VARIABLE (c->factors->pdata[0]));
-  assert (strcmp (calc_variable_get_name (CALC_VARIABLE (c->factors->pdata[0])),
-		  "x") == 0);
+  assert (CALC_IS_EXPONENT (c->factors->pdata[0]));
+  d = CALC_EXPONENT (c->factors->pdata[0]);
+  assert (CALC_IS_VARIABLE (calc_exponent_get_base (d)));
+  e = CALC_VARIABLE (calc_exponent_get_base (d));
+  assert (strcmp (calc_variable_get_name (e), "x") == 0);
+  assert (CALC_IS_NUMBER (calc_exponent_get_power (d)));
+  assert_num_equals_ui (CALC_NUMBER (calc_exponent_get_power (d)), 1);
   assert_num_equals_ui (calc_term_get_coefficient (c), TEST_VALUE_A);
   g_object_unref (a);
   g_object_unref (b);

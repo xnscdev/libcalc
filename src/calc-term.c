@@ -16,6 +16,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
+#include "calc-exponent.h"
 #include "calc-term.h"
 
 G_DEFINE_TYPE (CalcTerm, calc_term, CALC_TYPE_EXPR)
@@ -34,6 +35,16 @@ calc_term_dispose (GObject *obj)
 }
 
 static void
+calc_term_factor_dispose (gpointer data)
+{
+  CalcExponent *self;
+  g_return_if_fail (CALC_IS_EXPONENT (data));
+  self = CALC_EXPONENT (data);
+  g_object_unref (self->power);
+  g_object_unref (self);
+}
+
+static void
 calc_term_class_init (CalcTermClass *klass)
 {
   CalcExprClass *exprclass = CALC_EXPR_CLASS (klass);
@@ -48,7 +59,7 @@ calc_term_class_init (CalcTermClass *klass)
 static void
 calc_term_init (CalcTerm *self)
 {
-  self->factors = g_ptr_array_new ();
+  self->factors = g_ptr_array_new_with_free_func (calc_term_factor_dispose);
 }
 
 static void
@@ -245,5 +256,8 @@ calc_term_add_factor (CalcTerm *self, CalcExpr *factor)
       calc_number_mul (&self->coefficient, temp, CALC_NUMBER (factor));
     }
   else
-    g_ptr_array_add (self->factors, factor);
+    {
+      CalcExponent *temp = calc_exponent_new (factor, calc_number_new_ui (1));
+      g_ptr_array_add (self->factors, temp);
+    }
 }
