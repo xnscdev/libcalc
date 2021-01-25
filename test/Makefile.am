@@ -27,7 +27,10 @@ TESTS =	eval-exp	\
 	num-abs-f	\
 	num-neg-z	\
 	num-neg-f	\
-	number-sub	\
+	num-sub-n	\
+	num-sub-q	\
+	num-sub-ui	\
+	num-sub-si	\
 	term-factors	\
 	term-init
 check_PROGRAMS = $(TESTS)

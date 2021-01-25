@@ -1,5 +1,5 @@
 /*************************************************************************
- * num-add-si.c -- This file is part of libcalc.                         *
+ * num-sub-n.c -- This file is part of libcalc.                          *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -19,17 +19,19 @@
 #include "libtest.h"
 
 #define TEST_VALUE_A 1452863953L
-#define TEST_VALUE_B -134217728L
+#define TEST_VALUE_B 134217728L
 
 int
 main (void)
 {
   CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
-  CalcNumber *b = NULL;
-  calc_number_add_si (&b, a, TEST_VALUE_B);
+  CalcNumber *b = calc_number_new_d (TEST_VALUE_B);
+  CalcNumber *c = NULL;
+  calc_number_sub (&c, a, b);
   g_object_unref (a);
-  assert (b != NULL);
-  assert_num_equals_ui (b, TEST_VALUE_A + TEST_VALUE_B);
   g_object_unref (b);
+  assert (c != NULL);
+  assert_num_equals_ui (c, TEST_VALUE_A - TEST_VALUE_B);
+  g_object_unref (c);
   return 0;
 }

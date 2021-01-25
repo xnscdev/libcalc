@@ -1,5 +1,5 @@
 /*************************************************************************
- * num-add-si.c -- This file is part of libcalc.                         *
+ * num-sub-si.c -- This file is part of libcalc.                         *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -26,10 +26,10 @@ main (void)
 {
   CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
   CalcNumber *b = NULL;
-  calc_number_add_si (&b, a, TEST_VALUE_B);
+  calc_number_sub_si (&b, a, TEST_VALUE_B);
   g_object_unref (a);
   assert (b != NULL);
-  assert_num_equals_ui (b, TEST_VALUE_A + TEST_VALUE_B);
+  assert_num_equals_ui (b, TEST_VALUE_A - TEST_VALUE_B);
   g_object_unref (b);
   return 0;
 }

@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-sub.c -- This file is part of libcalc.                         *
+ * num-sub-ui.c -- This file is part of libcalc.                         *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,72 +16,20 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#include <stdlib.h>
 #include "libtest.h"
 
 #define TEST_VALUE_A 1452863953L
 #define TEST_VALUE_B 134217728L
 
-DEFINE_TEST (n_n)
-{
-  CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
-  CalcNumber *b = calc_number_new_d (TEST_VALUE_B);
-  CalcNumber *c = NULL;
-  calc_number_sub (&c, a, b);
-  g_object_unref (a);
-  g_object_unref (b);
-  if (c == NULL)
-    abort ();
-  assert_num_equals_ui (c, TEST_VALUE_A - TEST_VALUE_B);
-  g_object_unref (c);
-}
-
-DEFINE_TEST (n_q)
-{
-  CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
-  mpq_t b;
-  CalcNumber *c = NULL;
-  mpq_init (b);
-  mpq_set_ui (b, TEST_VALUE_B, 1);
-  calc_number_sub_q (&c, a, b);
-  g_object_unref (a);
-  mpq_clear (b);
-  if (c == NULL)
-    abort ();
-  assert_num_equals_ui (c, TEST_VALUE_A - TEST_VALUE_B);
-  g_object_unref (c);
-}
-
-DEFINE_TEST (n_ui)
+int
+main (void)
 {
   CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
   CalcNumber *b = NULL;
   calc_number_sub_ui (&b, a, TEST_VALUE_B);
   g_object_unref (a);
-  if (b == NULL)
-    abort ();
+  assert (b != NULL);
   assert_num_equals_ui (b, TEST_VALUE_A - TEST_VALUE_B);
   g_object_unref (b);
-}
-
-DEFINE_TEST (n_si)
-{
-  CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
-  CalcNumber *b = NULL;
-  calc_number_sub_si (&b, a, -TEST_VALUE_B);
-  g_object_unref (a);
-  if (b == NULL)
-    abort ();
-  assert_num_equals_ui (b, TEST_VALUE_A + TEST_VALUE_B);
-  g_object_unref (b);
-}
-
-int
-main (void)
-{
-  RUN_TEST (n_n);
-  RUN_TEST (n_q);
-  RUN_TEST (n_ui);
-  RUN_TEST (n_si);
   return 0;
 }
