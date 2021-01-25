@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-pow.c -- This file is part of libcalc.                         *
+ * num-neg-z.c -- This file is part of libcalc.                          *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,26 +16,22 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#include <stdlib.h>
 #include "libtest.h"
 
-DEFINE_TEST (test0)
-{
-  CalcNumber *a = calc_number_new_ui (3);
-  CalcNumber *b = calc_number_new_ui (4);
-  CalcNumber *c = NULL;
-  calc_number_pow (&c, a, b);
-  g_object_unref (a);
-  g_object_unref (b);
-  if (c == NULL)
-    abort ();
-  assert_num_equals_ui (c, 81);
-  g_object_unref (c);
-}
+#define TEST_VALUE 64
 
 int
 main (void)
 {
-  RUN_TEST (test0);
+  CalcNumber *a = calc_number_new_si (-TEST_VALUE);
+  CalcNumber *b = NULL;
+  calc_number_neg (&b, a);
+  assert_num_equals_ui (b, TEST_VALUE);
+  g_object_unref (a);
+  a = calc_number_new_ui (TEST_VALUE);
+  calc_number_neg (&b, a);
+  assert_num_equals_si (b, -TEST_VALUE);
+  g_object_unref (a);
+  g_object_unref (b);
   return 0;
 }

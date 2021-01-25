@@ -22,8 +22,11 @@ TESTS =	eval-exp	\
 	num-mul-q	\
 	num-mul-ui	\
 	num-mul-si	\
-	number-pow	\
-	number-sign	\
+	num-pow		\
+	num-abs-z	\
+	num-abs-f	\
+	num-neg-z	\
+	num-neg-f	\
 	number-sub	\
 	term-factors	\
 	term-init
