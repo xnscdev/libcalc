@@ -17,6 +17,7 @@
  *************************************************************************/
 
 #include "calc-sum.h"
+#include "calc-term.h"
 
 G_DEFINE_TYPE (CalcSum, calc_sum, CALC_TYPE_EXPR)
 
@@ -34,6 +35,16 @@ calc_sum_dispose (GObject *obj)
 }
 
 static void
+calc_sum_term_dispose (gpointer data)
+{
+  CalcTerm *self;
+  g_return_if_fail (CALC_IS_TERM (data));
+  self = CALC_TERM (data);
+  g_object_unref (self->coefficient);
+  g_object_unref (self);
+}
+
+static void
 calc_sum_class_init (CalcSumClass *klass)
 {
   CalcExprClass *exprclass = CALC_EXPR_CLASS (klass);
@@ -48,7 +59,7 @@ calc_sum_class_init (CalcSumClass *klass)
 static void
 calc_sum_init (CalcSum *self)
 {
-  self->terms = g_ptr_array_new ();
+  self->terms = g_ptr_array_new_with_free_func (calc_sum_term_dispose);
 }
 
 static void
@@ -169,7 +180,7 @@ calc_sum_new (CalcExpr *term)
   CalcSum *self;
   g_return_val_if_fail (CALC_IS_EXPR (term), NULL);
   self = g_object_new (CALC_TYPE_SUM, NULL);
-  g_ptr_array_add (self->terms, term);
+  calc_sum_add_term (self, term);
   return self;
 }
 
@@ -194,20 +205,44 @@ calc_sum_add_term (CalcSum *self, CalcExpr *term)
   /* Check for like terms */
   for (i = 0; i < self->terms->len; i++)
     {
-      CalcExpr *expr = self->terms->pdata[i];
-      if (calc_expr_like_terms (term, expr))
+      CalcTerm *expr = CALC_TERM (self->terms->pdata[i]);
+      if (CALC_IS_NUMBER (term) && expr->factors->len == 0)
 	{
-	  if (CALC_IS_NUMBER (term))
+	  CalcNumber *temp = calc_number_new (expr->coefficient);
+	  calc_number_add (&expr->coefficient, temp, CALC_NUMBER (term));
+	  g_object_unref (temp);
+	  return;
+	}
+      else if (calc_expr_like_terms (term, CALC_EXPR (expr)))
+	{
+	  /* term is a CalcTerm instance */
+	  CalcNumber *temp = calc_number_new (expr->coefficient);
+	  calc_number_add (&expr->coefficient, temp,
+			   CALC_TERM (term)->coefficient);
+	  return;
+	}
+      else if (expr->factors->len == 1)
+	{
+	  CalcExpr *e = expr->factors->pdata[0];
+	  if (calc_expr_like_terms (e, term))
 	    {
-	      CalcNumber *nexpr = CALC_NUMBER (expr);
-	      CalcNumber *temp = calc_number_new (nexpr);
-	      calc_number_add (&nexpr, temp, CALC_NUMBER (term));
-	      g_object_unref (temp);
+	      CalcNumber *temp = calc_number_new (expr->coefficient);
+	      calc_number_add_ui (&expr->coefficient, temp, 1);
 	      return;
 	    }
-	  /* TODO Join like terms with fractions */
 	}
     }
 
-  g_ptr_array_add (self->terms, term);
+  if (CALC_IS_TERM (term))
+    {
+      g_object_ref (term);
+      g_object_ref (CALC_TERM (term)->coefficient);
+      g_ptr_array_add (self->terms, term);
+    }
+  else
+    {
+      CalcTerm *temp = calc_term_new (calc_number_new_ui (1));
+      calc_term_add_factor (temp, term);
+      g_ptr_array_add (self->terms, temp);
+    }
 }

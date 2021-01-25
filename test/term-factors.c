@@ -68,6 +68,7 @@ DEFINE_TEST (exp_match)
   CalcExponent *e = calc_exponent_new (CALC_EXPR (c), CALC_EXPR (b));
   CalcTerm *f = calc_term_new (a);
   CalcExponent *g;
+  CalcTerm *h;
   calc_term_add_factor (f, CALC_EXPR (d));
   calc_term_add_factor (f, CALC_EXPR (e));
   assert (f->factors->len == 1);
@@ -76,9 +77,10 @@ DEFINE_TEST (exp_match)
   assert (calc_expr_equivalent (g->base, CALC_EXPR (c)));
   assert (CALC_IS_SUM (g->power));
   assert (CALC_SUM (g->power)->terms->len == 1);
-  assert (CALC_IS_NUMBER (CALC_SUM (g->power)->terms->pdata[0]));
-  assert_num_equals_ui (CALC_NUMBER (CALC_SUM (g->power)->terms->pdata[0]),
-			TEST_VALUE_A + TEST_VALUE_B);
+  assert (CALC_IS_TERM (CALC_SUM (g->power)->terms->pdata[0]));
+  h = CALC_TERM (CALC_SUM (g->power)->terms->pdata[0]);
+  assert (h->factors->len == 0);
+  assert_num_equals_ui (h->coefficient, TEST_VALUE_A + TEST_VALUE_B);
   g_object_unref (a);
   g_object_unref (b);
   g_object_unref (c);

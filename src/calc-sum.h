@@ -35,8 +35,7 @@ struct _CalcSumClass
 /**
  * CalcSum:
  *
- * Represents the addition of one or more terms (not necessarily instances of
- * #CalcTerm).
+ * Represents the addition of one or more terms.
  **/
 
 struct _CalcSum
