@@ -27,8 +27,7 @@ main (void)
   CalcNumber *denom = calc_number_new_ui (2);
   CalcFraction *a = calc_fraction_new (CALC_EXPR (num), CALC_EXPR (denom));
   CalcNumber *b = calc_number_new (NULL);
-  if (!calc_expr_evaluate (CALC_EXPR (a), CALC_EXPR (b)))
-    abort ();
+  assert (calc_expr_evaluate (CALC_EXPR (a), CALC_EXPR (b)));
   assert_num_equals_ui (b, TEST_VALUE / 2);
   g_object_unref (a);
   g_object_unref (b);

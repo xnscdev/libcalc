@@ -30,8 +30,7 @@ main (void)
   CalcNumber *d = calc_number_new (NULL);
   calc_variable_set_value (TEST_VARIABLE, CALC_EXPR (a));
   calc_sum_add_term (b, CALC_EXPR (c));
-  if (!calc_expr_evaluate (CALC_EXPR (b), CALC_EXPR (d)))
-    abort ();
+  assert (calc_expr_evaluate (CALC_EXPR (b), CALC_EXPR (d)));
   assert_num_equals_ui (d, TEST_VALUE * 2);
   calc_variable_set_value (TEST_VARIABLE, NULL);
   g_object_unref (a);

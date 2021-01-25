@@ -28,8 +28,7 @@ main (void)
   CalcNumber *b = calc_number_new_ui (TEST_VALUE);
   CalcNumber *c = calc_number_new (NULL);
   calc_variable_set_value (TEST_VARIABLE, CALC_EXPR (b));
-  if (!calc_expr_evaluate (CALC_EXPR (a), CALC_EXPR (c)))
-    abort ();
+  assert (calc_expr_evaluate (CALC_EXPR (a), CALC_EXPR (c)));
   assert_num_equals_ui (c, TEST_VALUE);
   g_object_unref (a);
   g_object_unref (b);
