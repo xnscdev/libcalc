@@ -1,5 +1,5 @@
 /*************************************************************************
- * term-init.c -- This file is part of libcalc.                          *
+ * term-var.c -- This file is part of libcalc.                           *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,45 +16,32 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#include <stdlib.h>
 #include "libtest.h"
 
-#define TEST_VALUE 4
-
-DEFINE_TEST (nofactors)
-{
-  CalcTerm *a = calc_term_new (calc_number_new_ui (TEST_VALUE));
-  CalcNumber *b = calc_number_new (NULL);
-  if (!calc_expr_evaluate (CALC_EXPR (a), CALC_EXPR (b)))
-    abort ();
-  assert_num_equals_ui (b, TEST_VALUE);
-  g_object_unref (calc_term_get_coefficient (a));
-  g_object_unref (a);
-  g_object_unref (b);
-}
-
-DEFINE_TEST (var)
-{
-  CalcVariable *a = calc_variable_new ("x");
-  CalcNumber *b = calc_number_new_ui (TEST_VALUE);
-  CalcTerm *c = calc_term_new (b);
-  CalcNumber *d = calc_number_new (NULL);
-  calc_variable_set_value ("x", CALC_EXPR (b));
-  calc_term_add_factor (c, CALC_EXPR (a));
-  if (!calc_expr_evaluate (CALC_EXPR (c), CALC_EXPR (d)))
-    abort ();
-  assert_num_equals_ui (d, TEST_VALUE * TEST_VALUE);
-  calc_variable_set_value ("x", NULL);
-  g_object_unref (a);
-  g_object_unref (b);
-  g_object_unref (c);
-  g_object_unref (d);
-}
+#define TEST_VALUE_A 4
+#define TEST_VALUE_B 2
+#define TEST_VARIABLE "x"
 
 int
 main (void)
 {
-  RUN_TEST (nofactors);
-  RUN_TEST (var);
+  CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
+  CalcVariable *b = calc_variable_new (TEST_VARIABLE);
+  CalcTerm *c = calc_term_new (a);
+  CalcExponent *d;
+  CalcVariable *e;
+  calc_term_add_factor (c, CALC_EXPR (b));
+  assert (c->factors->len == 1);
+  assert (CALC_IS_EXPONENT (c->factors->pdata[0]));
+  d = CALC_EXPONENT (c->factors->pdata[0]);
+  assert (CALC_IS_VARIABLE (calc_exponent_get_base (d)));
+  e = CALC_VARIABLE (calc_exponent_get_base (d));
+  assert (strcmp (calc_variable_get_name (e), TEST_VARIABLE) == 0);
+  assert (CALC_IS_NUMBER (calc_exponent_get_power (d)));
+  assert_num_equals_ui (CALC_NUMBER (calc_exponent_get_power (d)), 1);
+  assert_num_equals_ui (calc_term_get_coefficient (c), TEST_VALUE_A);
+  g_object_unref (a);
+  g_object_unref (b);
+  g_object_unref (c);
   return 0;
 }

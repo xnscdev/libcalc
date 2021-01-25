@@ -31,8 +31,10 @@ TESTS =	eval-exp	\
 	num-sub-q	\
 	num-sub-ui	\
 	num-sub-si	\
-	term-factors	\
-	term-init
+	term-num	\
+	term-var	\
+	term-exp2	\
+	term-exp3
 check_PROGRAMS = $(TESTS)
 
 check_LIBRARIES = libtest.a

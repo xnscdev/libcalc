@@ -1,5 +1,5 @@
 /*************************************************************************
- * libtest.h -- This file is part of libcalc.                            *
+ * term-num.c -- This file is part of libcalc.                           *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,15 +16,23 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#ifndef _LIBTEST_H
-#define _LIBTEST_H
+#include "libtest.h"
 
-#include <assert.h>
-#include <libcalc.h>
+#define TEST_VALUE_A 4
+#define TEST_VALUE_B 2
 
-void assert_num_equals_d (CalcNumber *num, double value);
-void assert_num_equals_ui (CalcNumber *num, unsigned long value);
-void assert_num_equals_si (CalcNumber *num, signed long value);
-void assert_num_type_equals (CalcNumber *num, CalcNumberType type);
-
-#endif
+int
+main (void)
+{
+  CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
+  CalcNumber *b = calc_number_new_ui (TEST_VALUE_B);
+  CalcTerm *c = calc_term_new (a);
+  calc_term_add_factor (c, CALC_EXPR (b));
+  assert (c->factors->len == 0);
+  assert_num_equals_ui (calc_term_get_coefficient (c),
+			TEST_VALUE_A * TEST_VALUE_B);
+  g_object_unref (a);
+  g_object_unref (b);
+  g_object_unref (c);
+  return 0;
+}
