@@ -7,7 +7,10 @@ TESTS =	eval-exp	\
 	eval-num	\
 	eval-sum	\
 	eval-var	\
-	number-add	\
+	num-add-n	\
+	num-add-q	\
+	num-add-ui	\
+	num-add-si	\
 	number-cast	\
 	number-div	\
 	number-init	\
