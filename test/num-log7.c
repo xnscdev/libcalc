@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-init.c -- This file is part of libcalc.                        *
+ * num-log7.c -- This file is part of libcalc.                           *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -18,18 +18,19 @@
 
 #include "libtest.h"
 
-#define TEST_VALUE 65535
-
-DEFINE_TEST (ui)
-{
-  CalcNumber *a = calc_number_new_ui (TEST_VALUE);
-  assert_num_equals_ui (a, TEST_VALUE);
-  g_object_unref (a);
-}
+#define TEST_BASE 7
+#define TEST_VALUE 16807
+#define TEST_RESULT 5
 
 int
 main (void)
 {
-  RUN_TEST (ui);
+  CalcNumber *a = calc_number_new_ui (TEST_VALUE);
+  CalcNumber *b = NULL;
+  calc_number_logn (&b, a, TEST_BASE);
+  g_object_unref (a);
+  assert (b != NULL);
+  assert_num_equals_ui (b, TEST_RESULT);
+  g_object_unref (b);
   return 0;
 }

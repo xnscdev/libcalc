@@ -15,8 +15,9 @@ TESTS =	eval-exp	\
 	num-div-int	\
 	num-div-nogcd	\
 	num-div-dec	\
-	number-init	\
-	number-log	\
+	num-log2	\
+	num-log10	\
+	num-log7	\
 	number-mul	\
 	number-pow	\
 	number-sign	\

@@ -1,5 +1,5 @@
 /*************************************************************************
- * number-add.c -- This file is part of libcalc.                         *
+ * num-log10.c -- This file is part of libcalc.                          *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,50 +16,20 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#include <stdlib.h>
 #include "libtest.h"
 
-DEFINE_TEST (test0)
-{
-  CalcNumber *a = calc_number_new_ui (16384);
-  CalcNumber *b = NULL;
-  calc_number_log2 (&b, a);
-  g_object_unref (a);
-  if (b == NULL)
-    abort ();
-  assert_num_equals_ui (b, 14);
-  g_object_unref (b);
-}
-
-DEFINE_TEST (test1)
-{
-  CalcNumber *a = calc_number_new_ui (10000);
-  CalcNumber *b = NULL;
-  calc_number_log10 (&b, a);
-  g_object_unref (a);
-  if (b == NULL)
-    abort ();
-  assert_num_equals_ui (b, 4);
-  g_object_unref (b);
-}
-
-DEFINE_TEST (test2)
-{
-  CalcNumber *a = calc_number_new_ui (16807);
-  CalcNumber *b = NULL;
-  calc_number_logn (&b, a, 7);
-  g_object_unref (a);
-  if (b == NULL)
-    abort ();
-  assert_num_equals_ui (b, 5);
-  g_object_unref (b);
-}
+#define TEST_VALUE 10000
+#define TEST_RESULT 4
 
 int
 main (void)
 {
-  RUN_TEST (test0);
-  RUN_TEST (test1);
-  RUN_TEST (test2);
+  CalcNumber *a = calc_number_new_ui (TEST_VALUE);
+  CalcNumber *b = NULL;
+  calc_number_log10 (&b, a);
+  g_object_unref (a);
+  assert (b != NULL);
+  assert_num_equals_ui (b, 4);
+  g_object_unref (b);
   return 0;
 }
