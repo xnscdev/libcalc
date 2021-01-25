@@ -29,7 +29,7 @@ DEFINE_TEST (test0)
   g_object_unref (b);
   if (c == NULL)
     abort ();
-  assert_type_equals (c, CALC_NUMBER_TYPE_INTEGER);
+  assert_num_type_equals (c, CALC_NUMBER_TYPE_INTEGER);
   assert_num_equals_ui (c, 3);
   g_object_unref (c);
 }
@@ -44,7 +44,7 @@ DEFINE_TEST (test1)
   g_object_unref (b);
   if (c == NULL)
     abort ();
-  assert_type_equals (c, CALC_NUMBER_TYPE_RATIONAL);
+  assert_num_type_equals (c, CALC_NUMBER_TYPE_RATIONAL);
   assert_num_equals_d (c, 1.5);
   g_object_unref (c);
 }
@@ -59,7 +59,7 @@ DEFINE_TEST (test2)
   g_object_unref (b);
   if (c == NULL)
     abort ();
-  assert_type_equals (c, CALC_NUMBER_TYPE_FLOATING);
+  assert_num_type_equals (c, CALC_NUMBER_TYPE_FLOATING);
   assert_num_equals_d (c, 0.5);
   g_object_unref (c);
 }

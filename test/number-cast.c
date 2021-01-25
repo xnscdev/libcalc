@@ -26,7 +26,7 @@ DEFINE_TEST (itoq)
   CalcNumber *a = calc_number_new_ui (TEST_VALUE);
   calc_number_cast (NULL, TEST_TYPE);
   calc_number_cast (a, TEST_TYPE);
-  assert_type_equals (a, TEST_TYPE);
+  assert_num_type_equals (a, TEST_TYPE);
   assert_num_equals_d (a, TEST_VALUE);
   g_object_unref (a);
 }

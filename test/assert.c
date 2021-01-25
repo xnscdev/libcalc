@@ -51,3 +51,13 @@ assert_num_equals_si (CalcNumber *num, signed long value)
       abort ();
     }
 }
+
+void
+assert_num_type_equals (CalcNumber *num, CalcNumberType type)
+{
+  if (num->type != type)
+    {
+      fprintf (stderr, "expected type %d but got %d\n", type, num->type);
+      abort ();
+    }
+}

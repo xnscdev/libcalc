@@ -28,7 +28,7 @@ DEFINE_TEST (sa_num)
   CalcNumber *b = calc_number_new (NULL);
   if (!calc_expr_evaluate (CALC_EXPR (a), CALC_EXPR (b)))
     abort ();
-  assert_type_equals (b, CALC_NUMBER_TYPE_INTEGER);
+  assert_num_type_equals (b, CALC_NUMBER_TYPE_INTEGER);
   assert_num_equals_ui (b, TEST_VALUE);
   g_object_unref (a);
   g_object_unref (b);
