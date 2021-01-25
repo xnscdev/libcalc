@@ -155,7 +155,8 @@ calc_sum_evaluate (CalcExpr *expr, CalcExpr *result)
  * calc_sum_new:
  * @term: the initial term
  *
- * Creates a new sum object with a single term of @term. @term should not
+ * Creates a new sum object with a single term of @term. The value of @term
+ * may be modified through calls to #CalcSum functions. @term should not
  * be freed until the created instance is no longer in use.
  *
  * Returns: the newly constructed instance, or %NULL if @term is an invalid
@@ -172,4 +173,41 @@ calc_sum_new (CalcExpr *term)
   return self;
 }
 
-/* TODO Adding terms to sum, combine like terms */
+/**
+ * calc_sum_add_term:
+ * @self: the sum
+ * @term: the term to add
+ *
+ * Adds @term to the list of terms of @sum. The value of @term may be modified
+ * through calls to #CalcSum functions. @term should not be freed until
+ * @self is no longer in use. If @self or @term are invalid, no actions is
+ * performed.
+ **/
+
+void
+calc_sum_add_term (CalcSum *self, CalcExpr *term)
+{
+  guint i;
+  g_return_if_fail (CALC_IS_SUM (self));
+  g_return_if_fail (CALC_IS_EXPR (term));
+
+  /* Check for like terms */
+  for (i = 0; i < self->terms->len; i++)
+    {
+      CalcExpr *expr = self->terms->pdata[i];
+      if (calc_expr_like_terms (term, expr))
+	{
+	  if (CALC_IS_NUMBER (term))
+	    {
+	      CalcNumber *nexpr = CALC_NUMBER (expr);
+	      CalcNumber *temp = calc_number_new (nexpr);
+	      calc_number_add (&nexpr, temp, CALC_NUMBER (term));
+	      g_object_unref (temp);
+	      return;
+	    }
+	  /* TODO Join like terms with fractions */
+	}
+    }
+
+  g_ptr_array_add (self->terms, term);
+}
