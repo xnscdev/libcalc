@@ -227,6 +227,11 @@ calc_term_get_coefficient (CalcTerm *self)
  * Adds the expression @factor as a factor of @self. @factor should not
  * be freed until @self is no longer in use. If @self or @factor are invalid,
  * no action is performed.
+ *
+ * Depending on the type of @factor, this function performs different actions.
+ * If @factor is an instance of #CalcNumber, its value will be multiplied to
+ * the coefficient of @self. For all other valid values, @factor will simply
+ * be appended to the list of factors of @self.
  **/
 
 void
