@@ -1,5 +1,5 @@
 /*************************************************************************
- * libtest.h -- This file is part of libcalc.                            *
+ * eval-sum.c -- This file is part of libcalc.                           *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,18 +16,26 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#ifndef _LIBTEST_H
-#define _LIBTEST_H
+#include "libtest.h"
 
-#include <assert.h>
-#include <libcalc.h>
+#define TEST_VALUE 64
+#define TEST_VARIABLE "x"
 
-#define DEFINE_TEST(x) void x (void)
-#define RUN_TEST(x) x ()
-
-void assert_num_equals_d (CalcNumber *num, double value);
-void assert_num_equals_ui (CalcNumber *num, unsigned long value);
-void assert_num_equals_si (CalcNumber *num, signed long value);
-void assert_num_type_equals (CalcNumber *num, CalcNumberType type);
-
-#endif
+int
+main (void)
+{
+  CalcNumber *a = calc_number_new_ui (TEST_VALUE);
+  CalcSum *b = calc_sum_new (CALC_EXPR (a));
+  CalcVariable *c = calc_variable_new (TEST_VARIABLE);
+  CalcNumber *d = calc_number_new (NULL);
+  calc_variable_set_value (TEST_VARIABLE, CALC_EXPR (a));
+  calc_sum_add_term (b, CALC_EXPR (c));
+  if (!calc_expr_evaluate (CALC_EXPR (b), CALC_EXPR (d)))
+    abort ();
+  assert_num_equals_ui (d, TEST_VALUE * 2);
+  calc_variable_set_value (TEST_VARIABLE, NULL);
+  g_object_unref (a);
+  g_object_unref (b);
+  g_object_unref (c);
+  return 0;
+}

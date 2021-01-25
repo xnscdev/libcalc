@@ -1,5 +1,5 @@
 /*************************************************************************
- * libtest.h -- This file is part of libcalc.                            *
+ * eval-exp.c -- This file is part of libcalc.                           *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,18 +16,23 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#ifndef _LIBTEST_H
-#define _LIBTEST_H
+#include "libtest.h"
 
-#include <assert.h>
-#include <libcalc.h>
+#define TEST_VALUE 64
 
-#define DEFINE_TEST(x) void x (void)
-#define RUN_TEST(x) x ()
-
-void assert_num_equals_d (CalcNumber *num, double value);
-void assert_num_equals_ui (CalcNumber *num, unsigned long value);
-void assert_num_equals_si (CalcNumber *num, signed long value);
-void assert_num_type_equals (CalcNumber *num, CalcNumberType type);
-
-#endif
+int
+main (void)
+{
+  CalcNumber *base = calc_number_new_ui (TEST_VALUE);
+  CalcNumber *power = calc_number_new_ui (2);
+  CalcExponent *a = calc_exponent_new (CALC_EXPR (base), CALC_EXPR (power));
+  CalcNumber *b = calc_number_new (NULL);
+  if (!calc_expr_evaluate (CALC_EXPR (a), CALC_EXPR (b)))
+    abort ();
+  assert_num_equals_ui (b, TEST_VALUE * TEST_VALUE);
+  g_object_unref (a);
+  g_object_unref (b);
+  g_object_unref (base);
+  g_object_unref (power);
+  return 0;
+}

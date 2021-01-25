@@ -2,7 +2,11 @@ AM_CPPFLAGS = -I$(top_srcdir)/src
 AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit \
 	$(GMP_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)
 
-TESTS =	eval-arith	\
+TESTS =	eval-exp	\
+	eval-frac	\
+	eval-num	\
+	eval-sum	\
+	eval-var	\
 	number-add	\
 	number-cast	\
 	number-div	\
