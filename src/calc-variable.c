@@ -71,7 +71,8 @@ static gboolean
 calc_variable_equivalent (CalcExpr *self, CalcExpr *other)
 {
   g_return_val_if_fail (CALC_IS_VARIABLE (other), FALSE);
-  return g_strcmp0 (CALC_VARIABLE (self)->text, CALC_VARIABLE (other)->text);
+  return g_strcmp0 (CALC_VARIABLE (self)->text,
+		    CALC_VARIABLE (other)->text) == 0;
 }
 
 static gboolean

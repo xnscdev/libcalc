@@ -266,23 +266,23 @@ calc_term_add_factor (CalcTerm *self, CalcExpr *factor)
   for (i = 0; i < self->factors->len; i++)
     {
       CalcExpr *expr = self->factors->pdata[i];
-      if (calc_expr_equivalent (factor, expr))
+      if (CALC_IS_EXPONENT (expr)
+	  && calc_expr_equivalent (CALC_EXPONENT (factor)->base,
+				   CALC_EXPONENT (expr)->base))
 	{
-	  if (CALC_IS_EXPONENT (expr))
-	    {
-	      CalcExponent *efactor = CALC_EXPONENT (factor);
-	      CalcSum *sum = calc_sum_new (efactor->power);
-	      CalcExponent *temp;
-	      calc_sum_add_term (sum, CALC_EXPONENT (expr)->power);
-	      temp = calc_exponent_new (efactor->base, CALC_EXPR (sum));
-	      g_ptr_array_add (self->factors, temp);
-	    }
-	  else
-	    {
-	      CalcExponent *temp =
-		calc_exponent_new (expr, CALC_EXPR (calc_number_new_ui (2)));
-	      g_ptr_array_add (self->factors, temp);
-	    }
+	  /* Add the powers together */
+	  CalcExponent *efactor = CALC_EXPONENT (factor);
+	  CalcSum *sum = calc_sum_new (efactor->power);
+	  calc_sum_add_term (sum, CALC_EXPONENT (expr)->power);
+	  CALC_EXPONENT (expr)->power = CALC_EXPR (sum);
+	  return;
+	}
+      else if (calc_expr_equivalent (factor, expr))
+	{
+	  /* Square the expression */
+	  CalcExponent *temp =
+	    calc_exponent_new (expr, CALC_EXPR (calc_number_new_ui (2)));
+	  g_ptr_array_add (self->factors, temp);
 	  return;
 	}
     }
@@ -290,6 +290,7 @@ calc_term_add_factor (CalcTerm *self, CalcExpr *factor)
   if (CALC_IS_EXPONENT (factor))
     {
       /* Will be unref-ed on disposal */
+      g_object_ref (factor);
       g_object_ref (CALC_EXPONENT (factor)->power);
       g_ptr_array_add (self->factors, factor);
     }

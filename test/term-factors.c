@@ -59,10 +59,39 @@ DEFINE_TEST (var)
   g_object_unref (c);
 }
 
+DEFINE_TEST (exp_match)
+{
+  CalcNumber *a = calc_number_new_ui (TEST_VALUE_A);
+  CalcNumber *b = calc_number_new_ui (TEST_VALUE_B);
+  CalcVariable *c = calc_variable_new ("x");
+  CalcExponent *d = calc_exponent_new (CALC_EXPR (c), CALC_EXPR (a));
+  CalcExponent *e = calc_exponent_new (CALC_EXPR (c), CALC_EXPR (b));
+  CalcTerm *f = calc_term_new (a);
+  CalcExponent *g;
+  calc_term_add_factor (f, CALC_EXPR (d));
+  calc_term_add_factor (f, CALC_EXPR (e));
+  assert (f->factors->len == 1);
+  assert (CALC_IS_EXPONENT (f->factors->pdata[0]));
+  g = CALC_EXPONENT (f->factors->pdata[0]);
+  assert (calc_expr_equivalent (g->base, CALC_EXPR (c)));
+  assert (CALC_IS_SUM (g->power));
+  assert (CALC_SUM (g->power)->terms->len == 1);
+  assert (CALC_IS_NUMBER (CALC_SUM (g->power)->terms->pdata[0]));
+  assert_num_equals_ui (CALC_NUMBER (CALC_SUM (g->power)->terms->pdata[0]),
+			TEST_VALUE_A + TEST_VALUE_B);
+  g_object_unref (a);
+  g_object_unref (b);
+  g_object_unref (c);
+  g_object_unref (d);
+  g_object_unref (e);
+  g_object_unref (f);
+}
+
 int
 main (void)
 {
   RUN_TEST (num);
   RUN_TEST (var);
+  RUN_TEST (exp_match);
   return 0;
 }
