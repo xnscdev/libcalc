@@ -17,6 +17,7 @@
  *************************************************************************/
 
 #include "calc-exponent.h"
+#include "calc-sum.h"
 #include "calc-term.h"
 
 G_DEFINE_TYPE (CalcTerm, calc_term, CALC_TYPE_EXPR)
@@ -241,24 +242,59 @@ calc_term_get_coefficient (CalcTerm *self)
  *
  * Depending on the type of @factor, this function performs different actions.
  * If @factor is an instance of #CalcNumber, its value will be multiplied to
- * the coefficient of @self. For all other valid values, @factor will simply
- * be appended to the list of factors of @self.
+ * the coefficient of @self. If @factor is an exponent and there is another
+ * factor of @self with the same base, the power of @factor is added to the
+ * power of the other factor. For all other valid expressions, an instance
+ * of #CalcExponent is appended to the list of factors of @self with a base of
+ * @factor and a power of 1.
  **/
 
 void
 calc_term_add_factor (CalcTerm *self, CalcExpr *factor)
 {
+  guint i;
   g_return_if_fail (CALC_IS_TERM (self));
   g_return_if_fail (CALC_IS_EXPR (factor));
+
   if (CALC_IS_NUMBER (factor))
     {
       CalcNumber *temp = calc_number_new (self->coefficient);
       calc_number_mul (&self->coefficient, temp, CALC_NUMBER (factor));
+      return;
+    }
+
+  for (i = 0; i < self->factors->len; i++)
+    {
+      CalcExpr *expr = self->factors->pdata[i];
+      if (calc_expr_equivalent (factor, expr))
+	{
+	  if (CALC_IS_EXPONENT (expr))
+	    {
+	      CalcExponent *efactor = CALC_EXPONENT (factor);
+	      CalcSum *sum = calc_sum_new (efactor->power);
+	      CalcExponent *temp;
+	      calc_sum_add_term (sum, CALC_EXPONENT (expr)->power);
+	      temp = calc_exponent_new (efactor->base, CALC_EXPR (sum));
+	      g_ptr_array_add (self->factors, temp);
+	    }
+	  else
+	    {
+	      CalcExponent *temp =
+		calc_exponent_new (expr, CALC_EXPR (calc_number_new_ui (2)));
+	      g_ptr_array_add (self->factors, temp);
+	    }
+	  return;
+	}
+    }
+
+  if (CALC_IS_EXPONENT (factor))
+    {
+      /* Will be unref-ed on disposal */
+      g_object_ref (CALC_EXPONENT (factor)->power);
+      g_ptr_array_add (self->factors, factor);
     }
   else
-    {
-      CalcExponent *temp =
-	calc_exponent_new (factor, CALC_EXPR (calc_number_new_ui (1)));
-      g_ptr_array_add (self->factors, temp);
-    }
+    g_ptr_array_add (self->factors,
+		     calc_exponent_new (factor,
+					CALC_EXPR (calc_number_new_ui (1))));
 }
