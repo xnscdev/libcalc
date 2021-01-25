@@ -1,5 +1,5 @@
 /*************************************************************************
- * calc-term.c -- This file is part of libcalc.                      *
+ * calc-term.c -- This file is part of libcalc.                          *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -257,7 +257,8 @@ calc_term_add_factor (CalcTerm *self, CalcExpr *factor)
     }
   else
     {
-      CalcExponent *temp = calc_exponent_new (factor, calc_number_new_ui (1));
+      CalcExponent *temp =
+	calc_exponent_new (factor, CALC_EXPR (calc_number_new_ui (1)));
       g_ptr_array_add (self->factors, temp);
     }
 }

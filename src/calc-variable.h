@@ -1,5 +1,5 @@
 /*************************************************************************
- * calc-variable.h -- This file is part of libcalc.                        *
+ * calc-variable.h -- This file is part of libcalc.                      *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *

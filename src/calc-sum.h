@@ -1,5 +1,5 @@
 /*************************************************************************
- * libcalc.h -- This file is part of libcalc.                            *
+ * calc-sum.h -- This file is part of libcalc.                           *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -16,14 +16,39 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
-#ifndef _LIBCALC_H
-#define _LIBCALC_H
+#ifndef _CALC_SUM_H
+#define _CALC_SUM_H
 
-#include "calc-exponent.h"
-#include "calc-fraction.h"
 #include "calc-number.h"
-#include "calc-sum.h"
-#include "calc-term.h"
-#include "calc-variable.h"
+
+G_BEGIN_DECLS
+
+#define CALC_TYPE_SUM calc_sum_get_type ()
+G_DECLARE_FINAL_TYPE (CalcSum, calc_sum, CALC, SUM, CalcExpr)
+
+struct _CalcSumClass
+{
+  /*< private >*/
+  CalcExprClass parent;
+};
+
+/**
+ * CalcSum:
+ *
+ * Represents the addition of one or more terms (not necessarily instances of
+ * #CalcTerm).
+ **/
+
+struct _CalcSum
+{
+  /*< private >*/
+  CalcExpr parent;
+  GPtrArray *terms;
+};
+
+CalcSum *calc_sum_new (CalcExpr *term);
+void calc_sum_add_term (CalcSum *self, CalcExpr *term);
+
+G_END_DECLS
 
 #endif
