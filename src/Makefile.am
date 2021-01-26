@@ -2,6 +2,7 @@ AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit -Wno-switch \
 	$(GMP_CFLAGS) $(MPFR_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)
 
 pkgincludedir = $(includedir)/libcalc
+pkgconfigdir = $(libdir)/pkgconfig
 
 lib_LTLIBRARIES = libcalc.la
 libcalc_la_SOURCES =		\
@@ -29,6 +30,8 @@ pkginclude_HEADERS =	\
 	calc-term.h	\
 	calc-variable.h	\
 	libcalc.h
+
+pkgconfig_DATA = libcalc.pc
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =

@@ -28,5 +28,6 @@ AC_SUBST([GOBJECT_LIBS])
 GTK_DOC_CHECK([1.14])
 GOBJECT_INTROSPECTION_CHECK([1.40.0])
 
-AC_CONFIG_FILES([Makefile doc/Makefile src/Makefile test/Makefile])
+AC_CONFIG_FILES([Makefile doc/Makefile src/Makefile src/libcalc.pc
+test/Makefile])
 AC_OUTPUT
