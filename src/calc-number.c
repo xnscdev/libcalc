@@ -142,20 +142,8 @@ calc_number_new (CalcNumber *value)
     }
   else
     {
-      self->type = value->type;
-      switch (self->type)
-	{
-	case CALC_NUMBER_TYPE_INTEGER:
-	  mpz_init_set (self->integer, value->integer);
-	  break;
-	case CALC_NUMBER_TYPE_RATIONAL:
-	  mpq_init (self->rational);
-	  mpq_set (self->rational, value->rational);
-	  break;
-	case CALC_NUMBER_TYPE_FLOATING:
-	  mpfr_init_set (self->floating, value->floating, MPFR_RNDN);
-	  break;
-	}
+      self->type = -1; /* Don't free anything */
+      calc_number_copy (self, value);
     }
   return self;
 }
@@ -293,6 +281,37 @@ calc_number_new_si (signed long value)
   mpz_init_set_si (self->integer, value);
   self->type = CALC_NUMBER_TYPE_INTEGER;
   return self;
+}
+
+/**
+ * calc_number_copy:
+ * @result: where to store the copied number
+ * @self: the number to copy
+ *
+ * Copies the value of @self into @result. Any previous value of @result is
+ * erased. If @result or @self are invalid numbers, no action is performed.
+ **/
+
+void
+calc_number_copy (CalcNumber *result, CalcNumber *self)
+{
+  g_return_if_fail (CALC_IS_NUMBER (result));
+  g_return_if_fail (CALC_IS_NUMBER (self));
+  _calc_number_release (result);
+  result->type = self->type;
+  switch (self->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      mpz_init_set (result->integer, self->integer);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      mpq_init (result->rational);
+      mpq_set (result->rational, self->rational);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_init_set (result->floating, self->floating, MPFR_RNDN);
+      break;
+    }
 }
 
 /**
@@ -459,6 +478,8 @@ _calc_number_get_final_type (CalcNumberType a, CalcNumberType b)
 void
 _calc_number_release (CalcNumber *self)
 {
+  if (self->type == -1)
+    return;
   switch (self->type)
     {
     case CALC_NUMBER_TYPE_INTEGER:
@@ -471,4 +492,5 @@ _calc_number_release (CalcNumber *self)
       mpfr_clear (self->floating);
       break;
     }
+  self->type = -1;
 }

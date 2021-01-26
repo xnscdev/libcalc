@@ -112,7 +112,7 @@ calc_sum_print (CalcExpr *expr, FILE *stream)
 	  CalcNumber *temp = calc_number_new (CALC_TERM (ex)->coefficient);
 	  calc_number_abs (&CALC_TERM (ex)->coefficient, temp);
 	  calc_expr_print (ex, stream);
-	  /* TODO Copy temp back to CALC_TERM (ex)->coefficient */
+	  calc_number_copy (CALC_TERM (ex)->coefficient, temp);
 	  g_object_unref (temp);
 	}
       else

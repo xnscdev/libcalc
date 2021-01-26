@@ -123,6 +123,7 @@ gint calc_number_cmp_d (CalcNumber *a, double b);
 gint calc_number_cmp_ui (CalcNumber *a, unsigned long b);
 gint calc_number_cmp_si (CalcNumber *a, signed long b);
 
+void calc_number_copy (CalcNumber *result, CalcNumber *self);
 void calc_number_cast (CalcNumber *self, CalcNumberType type);
 void calc_number_neg (CalcNumber **result, CalcNumber *self);
 void calc_number_abs (CalcNumber **result, CalcNumber *self);
