@@ -84,7 +84,7 @@ calc_variable_render (CalcExpr *expr, cairo_t *cr, gsize size)
 
 static void
 calc_variable_get_dims (CalcExpr *expr, cairo_t *cr, gint *width, gint *height,
-		      gsize size)
+			gsize size)
 {
   CalcVariable *self = CALC_VARIABLE (expr);
   PangoLayout *layout =

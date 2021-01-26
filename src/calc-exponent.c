@@ -27,6 +27,9 @@
 
 G_DEFINE_TYPE (CalcExponent, calc_exponent, CALC_TYPE_EXPR)
 
+static void calc_exponent_render (CalcExpr *expr, cairo_t *cr, gsize size);
+static void calc_exponent_get_dims (CalcExpr *expr, cairo_t *cr, gint *width,
+				    gint *height, gsize size);
 static void calc_exponent_print (CalcExpr *expr, FILE *stream);
 static gboolean calc_exponent_equivalent (CalcExpr *self, CalcExpr *other);
 static gboolean calc_exponent_like_terms (CalcExpr *self, CalcExpr *other);
@@ -37,6 +40,8 @@ static void
 calc_exponent_class_init (CalcExponentClass *klass)
 {
   CalcExprClass *exprclass = CALC_EXPR_CLASS (klass);
+  exprclass->render = calc_exponent_render;
+  exprclass->get_dims = calc_exponent_get_dims;
   exprclass->print = calc_exponent_print;
   exprclass->equivalent = calc_exponent_equivalent;
   exprclass->like_terms = calc_exponent_like_terms;
@@ -47,6 +52,48 @@ calc_exponent_class_init (CalcExponentClass *klass)
 static void
 calc_exponent_init (CalcExponent *self)
 {
+}
+
+static void
+calc_exponent_render (CalcExpr *expr, cairo_t *cr, gsize size)
+{
+  CalcExponent *self = CALC_EXPONENT (expr);
+  gdouble sx;
+  gdouble sy;
+  gint base_width;
+  gint base_height;
+  gint power_height;
+  cairo_get_current_point (cr, &sx, &sy);
+  calc_expr_get_dims (self->base, cr, &base_width, &base_height, size);
+  calc_expr_render (self->base, cr, size);
+  cairo_rel_move_to (cr, base_width, 0.0);
+  calc_expr_get_dims (self->power, cr, NULL, &power_height, size / 2);
+  if (power_height > base_height)
+    cairo_move_to (cr, sx + base_width, sy - power_height / 2);
+  calc_expr_render (self->power, cr, size / 2);
+  cairo_move_to (cr, sx, sy);
+}
+
+static void
+calc_exponent_get_dims (CalcExpr *expr, cairo_t *cr, gint *width, gint *height,
+			gsize size)
+{
+  CalcExponent *self = CALC_EXPONENT (expr);
+  gint base_width;
+  gint base_height;
+  gint power_width;
+  gint power_height;
+  calc_expr_get_dims (self->base, cr, &base_width, &base_height, size);
+  calc_expr_get_dims (self->power, cr, &power_width, &power_height, size / 2);
+  if (width != NULL)
+    *width = base_width + power_width;
+  if (height != NULL)
+    {
+      if (power_height > base_height)
+	*height = base_height + power_height / 2;
+      else
+	*height = base_height;
+    }
 }
 
 static void
