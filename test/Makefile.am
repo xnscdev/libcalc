@@ -32,6 +32,9 @@ TESTS =	eval-exp	\
 	num-sub-q	\
 	num-sub-ui	\
 	num-sub-si	\
+	render-int	\
+	render-rat	\
+	render-flt	\
 	term-num	\
 	term-var	\
 	term-exp2	\

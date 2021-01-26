@@ -72,6 +72,9 @@ gboolean calc_expr_evaluate (CalcExpr *self, CalcExpr *result);
 PangoLayout *_calc_expr_layout_new (cairo_t *cr, const gchar *face, gsize size,
 				    const gchar *text);
 
+#define _LIBCALC_REGULAR_FONT "CMU Serif"
+#define _LIBCALC_ITALIC_FONT "CMU Classical Serif Italic"
+
 #endif
 
 G_END_DECLS

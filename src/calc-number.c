@@ -23,6 +23,9 @@
 
 G_DEFINE_TYPE (CalcNumber, calc_number, CALC_TYPE_EXPR)
 
+static void calc_number_render (CalcExpr *expr, cairo_t *cr, gsize size);
+static void calc_number_get_dims (CalcExpr *expr, cairo_t *cr, gint *width,
+				  gint *height, gsize size);
 static void calc_number_print (CalcExpr *expr, FILE *stream);
 static gboolean calc_number_equivalent (CalcExpr *self, CalcExpr *other);
 static gboolean calc_number_like_terms (CalcExpr *self, CalcExpr *other);
@@ -40,6 +43,8 @@ calc_number_class_init (CalcNumberClass *klass)
 {
   CalcExprClass *exprclass = CALC_EXPR_CLASS (klass);
   G_OBJECT_CLASS (klass)->dispose = calc_number_dispose;
+  exprclass->render = calc_number_render;
+  exprclass->get_dims = calc_number_get_dims;
   exprclass->print = calc_number_print;
   exprclass->equivalent = calc_number_equivalent;
   exprclass->like_terms = calc_number_like_terms;
@@ -51,6 +56,63 @@ calc_number_class_init (CalcNumberClass *klass)
 static void
 calc_number_init (CalcNumber *self)
 {
+}
+
+static void
+calc_number_render (CalcExpr *expr, cairo_t *cr, gsize size)
+{
+  CalcNumber *self = CALC_NUMBER (expr);
+  gchar *text;
+  PangoLayout *layout;
+
+  switch (self->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      gmp_asprintf (&text, "%Zd", self->integer);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      gmp_asprintf (&text, "%Qd", self->rational);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_asprintf (&text, "%.8RNf", self->floating);
+      break;
+    default:
+      g_return_if_reached ();
+    }
+
+  layout = _calc_expr_layout_new (cr, _LIBCALC_REGULAR_FONT, size, text);
+  pango_cairo_show_layout (cr, layout);
+  free (text);
+  g_object_unref (layout);
+}
+
+static void
+calc_number_get_dims (CalcExpr *expr, cairo_t *cr, gint *width, gint *height,
+		      gsize size)
+{
+  CalcNumber *self = CALC_NUMBER (expr);
+  gchar *text;
+  PangoLayout *layout;
+
+  switch (self->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      gmp_asprintf (&text, "%Zd", self->integer);
+      break;
+    case CALC_NUMBER_TYPE_RATIONAL:
+      gmp_asprintf (&text, "%Qd", self->rational);
+      break;
+    case CALC_NUMBER_TYPE_FLOATING:
+      mpfr_asprintf (&text, "%.8RNf", self->floating);
+      break;
+    default:
+      g_return_if_reached ();
+    }
+
+  layout = _calc_expr_layout_new (cr, _LIBCALC_REGULAR_FONT, size, text);
+  pango_layout_get_pixel_size (layout, width, height);
+  free (text);
+  g_object_unref (layout);
 }
 
 static void
