@@ -423,6 +423,33 @@ calc_number_abs (CalcNumber **result, CalcNumber *self)
     }
 }
 
+/**
+ * calc_number_sgn:
+ * @self: the number
+ *
+ * Determines the sign of the number @self.
+ *
+ * Returns: positive if @self is positive, zero if @self is zero, or negative
+ * if @self is negative or invalid
+ **/
+
+gint
+calc_number_sgn (CalcNumber *self)
+{
+  g_return_val_if_fail (CALC_IS_NUMBER (self), -1);
+  switch (self->type)
+    {
+    case CALC_NUMBER_TYPE_INTEGER:
+      return mpz_sgn (self->integer);
+    case CALC_NUMBER_TYPE_RATIONAL:
+      return mpq_sgn (self->rational);
+    case CALC_NUMBER_TYPE_FLOATING:
+      return mpfr_sgn (self->floating);
+    default:
+      return -1;
+    }
+}
+
 CalcNumberType
 _calc_number_get_final_type (CalcNumberType a, CalcNumberType b)
 {
