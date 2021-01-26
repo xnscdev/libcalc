@@ -66,10 +66,10 @@ calc_exponent_render (CalcExpr *expr, cairo_t *cr, gsize size)
   cairo_get_current_point (cr, &sx, &sy);
   calc_expr_get_dims (self->base, cr, &base_width, &base_height, size);
   calc_expr_render (self->base, cr, size);
-  cairo_rel_move_to (cr, base_width, 0.0);
+  cairo_rel_move_to (cr, base_width + size / 9, 0.0);
   calc_expr_get_dims (self->power, cr, NULL, &power_height, size / 2);
   if (power_height > base_height)
-    cairo_move_to (cr, sx + base_width, sy - power_height / 2);
+    cairo_move_to (cr, sx + base_width + size / 9, sy - power_height / 2);
   calc_expr_render (self->power, cr, size / 2);
   cairo_move_to (cr, sx, sy);
 }
@@ -86,7 +86,7 @@ calc_exponent_get_dims (CalcExpr *expr, cairo_t *cr, gint *width, gint *height,
   calc_expr_get_dims (self->base, cr, &base_width, &base_height, size);
   calc_expr_get_dims (self->power, cr, &power_width, &power_height, size / 2);
   if (width != NULL)
-    *width = base_width + power_width;
+    *width = base_width + power_width + size / 9;
   if (height != NULL)
     {
       if (power_height > base_height)
