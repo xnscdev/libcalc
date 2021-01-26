@@ -156,7 +156,8 @@ calc_exponent_set_base (CalcExponent *self, CalcExpr *base)
  *
  * Gets the base of @self, which may be modified but not freed.
  *
- * Returns: the base of @self, or %NULL if @self is an invalid exponent
+ * Returns: (transfer none): the base of @self, or %NULL if @self is an
+ * invalid exponent
  **/
 
 CalcExpr *
@@ -191,7 +192,8 @@ calc_exponent_set_power (CalcExponent *self, CalcExpr *power)
  *
  * Gets the power of @self, which may be modified but not freed.
  *
- * Returns: the power of @self, or %NULL if @self is an invalid exponent
+ * Returns: (transfer none): the power of @self, or %NULL if @self is an
+ * invalid exponent
  **/
 
 CalcExpr *

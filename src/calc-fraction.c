@@ -159,7 +159,8 @@ calc_fraction_set_num (CalcFraction *self, CalcExpr *num)
  *
  * Gets the numerator of @self, which may be modified but should not be freed.
  *
- * Returns: the numerator of @self, or %NULL if @self is an invalid fraction
+ * Returns: (transfer none): the numerator of @self, or %NULL if @self is an
+ * invalid fraction
  **/
 
 CalcExpr *
@@ -194,7 +195,8 @@ calc_fraction_set_denom (CalcFraction *self, CalcExpr *denom)
  *
  * Gets the denominator of @self, which may be modified but should not be freed.
  *
- * Returns: the denominator of @self, or %NULL if @self is an invalid fraction
+ * Returns: (transfer none): the denominator of @self, or %NULL if @self is an
+ * invalid fraction
  **/
 
 CalcExpr *
