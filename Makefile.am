@@ -3,3 +3,5 @@ ACLOCAL_AMFLAGS = -I m4
 DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
 
 SUBDIRS = src doc test
+
+EXTRA_DIST = autogen.sh

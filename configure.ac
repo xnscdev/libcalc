@@ -1,4 +1,4 @@
-AC_INIT([libcalc], [1.0.0], [xnscdev@gmail.com])
+AC_INIT([libcalc], [1.1.0], [xnscdev@gmail.com])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 
