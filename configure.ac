@@ -1,6 +1,8 @@
 AC_INIT([libcalc], [1.1.0], [xnscdev@gmail.com])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_HEADERS([config.h])
+AC_USE_SYSTEM_EXTENSIONS
 
 AM_INIT_AUTOMAKE
 AM_SILENT_RULES([yes])
@@ -8,6 +10,9 @@ AM_SILENT_RULES([yes])
 LT_INIT
 
 AC_PROG_CC
+gl_EARLY
+
+gl_INIT
 
 PKG_CHECK_MODULES([GMP], [gmp >= 4.3.2])
 AC_SUBST([GMP_CFLAGS])
@@ -32,6 +37,6 @@ AC_SUBST([PANGOCAIRO_LIBS])
 GTK_DOC_CHECK([1.14])
 GOBJECT_INTROSPECTION_CHECK([1.40.0])
 
-AC_CONFIG_FILES([Makefile doc/Makefile src/Makefile src/libcalc.pc
+AC_CONFIG_FILES([Makefile doc/Makefile lib/Makefile src/Makefile src/libcalc.pc
 test/Makefile])
 AC_OUTPUT

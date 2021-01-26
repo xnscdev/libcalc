@@ -18,6 +18,10 @@
 
 #define _LIBCALC_INTERNAL
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "calc-number.h"
 #include "calc-exponent.h"
 

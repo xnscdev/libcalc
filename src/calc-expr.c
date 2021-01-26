@@ -18,6 +18,10 @@
 
 #define _LIBCALC_INTERNAL
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "calc-expr.h"
 
 G_DEFINE_ABSTRACT_TYPE (CalcExpr, calc_expr, G_TYPE_OBJECT)

@@ -18,6 +18,10 @@
 
 #define _LIBCALC_INTERNAL
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "calc-sum.h"
 #include "calc-term.h"
 

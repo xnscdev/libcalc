@@ -1,3 +1,4 @@
+AM_CPPFLAGS = -I$(top_builddir)
 AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit -Wno-switch	\
 	$(GMP_CFLAGS) $(MPFR_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)	\
 	$(PANGOCAIRO_CFLAGS)
