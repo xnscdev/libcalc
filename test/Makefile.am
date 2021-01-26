@@ -35,6 +35,7 @@ TESTS =	eval-exp	\
 	render-int	\
 	render-rat	\
 	render-flt	\
+	render-var	\
 	term-num	\
 	term-var	\
 	term-exp2	\

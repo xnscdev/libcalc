@@ -27,6 +27,9 @@
 
 G_DEFINE_TYPE (CalcVariable, calc_variable, CALC_TYPE_EXPR)
 
+static void calc_variable_render (CalcExpr *expr, cairo_t *cr, gsize size);
+static void calc_variable_get_dims (CalcExpr *expr, cairo_t *cr, gint *width,
+				    gint *height, gsize size);
 static void calc_variable_print (CalcExpr *expr, FILE *stream);
 static gboolean calc_variable_equivalent (CalcExpr *self, CalcExpr *other);
 static gboolean calc_variable_like_terms (CalcExpr *self, CalcExpr *other);
@@ -52,6 +55,8 @@ calc_variable_class_init (CalcVariableClass *klass)
 {
   CalcExprClass *exprclass = CALC_EXPR_CLASS (klass);
   G_OBJECT_CLASS (klass)->dispose = calc_variable_dispose;
+  exprclass->render = calc_variable_render;
+  exprclass->get_dims = calc_variable_get_dims;
   exprclass->print = calc_variable_print;
   exprclass->equivalent = calc_variable_equivalent;
   exprclass->like_terms = calc_variable_like_terms;
@@ -65,6 +70,27 @@ calc_variable_class_init (CalcVariableClass *klass)
 static void
 calc_variable_init (CalcVariable *self)
 {
+}
+
+static void
+calc_variable_render (CalcExpr *expr, cairo_t *cr, gsize size)
+{
+  CalcVariable *self = CALC_VARIABLE (expr);
+  PangoLayout *layout =
+    _calc_expr_layout_new (cr, _LIBCALC_ITALIC_FONT, size, self->text);
+  pango_cairo_show_layout (cr, layout);
+  g_object_unref (layout);
+}
+
+static void
+calc_variable_get_dims (CalcExpr *expr, cairo_t *cr, gint *width, gint *height,
+		      gsize size)
+{
+  CalcVariable *self = CALC_VARIABLE (expr);
+  PangoLayout *layout =
+    _calc_expr_layout_new (cr, _LIBCALC_ITALIC_FONT, size, self->text);
+  pango_layout_get_pixel_size (layout, width, height);
+  g_object_unref (layout);
 }
 
 static void
