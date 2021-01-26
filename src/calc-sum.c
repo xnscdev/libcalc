@@ -87,10 +87,36 @@ calc_sum_print (CalcExpr *expr, FILE *stream)
   guint i;
   for (i = 0; i < self->terms->len; i++)
     {
+      CalcExpr *ex = self->terms->pdata[i];
+      gboolean neg_num =
+	CALC_IS_NUMBER (ex) && calc_number_sgn (CALC_NUMBER (ex)) < 0;
+      gboolean neg_term =
+	CALC_IS_TERM (ex) && calc_number_sgn (CALC_TERM (ex)->coefficient) < 0;
       if (i > 0)
-	fputc ('+', stream);
+	{
+	  if (neg_num || neg_term)
+	    fputc ('-', stream);
+	  else
+	    fputc ('+', stream);
+	}
       fputc ('(', stream);
-      calc_expr_print (CALC_EXPR (self->terms->pdata[i]), stream);
+      if (neg_num)
+	{
+	  CalcNumber *temp = NULL;
+	  calc_number_abs (&temp, CALC_NUMBER (ex));
+	  calc_expr_print (CALC_EXPR (temp), stream);
+	  g_object_unref (temp);
+	}
+      else if (neg_term)
+	{
+	  CalcNumber *temp = calc_number_new (CALC_TERM (ex)->coefficient);
+	  calc_number_abs (&CALC_TERM (ex)->coefficient, temp);
+	  calc_expr_print (ex, stream);
+	  /* TODO Copy temp back to CALC_TERM (ex)->coefficient */
+	  g_object_unref (temp);
+	}
+      else
+	calc_expr_print (ex, stream);
       fputc (')', stream);
     }
 }
