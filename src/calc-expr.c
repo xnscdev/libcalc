@@ -198,3 +198,27 @@ calc_expr_evaluate (CalcExpr *self, CalcExpr *result)
   g_return_val_if_fail (klass->evaluate != NULL, FALSE);
   return klass->evaluate (self, result);
 }
+
+PangoLayout *
+_calc_expr_layout_new (cairo_t *cr, const gchar *face, gsize size,
+		       const gchar *text)
+{
+  PangoLayout *layout;
+  PangoFontDescription *font;
+  gchar *buffer;
+
+  g_return_val_if_fail (cr != NULL, NULL);
+  g_return_val_if_fail (face != NULL, NULL);
+  g_return_val_if_fail (text != NULL, NULL);
+
+  layout = pango_cairo_create_layout (cr);
+  pango_layout_set_text (layout, text, -1);
+
+  asprintf (&buffer, "%s %zu", face, size);
+  font = pango_font_description_from_string (buffer);
+  free (buffer);
+
+  pango_layout_set_font_description (layout, font);
+  pango_font_description_free (font);
+  return layout;
+}

@@ -67,6 +67,13 @@ gboolean calc_expr_like_terms (CalcExpr *self, CalcExpr *other);
 gulong calc_expr_hash (CalcExpr *self);
 gboolean calc_expr_evaluate (CalcExpr *self, CalcExpr *result);
 
+#ifdef _LIBCALC_INTERNAL
+
+PangoLayout *_calc_expr_layout_new (cairo_t *cr, const gchar *face, gsize size,
+				    const gchar *text);
+
+#endif
+
 G_END_DECLS
 
 #endif
