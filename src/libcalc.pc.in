@@ -7,6 +7,6 @@ Name: Libcalc
 Description: Library for mathematical calculations
 Version: @VERSION@
 Requires: gmp >= 4.3.2, mpfr >= 3.1.0
-Requires.private: glib-2.0 >= 2.44, gobject-2.0 >= 2.44
+Requires.private: glib-2.0 >= 2.44, gobject-2.0 >= 2.44, pangocairo
 Libs: -L${libdir} -lcalc
 Cflags: -I${includedir}/libcalc

@@ -1,6 +1,7 @@
 AM_CPPFLAGS = -I$(top_srcdir)/src
-AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit \
-	$(GMP_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)
+AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit			\
+	$(GMP_CFLAGS) $(MPFR_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)	\
+	$(PANGOCAIRO_CFLAGS)
 
 TESTS =	eval-exp	\
 	eval-frac	\
@@ -42,5 +43,6 @@ libtest_a_SOURCES =	\
 	assert.c	\
 	libtest.h
 
-LDADD = libtest.a $(top_builddir)/src/libcalc.la \
-	$(GMP_LIBS) $(GLIB_LIBS) $(GOBJECT_LIBS)
+LDADD = libtest.a $(top_builddir)/src/libcalc.la		\
+	$(GMP_LIBS) $(MPFR_LIBS) $(GLIB_LIBS) $(GOBJECT_LIBS)	\
+	$(PANGOCAIRO_LIBS)

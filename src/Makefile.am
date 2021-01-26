@@ -1,5 +1,6 @@
-AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit -Wno-switch \
-	$(GMP_CFLAGS) $(MPFR_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)
+AM_CFLAGS = -std=gnu99 -Wall -pedantic -Werror=implicit -Wno-switch	\
+	$(GMP_CFLAGS) $(MPFR_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)	\
+	$(PANGOCAIRO_CFLAGS)
 
 pkgincludedir = $(includedir)/libcalc
 pkgconfigdir = $(libdir)/pkgconfig
@@ -19,7 +20,8 @@ libcalc_la_SOURCES =		\
 	calc-sum.c		\
 	calc-term.c		\
 	calc-variable.c
-libcalc_la_LIBADD = $(GMP_LIBS) $(MPFR_LIBS) $(GLIB_LIBS) $(GOBJECT_LIBS)
+libcalc_la_LIBADD = $(GMP_LIBS) $(MPFR_LIBS) $(GLIB_LIBS) $(GOBJECT_LIBS) \
+	$(PANGOCAIRO_LIBS)
 
 pkginclude_HEADERS =	\
 	calc-exponent.h	\
