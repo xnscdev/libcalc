@@ -25,6 +25,8 @@ G_DEFINE_ABSTRACT_TYPE (CalcExpr, calc_expr, G_TYPE_OBJECT)
 static void
 calc_expr_class_init (CalcExprClass *klass)
 {
+  klass->render = NULL;
+  klass->get_dims = NULL;
   klass->print = NULL;
   klass->equivalent = NULL;
   klass->like_terms = NULL;
@@ -34,6 +36,59 @@ calc_expr_class_init (CalcExprClass *klass)
 static void
 calc_expr_init (CalcExpr *self)
 {
+}
+
+/**
+ * calc_expr_render:
+ * @self: the expression to render
+ * @cr: the #cairo_t object to render the expression on
+ * @size: the font size to use for text
+ *
+ * Renders a graphical representation of the expression on the #cairo_t object
+ * @cr, using a font size of @size. If @self is an invalid expression, @cr is
+ * %NULL, or @size is zero, no action is performed. The current point of @cr
+ * will remain unchanged, so subsequent calls to this function will draw over
+ * previously-rendered expressions.
+ **/
+
+void
+calc_expr_render (CalcExpr *self, cairo_t *cr, gsize size)
+{
+  CalcExprClass *klass;
+  g_return_if_fail (CALC_IS_EXPR (self));
+  g_return_if_fail (cr != NULL);
+  g_return_if_fail (size > 0);
+  klass = CALC_EXPR_GET_CLASS (self);
+  g_return_if_fail (klass->render != NULL);
+  klass->render (self, cr, size);
+}
+
+/**
+ * calc_expr_get_dims:
+ * @self: the expression to get the dimensions of
+ * @cr: the #cairo_t object to construct text layouts with
+ * @width: the location to store the width, or %NULL to ignore width
+ * @height: the location to store the height, or %NULL to ignore height
+ * @size: the font size to consider
+ *
+ * Determines the dimensions of an expression if it were to be rendered on
+ * @cr with a font size of @size, and stores the width and height in @width
+ * and @height respectively. @width or @height may be %NULL to indicate that
+ * the width or height should be ignored. No drawing is done on @cr by calling
+ * this function, and the current point of @cr will remain unchanged.
+ **/
+
+void
+calc_expr_get_dims (CalcExpr *self, cairo_t *cr, gint *width, gint *height,
+		    gsize size)
+{
+  CalcExprClass *klass;
+  g_return_if_fail (CALC_IS_EXPR (self));
+  g_return_if_fail (cr != NULL);
+  g_return_if_fail (size > 0);
+  klass = CALC_EXPR_GET_CLASS (self);
+  g_return_if_fail (klass->get_dims != NULL);
+  klass->get_dims (self, cr, width, height, size);
 }
 
 /**

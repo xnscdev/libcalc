@@ -45,7 +45,9 @@ introspection_sources = $(libcalc_la_SOURCES) $(pkginclude_HEADERS)
 
 Calc-1.0.gir: libcalc.la
 Calc_1_0_gir_INCLUDES = GObject-2.0
-Calc_1_0_gir_CFLAGS = $(INCLUDES)
+Calc_1_0_gir_CFLAGS = $(INCLUDES)					\
+	$(GMP_CFLAGS) $(MPFR_CFLAGS) $(GLIB_CFLAGS) $(GOBJECT_CFLAGS)	\
+	$(PANGOCAIRO_CFLAGS)
 Calc_1_0_gir_LIBS = libcalc.la
 Calc_1_0_gir_FILES = $(introspection_sources)
 Calc_1_0_gir_NAMESPACE = Calc
