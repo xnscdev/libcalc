@@ -16,6 +16,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
 
+#define _LIBCALC_INTERNAL
+
 #include "calc-sum.h"
 #include "calc-term.h"
 

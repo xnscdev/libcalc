@@ -19,7 +19,7 @@
 #ifndef _CALC_EXPR_H
 #define _CALC_EXPR_H
 
-#include <cairo.h>
+#include <pango/pangocairo.h>
 #include <glib-object.h>
 #include <stdio.h>
 

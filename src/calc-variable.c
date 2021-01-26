@@ -1,5 +1,5 @@
 /*************************************************************************
- * calc-variable.c -- This file is part of libcalc.                        *
+ * calc-variable.c -- This file is part of libcalc.                      *
  * Copyright (C) 2020 XNSC                                               *
  *                                                                       *
  * libcalc is free software: you can redistribute it and/or modify       *
@@ -15,6 +15,8 @@
  * You should have received a copy of the GNU General Public License     *
  * along with this program. If not, see <https://www.gnu.org/licenses/>. *
  *************************************************************************/
+
+#define _LIBCALC_INTERNAL
 
 #include "calc-number.h"
 #include "calc-variable.h"
